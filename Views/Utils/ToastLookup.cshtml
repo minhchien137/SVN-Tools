@@ -453,7 +453,10 @@
                 return `
                 <tr style="border-bottom:1px solid #1f2937;">
                     <td style="padding:10px 12px;font-size:12px;color:#4b5563;">${start + i + 1}</td>
-                    <td style="padding:10px 12px;font-family:monospace;font-size:13px;color:#93c5fd;">${r.serial_number || '—'}</td>
+                    <td style="padding:10px 12px;font-family:monospace;font-size:13px;color:#93c5fd;">
+                        ${r.serial_number || '—'}
+                        ${r.renamed_to ? `<span class="mt-badge" style="background:rgba(248,113,113,.15);color:#fca5a5;" title="Đã đổi sang ${r.renamed_to}">Đã đổi SN</span>` : ''}
+                    </td>
                     <td style="padding:10px 12px;">${badgeHtml(r.FCT_status)}</td>
                     <td style="padding:10px 12px;">${badgeHtml(r.FQC_status)}</td>
                     <td style="padding:10px 12px;font-size:12px;color:#9ca3af;">${r.work_order || '—'}</td>
@@ -516,6 +519,24 @@
             html += `<div style="font-size:12px;color:#fbbf24;background:rgba(251,191,36,.1);
                         border:1px solid rgba(251,191,36,.35);border-radius:8px;padding:8px 14px;margin-bottom:16px;">
                 ${noteBody}
+            </div>`;
+        }
+        if (data.renameInfo && data.renameInfo.renamedTo) {
+            const rt = data.renameInfo.renamedTo;
+            html += `<div style="font-size:12px;color:#fca5a5;background:rgba(248,113,113,.1);
+                        border:1px solid rgba(248,113,113,.35);border-radius:8px;padding:8px 14px;margin-bottom:16px;
+                        display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                <span>⚠ SN này đã được đổi sang <strong>${rt.newSerial}</strong> (lý do: ${rt.reason || '—'}, lúc: ${fmtDate(rt.editedAt)}).</span>
+                <button class="btn btn-blue" style="font-size:11px;padding:4px 12px;" onclick="searchSerial('${rt.newSerial}')">Xem SN mới →</button>
+            </div>`;
+        }
+        if (data.renameInfo && data.renameInfo.renamedFrom) {
+            const rf = data.renameInfo.renamedFrom;
+            html += `<div style="font-size:12px;color:#93c5fd;background:rgba(59,130,246,.1);
+                        border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:8px 14px;margin-bottom:16px;
+                        display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                <span>ⓘ SN này đã tiếp nhận dữ liệu sản xuất từ SN cũ <strong>${rf.oldSerial}</strong> (lý do: ${rf.reason || '—'}, lúc: ${fmtDate(rf.editedAt)}).</span>
+                <button class="btn btn-gray" style="font-size:11px;padding:4px 12px;" onclick="searchSerial('${rf.oldSerial}')">Xem SN cũ →</button>
             </div>`;
         }
         html += buildJourney(data);

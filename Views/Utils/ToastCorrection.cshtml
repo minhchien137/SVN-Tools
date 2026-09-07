@@ -1,0 +1,539 @@
+@{
+    ViewData["Title"] = "Sửa dữ liệu Toast";
+}
+
+<style>
+    body { font-family: 'Segoe UI', sans-serif; background: #0f1115; color: #f9fafb; margin: 0; padding: 32px 20px; }
+
+    .page-title {
+        font-size: 34px; font-weight: 800; margin: 0 0 8px; letter-spacing: -.5px;
+        text-align: center;
+        background: linear-gradient(90deg, #60a5fa, #93c5fd);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .page-sub { text-align: center; color: #9ca3af; font-size: 13px; margin-bottom: 20px; }
+
+    .warn-banner {
+        max-width: 900px; margin: 0 auto 28px; padding: 12px 18px; border-radius: 10px;
+        background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.35);
+        color: #fca5a5; font-size: 13px; line-height: 1.6;
+    }
+
+    .wrap { max-width: 900px; margin: 0 auto; }
+
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .tab-btn {
+        background: #1f2937; border: 1px solid #374151; color: #9ca3af;
+        border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer;
+    }
+    .tab-btn.active { background: #2563eb; border-color: #2563eb; color: #fff; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .card {
+        background: #1f2937; border: 1px solid #374151; border-radius: 14px; padding: 20px; margin-bottom: 18px;
+    }
+    .card-title {
+        font-size: 13px; font-weight: 700; color: #9ca3af; text-transform: uppercase;
+        letter-spacing: .6px; margin: 0 0 16px;
+    }
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 12px; color: #cbd5e1; font-weight: 600; margin-bottom: 6px; }
+    .field input, .field textarea, .field select {
+        width: 100%; box-sizing: border-box; background: #111827; border: 1px solid #374151; border-radius: 8px;
+        color: #f9fafb; padding: 10px 12px; font-size: 14px; outline: none;
+    }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: #3b82f6; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @@media (max-width: 640px) { .field-row { grid-template-columns: 1fr; } }
+
+    .btn-blue {
+        background: #2563eb; color: #fff; border: none; border-radius: 8px;
+        font-weight: 600; cursor: pointer; padding: 10px 20px; font-size: 14px;
+    }
+    .btn-blue:hover:not(:disabled) { background: #1d4ed8; }
+    .btn-blue:disabled { opacity: .5; cursor: not-allowed; }
+
+    .btn-gray {
+        background: #1f2937; color: #e5e7eb; border: 1px solid #4b5563;
+        border-radius: 8px; font-weight: 600; cursor: pointer; padding: 6px 14px; font-size: 12px;
+    }
+    .btn-gray:hover:not(:disabled) { background: #2563eb; border-color: #2563eb; color: #fff; }
+
+    .msg { font-size: 13px; padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; display: none; }
+    .msg.ok  { background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.35); color: #86efac; display: block; }
+    .msg.err { background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.35); color: #fca5a5; display: block; }
+
+    .comp-station { font-size: 12px; color: #93c5fd; font-weight: 700; text-transform: uppercase; margin: 14px 0 8px; }
+    .comp-row {
+        display: flex; align-items: center; justify-content: space-between; gap: 10px;
+        background: #111827; border: 1px solid #374151; border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;
+    }
+    .comp-row-text { font-size: 12px; font-family: monospace; color: #d1d5db; }
+    .comp-row-text b { color: #93c5fd; }
+    .comp-row-text .lot { color: #fbbf24; font-weight: 700; }
+
+    #loading { text-align: center; color: #6b7280; padding: 20px; display: none; font-size: 14px; }
+
+    .info-box {
+        background: #111827; border: 1px solid #374151; border-radius: 10px;
+        padding: 14px 16px; margin-bottom: 14px; font-size: 12px;
+    }
+    .info-box-title { font-size: 12px; font-weight: 700; color: #93c5fd; margin-bottom: 10px; text-transform: uppercase; }
+    .info-box-row { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; border-bottom: 1px solid #1f2937; }
+    .info-box-row:last-child { border-bottom: none; }
+    .info-box-row span:first-child { color: #9ca3af; }
+    .info-box-row span:last-child { color: #f9fafb; font-weight: 600; text-align: right; }
+    .info-badge { padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+    .info-badge.ok  { background: rgba(34,197,94,.15); color: #86efac; }
+    .info-badge.ng  { background: rgba(248,113,113,.15); color: #fca5a5; }
+    .info-badge.none{ background: rgba(107,114,128,.15); color: #9ca3af; }
+</style>
+
+<div class="wrap">
+    <div class="page-title">Sửa dữ liệu Toast</div>
+
+    <div class="warn-banner">
+        ⚠ Thao tác này sửa trực tiếp dữ liệu sản xuất &amp; truy xuất nguồn gốc. Chỉ thực hiện khi có xác nhận của Line Leader.
+        Mọi thay đổi đều được ghi log (người sửa, thời gian, dữ liệu cũ/mới, lý do) để đối chiếu sau này.
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" id="tab-btn-component" onclick="switchTab('component')">Sửa linh kiện</button>
+        <button class="tab-btn" id="tab-btn-rename" onclick="switchTab('rename')">Đổi Serial Number</button>
+        <a class="tab-btn" style="margin-left:auto;text-decoration:none;display:flex;align-items:center;"
+           asp-controller="Utils" asp-action="ToastEditHistory">Xem lịch sử thay đổi →</a>
+    </div>
+
+    <!-- TAB 1: Sua linh kien -->
+    <div class="tab-panel active" id="tab-component">
+        <div class="card">
+            <div class="card-title">Bước 1 — Tải linh kiện theo Serial</div>
+            <div class="field-row">
+                <div class="field">
+                    <label>Serial Number</label>
+                    <input type="text" id="comp-serial" placeholder="Nhập serial cần sửa..." />
+                </div>
+                <div class="field" style="display:flex;align-items:flex-end;">
+                    <button class="btn-blue" style="width:100%;" onclick="loadComponents()">Tải linh kiện</button>
+                </div>
+            </div>
+            <div id="comp-msg" class="msg"></div>
+            <div id="comp-loading" style="display:none;color:#6b7280;font-size:13px;">Đang tải...</div>
+            <div id="comp-list"></div>
+        </div>
+
+        <div class="card" id="comp-edit-card" style="display:none;">
+            <div class="card-title">Bước 2 — Nhập linh kiện thay thế</div>
+            <div class="field-row">
+                <div class="field">
+                    <label>Trạm</label>
+                    <input type="text" id="edit-station" readonly />
+                </div>
+                <div class="field">
+                    <label>Lot cũ</label>
+                    <input type="text" id="edit-old-lot" readonly />
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label>Mã sản phẩm</label>
+                    <input type="text" id="edit-new-code" readonly />
+                </div>
+                <div class="field">
+                    <label>Lot mới</label>
+                    <input type="text" id="edit-new-lot" placeholder="Nhập lot number mới..." />
+                </div>
+            </div>
+            <div id="edit-diff"></div>
+            <div class="field">
+                <label>Lý do</label>
+                <textarea id="edit-reason" rows="2" placeholder="VD: PCB bị NG, thay linh kiện mới / Bắn nhầm PCB của SN khác..."></textarea>
+            </div>
+            <div class="field">
+                <label>Mã nhân viên thực hiện</label>
+                <input type="text" id="edit-svncode" placeholder="Nhập mã nhân viên của bạn..." />
+            </div>
+            <div id="edit-msg" class="msg"></div>
+            <button class="btn-blue" id="edit-submit-btn" onclick="submitReplaceComponent()">Lưu thay đổi</button>
+            <button class="btn-gray" onclick="cancelEditComponent()">Hủy</button>
+        </div>
+    </div>
+
+    <!-- TAB 2: Doi SN -->
+    <div class="tab-panel" id="tab-rename">
+        <div class="card">
+            <div class="card-title">Đổi Serial Number</div>
+            <div class="field-row">
+                <div class="field">
+                    <label>Serial cũ</label>
+                    <input type="text" id="rn-old" placeholder="SN hiện tại (không rework được tem)..." />
+                </div>
+                <div class="field">
+                    <label>Serial mới</label>
+                    <input type="text" id="rn-new" placeholder="SN mới (phải đã qua FCT/FQC)..." />
+                </div>
+            </div>
+            <div id="rn-old-info"></div>
+            <div id="rn-new-info"></div>
+            <div id="rn-diff"></div>
+            <div class="field">
+                <label>Lý do</label>
+                <textarea id="rn-reason" rows="2" placeholder="VD: Tem SN cũ bị rách/mờ không rework được, thay tem mới..."></textarea>
+            </div>
+            <div class="field">
+                <label>Mã nhân viên thực hiện</label>
+                <input type="text" id="rn-svncode" placeholder="Nhập mã nhân viên của bạn..." />
+            </div>
+            <div id="rn-msg" class="msg"></div>
+            <button class="btn-blue" id="rn-submit-btn" onclick="submitRenameSerial()">Đổi Serial Number</button>
+        </div>
+    </div>
+</div>
+
+<div id="confirm-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:#1f2937;border:1px solid #374151;border-radius:14px;padding:24px;max-width:520px;width:90%;">
+        <div style="font-size:15px;font-weight:700;color:#fbbf24;margin-bottom:14px;">⚠ Xác nhận thao tác</div>
+        <div id="confirm-modal-body" style="font-size:13px;color:#e5e7eb;line-height:1.7;margin-bottom:22px;"></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+            <button class="btn-gray" onclick="closeConfirmModal()">Hủy</button>
+            <button class="btn-blue" id="confirm-modal-ok" style="background:#dc2626;">Xác nhận, tôi chắc chắn</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(tab) {
+        document.getElementById('tab-component').classList.toggle('active', tab === 'component');
+        document.getElementById('tab-rename').classList.toggle('active', tab === 'rename');
+        document.getElementById('tab-btn-component').classList.toggle('active', tab === 'component');
+        document.getElementById('tab-btn-rename').classList.toggle('active', tab === 'rename');
+    }
+
+    let _confirmCallback = null;
+    function openConfirmModal(bodyHtml, onConfirm) {
+        document.getElementById('confirm-modal-body').innerHTML = bodyHtml;
+        _confirmCallback = onConfirm;
+        document.getElementById('confirm-modal').style.display = 'flex';
+    }
+    function closeConfirmModal() {
+        document.getElementById('confirm-modal').style.display = 'none';
+        _confirmCallback = null;
+    }
+    document.getElementById('confirm-modal-ok').addEventListener('click', () => {
+        const cb = _confirmCallback;
+        closeConfirmModal();
+        if (cb) cb();
+    });
+
+    function showMsg(elId, text, ok) {
+        const el = document.getElementById(elId);
+        el.textContent = text;
+        el.className = 'msg ' + (ok ? 'ok' : 'err');
+    }
+    function clearMsg(elId) {
+        const el = document.getElementById(elId);
+        el.textContent = '';
+        el.className = 'msg';
+    }
+
+    let _currentSerial = '';
+
+    async function loadComponents() {
+        const serial = document.getElementById('comp-serial').value.trim();
+        clearMsg('comp-msg');
+        document.getElementById('comp-list').innerHTML = '';
+        document.getElementById('comp-edit-card').style.display = 'none';
+        if (!serial) { showMsg('comp-msg', 'Nhập serial trước đã.', false); return; }
+
+        document.getElementById('comp-loading').style.display = 'block';
+        try {
+            const res = await fetch(`/api/ToastLookup/detail?serial=${encodeURIComponent(serial)}`);
+            const data = await res.json();
+            document.getElementById('comp-loading').style.display = 'none';
+
+            if (!data.ok || !data.found) {
+                showMsg('comp-msg', 'Không tìm thấy serial này.', false);
+                return;
+            }
+            _currentSerial = data.serial;
+            renderComponentList(data);
+        } catch (e) {
+            document.getElementById('comp-loading').style.display = 'none';
+            showMsg('comp-msg', 'Lỗi kết nối: ' + e.message, false);
+        }
+    }
+
+    function renderComponentList(data) {
+        let html = '';
+        const stations = [
+            { key: 'wip', label: 'Trạm WIP', code: 'WIP' },
+            { key: 'fg',  label: 'Trạm FG',  code: 'FG' }
+        ];
+        let any = false;
+        stations.forEach(st => {
+            const rec = data[st.key];
+            const list = rec && rec.componentList ? rec.componentList : [];
+            if (!list.length) return;
+            any = true;
+            html += `<div class="comp-station">${st.label}</div>`;
+            list.forEach(c => {
+                const label = c.productCode ? `<b>[${c.productCode}]</b> ${c.productName || ''}` : `product_id: ${c.productId}`;
+                html += `<div class="comp-row">
+                    <div class="comp-row-text">${label} &nbsp;|&nbsp; lot: <span class="lot">${c.lotNumber}</span></div>
+                    <button class="btn-gray" onclick='startEditComponent("${st.code}", ${JSON.stringify(c.lotNumber)}, ${JSON.stringify(c.productCode || "")}, ${JSON.stringify(c.productName || "")})'>Sửa</button>
+                </div>`;
+            });
+        });
+        if (!any) html = `<div style="color:#6b7280;font-size:13px;padding:10px 0;">Serial này chưa có linh kiện ở WIP/FG.</div>`;
+        document.getElementById('comp-list').innerHTML = html;
+    }
+
+    const _editOld = { station: '', lot: '', code: '', name: '' };
+
+    function startEditComponent(station, oldLot, productCode, productName) {
+        _editOld.station = station;
+        _editOld.lot = oldLot;
+        _editOld.code = productCode || '';
+        _editOld.name = productName || '';
+        document.getElementById('edit-station').value = station;
+        document.getElementById('edit-old-lot').value = oldLot;
+        document.getElementById('edit-new-code').value = productCode ? `[${productCode}] ${productName || ''}` : '';
+        document.getElementById('edit-new-lot').value = '';
+        document.getElementById('edit-reason').value = '';
+        clearMsg('edit-msg');
+        document.getElementById('comp-edit-card').style.display = 'block';
+        document.getElementById('comp-edit-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        renderComponentDiff();
+    }
+
+    function cancelEditComponent() {
+        document.getElementById('comp-edit-card').style.display = 'none';
+    }
+
+    function renderComponentDiff() {
+        const box = document.getElementById('edit-diff');
+        const newLot = document.getElementById('edit-new-lot').value.trim();
+        const oldLotShown = _editOld.lot || '—';
+        const newLotShown = newLot || '<span style="color:#6b7280;">(chưa nhập)</span>';
+        const lotChanged = newLot && newLot !== _editOld.lot;
+
+        box.innerHTML = `<div class="info-box">
+            <div class="info-box-title">Xem trước thay đổi</div>
+            <table style="width:100%;border-collapse:collapse;font-size:12px;">
+                <thead>
+                    <tr style="border-bottom:1px solid #374151;">
+                        <th style="text-align:left;padding:6px 8px;color:#6b7280;">Dữ liệu</th>
+                        <th style="text-align:left;padding:6px 8px;color:#6b7280;">Trước</th>
+                        <th></th>
+                        <th style="text-align:left;padding:6px 8px;color:#6b7280;">Sau</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding:6px 8px;color:#9ca3af;">Lot</td>
+                        <td style="padding:6px 8px;font-family:monospace;">${oldLotShown}</td>
+                        <td style="padding:6px 8px;text-align:center;color:#3b82f6;">→</td>
+                        <td style="padding:6px 8px;font-family:monospace;${lotChanged ? 'color:#fbbf24;font-weight:700;' : ''}">${newLotShown}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>`;
+    }
+
+    document.getElementById('edit-new-lot').addEventListener('input', renderComponentDiff);
+
+    function submitReplaceComponent() {
+        const body = {
+            serial: _currentSerial,
+            station: document.getElementById('edit-station').value,
+            oldLotNumber: document.getElementById('edit-old-lot').value,
+            newProductCode: _editOld.code,
+            newLotNumber: document.getElementById('edit-new-lot').value.trim(),
+            reason: document.getElementById('edit-reason').value.trim(),
+            svnCode: document.getElementById('edit-svncode').value.trim()
+        };
+        if (!body.newProductCode || !body.newLotNumber || !body.reason || !body.svnCode) {
+            showMsg('edit-msg', 'Vui lòng nhập đủ mã sản phẩm mới, lot mới, lý do và mã nhân viên.', false);
+            return;
+        }
+        openConfirmModal(`
+            Bạn sắp <b>ghi đè lot linh kiện</b> [${_editOld.code || '?'}] ${_editOld.name || ''} tại <b>${body.station}</b> của serial <b>${_currentSerial}</b>:<br><br>
+            Lot <b>${body.oldLotNumber}</b> → <b>${body.newLotNumber}</b><br><br>
+            Lý do: ${body.reason}<br>
+            Người thực hiện: ${body.svnCode}<br><br>
+            Thao tác này ghi đè dữ liệu sản xuất, chỉ tiếp tục nếu chắc chắn.
+        `, () => doSubmitReplaceComponent(body));
+    }
+
+    async function doSubmitReplaceComponent(body) {
+        const btn = document.getElementById('edit-submit-btn');
+        btn.disabled = true;
+        try {
+            const res = await fetch('/api/ToastCorrection/replace-component', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            btn.disabled = false;
+            if (!res.ok || !data.ok) {
+                showMsg('edit-msg', data.message || 'Có lỗi xảy ra.', false);
+                return;
+            }
+            showMsg('edit-msg', data.message, true);
+            setTimeout(() => {
+                document.getElementById('comp-edit-card').style.display = 'none';
+                loadComponents();
+            }, 900);
+        } catch (e) {
+            btn.disabled = false;
+            showMsg('edit-msg', 'Lỗi kết nối: ' + e.message, false);
+        }
+    }
+
+    function submitRenameSerial() {
+        const body = {
+            oldSerial: document.getElementById('rn-old').value.trim(),
+            newSerial: document.getElementById('rn-new').value.trim(),
+            reason: document.getElementById('rn-reason').value.trim(),
+            svnCode: document.getElementById('rn-svncode').value.trim()
+        };
+        if (!body.oldSerial || !body.newSerial || !body.reason || !body.svnCode) {
+            showMsg('rn-msg', 'Vui lòng nhập đủ SN cũ, SN mới, lý do và mã nhân viên.', false);
+            return;
+        }
+        openConfirmModal(`
+            Bạn sắp <b>đổi Serial Number</b>:<br><br>
+            <b>${body.oldSerial}</b> → <b>${body.newSerial}</b><br><br>
+            Toàn bộ dữ liệu WIP/FG/Pallet hiện có của <b>${body.oldSerial}</b> sẽ chuyển hẳn sang <b>${body.newSerial}</b>.<br>
+            Lý do: ${body.reason}<br>
+            Người thực hiện: ${body.svnCode}<br><br>
+            Thao tác này ảnh hưởng đến dữ liệu truy xuất nguồn gốc, chỉ tiếp tục nếu chắc chắn.
+        `, () => doSubmitRenameSerial(body));
+    }
+
+    async function doSubmitRenameSerial(body) {
+        const btn = document.getElementById('rn-submit-btn');
+        btn.disabled = true;
+        try {
+            const res = await fetch('/api/ToastCorrection/rename-serial', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            btn.disabled = false;
+            if (!res.ok || !data.ok) {
+                showMsg('rn-msg', data.message || 'Có lỗi xảy ra.', false);
+                return;
+            }
+            showMsg('rn-msg', data.message, true);
+            document.getElementById('rn-old').value = '';
+            document.getElementById('rn-new').value = '';
+            document.getElementById('rn-reason').value = '';
+            document.getElementById('rn-old-info').innerHTML = '';
+            document.getElementById('rn-new-info').innerHTML = '';
+            document.getElementById('rn-diff').innerHTML = '';
+            _rnData.old = null;
+            _rnData.new = null;
+        } catch (e) {
+            btn.disabled = false;
+            showMsg('rn-msg', 'Lỗi kết nối: ' + e.message, false);
+        }
+    }
+
+    function fmtDate(str) {
+        if (!str) return '—';
+        const d = new Date(str);
+        return d.toLocaleString('vi-VN', { hour12: false });
+    }
+
+    function infoBadge(status) {
+        if (!status) return `<span class="info-badge none">Chưa có</span>`;
+        const s = status.toUpperCase();
+        if (s === 'OK') return `<span class="info-badge ok">OK</span>`;
+        if (s === 'NG') return `<span class="info-badge ng">NG</span>`;
+        return `<span class="info-badge none">${status}</span>`;
+    }
+
+    const _rnData = { old: null, new: null };
+
+    async function loadSerialInfoBox(inputId, boxId, kind) {
+        const serial = document.getElementById(inputId).value.trim();
+        const box = document.getElementById(boxId);
+        _rnData[kind] = null;
+        if (!serial) { box.innerHTML = ''; renderRenameDiff(); return; }
+        box.innerHTML = `<div class="info-box" style="color:#6b7280;">Đang tải thông tin...</div>`;
+        try {
+            const res = await fetch(`/api/ToastLookup/detail?serial=${encodeURIComponent(serial)}`);
+            const data = await res.json();
+            if (!data.ok || !data.found) {
+                box.innerHTML = `<div class="info-box" style="color:#fca5a5;">Không tìm thấy serial <b>${serial}</b> trong hệ thống.</div>`;
+                renderRenameDiff();
+                return;
+            }
+            let renameWarn = '';
+            if (data.renameInfo && data.renameInfo.renamedTo) {
+                renameWarn = `<div style="color:#fca5a5;margin-bottom:8px;">⚠ SN này đã được đổi sang <b>${data.renameInfo.renamedTo.newSerial}</b> trước đó (lúc ${fmtDate(data.renameInfo.renamedTo.editedAt)}).</div>`;
+            }
+            box.innerHTML = `<div class="info-box">
+                <div class="info-box-title">Thông tin ${serial}</div>
+                ${renameWarn}
+                <div class="info-box-row"><span>FCT Status</span><span>${infoBadge(data.fctFqc && data.fctFqc.fctStatus)}</span></div>
+                <div class="info-box-row"><span>FQC Status</span><span>${infoBadge(data.fctFqc && data.fctFqc.fqcStatus)}</span></div>
+                <div class="info-box-row"><span>Pallet ID</span><span>${(data.pallet && data.pallet.palletID) || '—'}</span></div>
+                <div class="info-box-row"><span>Trạm WIP</span><span>${data.wip ? `${data.wip.woCode} — ${fmtDate(data.wip.dateFinished)}` : 'Chưa có'}</span></div>
+                <div class="info-box-row"><span>Trạm FG</span><span>${data.fg ? `${data.fg.woCode} — ${fmtDate(data.fg.dateFinished)}` : 'Chưa có'}</span></div>
+            </div>`;
+            _rnData[kind] = data;
+        } catch (e) {
+            box.innerHTML = `<div class="info-box" style="color:#fca5a5;">Lỗi kết nối: ${e.message}</div>`;
+        }
+        renderRenameDiff();
+    }
+
+    function renderRenameDiff() {
+        const box = document.getElementById('rn-diff');
+        const oldD = _rnData.old, newD = _rnData.new;
+        if (!oldD || !newD) { box.innerHTML = ''; return; }
+
+        const oldSerial = oldD.serial, newSerial = newD.serial;
+        const rows = [
+            { label: 'Trạm WIP',  oldVal: oldD.wip ? oldD.wip.woCode : '—' },
+            { label: 'Trạm FG',   oldVal: oldD.fg  ? oldD.fg.woCode  : '—' },
+            { label: 'Pallet',    oldVal: (oldD.pallet && oldD.pallet.palletID) || '—' }
+        ];
+
+        let rowsHtml = rows.map(r => `
+            <tr style="border-bottom:1px solid #1f2937;">
+                <td style="padding:6px 8px;color:#9ca3af;">${r.label}</td>
+                <td style="padding:6px 8px;font-family:monospace;">${r.oldVal}</td>
+                <td style="padding:6px 8px;text-align:center;color:#3b82f6;">→</td>
+                <td style="padding:6px 8px;font-family:monospace;">${r.oldVal === '—' ? '<span style="color:#6b7280;">—</span>' : `<span style="color:#86efac;font-weight:700;">${r.oldVal}</span>`}</td>
+            </tr>`).join('');
+
+        box.innerHTML = `<div class="info-box">
+            <div class="info-box-title">Xem trước thay đổi</div>
+            <table style="width:100%;border-collapse:collapse;font-size:12px;">
+                <thead>
+                    <tr style="border-bottom:1px solid #374151;">
+                        <th style="text-align:left;padding:6px 8px;color:#6b7280;">Dữ liệu</th>
+                        <th style="text-align:left;padding:6px 8px;color:#6b7280;">${oldSerial} (trước)</th>
+                        <th></th>
+                        <th style="text-align:left;padding:6px 8px;color:#6b7280;">${newSerial} (sau khi đổi)</th>
+                    </tr>
+                </thead>
+                <tbody>${rowsHtml}</tbody>
+            </table>
+            <div style="margin-top:10px;font-size:11px;color:#6b7280;">
+                Sau khi đổi: <b>${oldSerial}</b> sẽ không còn WIP/FG/Pallet (vẫn giữ FCT/FQC riêng) —
+                <b>${newSerial}</b> sẽ nhận toàn bộ WIP/FG/Pallet ở trên, cộng với FCT/FQC vốn có của chính nó.
+            </div>
+        </div>`;
+    }
+
+    document.getElementById('rn-old').addEventListener('blur', () => loadSerialInfoBox('rn-old', 'rn-old-info', 'old'));
+    document.getElementById('rn-new').addEventListener('blur', () => loadSerialInfoBox('rn-new', 'rn-new-info', 'new'));
+</script>

@@ -25,6 +25,8 @@ public class AppDbContext : DbContext
 
     public DbSet<SVNToastScanRule> SVNToastScanRules { get; set; }
 
+    public DbSet<SVNToastEditLog> SVNToastEditLogs { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<SVNToastSerialInfo>()

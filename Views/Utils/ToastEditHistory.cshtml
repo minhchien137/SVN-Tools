@@ -1,0 +1,261 @@
+@{
+    ViewData["Title"] = "Lịch sử thay đổi Toast";
+}
+
+<style>
+    body { font-family: 'Segoe UI', sans-serif; background: #0f1115; color: #f9fafb; margin: 0; padding: 32px 20px; }
+
+    .page-title {
+        font-size: 34px; font-weight: 800; margin: 0 0 8px; letter-spacing: -.5px;
+        text-align: center;
+        background: linear-gradient(90deg, #60a5fa, #93c5fd);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    .wrap { max-width: 1100px; margin: 0 auto; }
+
+    .back-link { display: inline-block; margin-bottom: 18px; color: #93c5fd; font-size: 13px; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+
+    .card {
+        background: #1f2937; border: 1px solid #374151; border-radius: 14px; padding: 20px; margin-bottom: 18px;
+    }
+
+    .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; align-items: flex-end; }
+    .filter-field label { display: block; font-size: 12px; color: #cbd5e1; font-weight: 600; margin-bottom: 6px; }
+    .filter-field input, .filter-field select {
+        background: #111827; border: 1px solid #374151; border-radius: 8px;
+        color: #f9fafb; padding: 9px 12px; font-size: 13px; outline: none;
+    }
+    .filter-field input:focus, .filter-field select:focus { border-color: #3b82f6; }
+
+    .btn-blue {
+        background: #2563eb; color: #fff; border: none; border-radius: 8px;
+        font-weight: 600; cursor: pointer; padding: 9px 18px; font-size: 13px;
+    }
+    .btn-blue:hover:not(:disabled) { background: #1d4ed8; }
+    .btn-gray {
+        background: #1f2937; color: #e5e7eb; border: 1px solid #4b5563;
+        border-radius: 8px; font-weight: 600; cursor: pointer; padding: 5px 12px; font-size: 12px;
+    }
+    .btn-gray:hover:not(:disabled) { background: #2563eb; border-color: #2563eb; color: #fff; }
+    .btn-gray:disabled { opacity: .35; cursor: not-allowed; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; padding: 10px 12px; color: #6b7280; font-size: 12px; border-bottom: 1px solid #374151; white-space: nowrap; }
+    td { padding: 10px 12px; font-size: 12px; border-bottom: 1px solid #1f2937; vertical-align: top; }
+
+    .action-badge { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .action-badge.component { background: rgba(167,139,250,.15); color: #a78bfa; }
+    .action-badge.rename    { background: rgba(248,113,113,.15); color: #fca5a5; }
+
+    .mono { font-family: monospace; }
+    #empty, #loading { text-align: center; color: #6b7280; padding: 30px; font-size: 13px; }
+
+    .modal-overlay {
+        display: none; position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 1000;
+        align-items: center; justify-content: center;
+    }
+    .modal-box {
+        background: #1f2937; border: 1px solid #374151; border-radius: 14px; padding: 24px;
+        max-width: 640px; width: 92%; max-height: 80vh; overflow-y: auto;
+    }
+    .modal-title { font-size: 15px; font-weight: 700; color: #93c5fd; margin-bottom: 16px; }
+    .kv-row { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid #111827; font-size: 12px; }
+    .kv-row span:first-child { color: #9ca3af; }
+    .kv-row span:last-child { color: #f9fafb; font-weight: 600; text-align: right; }
+
+    .comp-diff-title { font-size: 11px; color: #6b7280; text-transform: uppercase; margin: 14px 0 6px; }
+    .comp-diff-item { font-size: 12px; font-family: monospace; background: #111827; border-radius: 6px; padding: 6px 10px; margin-bottom: 4px; color: #d1d5db; }
+    .comp-diff-item.old { color: #fca5a5; }
+    .comp-diff-item.new { color: #86efac; }
+</style>
+
+<div class="wrap">
+    <div class="page-title">Lịch sử thay đổi Toast</div>
+    <a class="back-link" asp-controller="Utils" asp-action="ToastCorrection">← Về trang Sửa dữ liệu Toast</a>
+
+    <div class="card">
+        <div class="filter-bar">
+            <div class="filter-field" style="flex:1;min-width:200px;">
+                <label>Tìm theo Serial / Người sửa</label>
+                <input type="text" id="f-q" style="width:100%;box-sizing:border-box;" placeholder="Nhập serial hoặc mã nhân viên..." />
+            </div>
+            <div class="filter-field">
+                <label>Loại thao tác</label>
+                <select id="f-type">
+                    <option value="">Tất cả</option>
+                    <option value="ReplaceComponent">Sửa linh kiện</option>
+                    <option value="RenameSerial">Đổi Serial Number</option>
+                </select>
+            </div>
+            <div class="filter-field">
+                <button class="btn-blue" onclick="loadHistory(1)">Tìm</button>
+            </div>
+        </div>
+
+        <div id="loading" style="display:none;">Đang tải...</div>
+        <div id="empty" style="display:none;">Không có dữ liệu.</div>
+
+        <div style="overflow-x:auto;">
+            <table id="hist-table" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>Thời gian</th>
+                        <th>Loại</th>
+                        <th>Serial</th>
+                        <th>Lý do</th>
+                        <th>Người sửa</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="hist-tbody"></tbody>
+            </table>
+        </div>
+
+        <div id="pagination" style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:8px;"></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="detail-modal">
+    <div class="modal-box">
+        <div class="modal-title">Chi tiết thay đổi</div>
+        <div id="detail-modal-body"></div>
+        <div style="text-align:right;margin-top:18px;">
+            <button class="btn-gray" onclick="closeDetailModal()">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const PAGE_SIZE = 20;
+    let _currentPage = 1;
+    let _items = [];
+
+    function fmtDate(str) {
+        if (!str) return '—';
+        const d = new Date(str);
+        return d.toLocaleString('vi-VN', { hour12: false });
+    }
+
+    function actionLabel(t) {
+        return t === 'RenameSerial' ? 'Đổi Serial Number' : 'Sửa linh kiện';
+    }
+    function actionBadgeClass(t) {
+        return t === 'RenameSerial' ? 'rename' : 'component';
+    }
+
+    async function loadHistory(page) {
+        _currentPage = page || 1;
+        const q = document.getElementById('f-q').value.trim();
+        const actionType = document.getElementById('f-type').value;
+
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('empty').style.display = 'none';
+        document.getElementById('hist-table').style.display = 'none';
+
+        const params = new URLSearchParams({ page: _currentPage, pageSize: PAGE_SIZE });
+        if (q) params.set('q', q);
+        if (actionType) params.set('actionType', actionType);
+
+        try {
+            const res = await fetch(`/api/ToastCorrection/edit-log?${params.toString()}`);
+            const data = await res.json();
+            document.getElementById('loading').style.display = 'none';
+
+            if (!data.ok || !data.items || !data.items.length) {
+                document.getElementById('empty').style.display = 'block';
+                document.getElementById('pagination').innerHTML = '';
+                return;
+            }
+
+            _items = data.items;
+            renderTable(_items);
+            renderPagination(data.total, data.page, data.pageSize);
+        } catch (e) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('empty').textContent = 'Lỗi kết nối: ' + e.message;
+            document.getElementById('empty').style.display = 'block';
+        }
+    }
+
+    function renderTable(items) {
+        const tbody = document.getElementById('hist-tbody');
+        tbody.innerHTML = items.map((it, i) => {
+            const serialText = it.actionType === 'RenameSerial'
+                ? `<span class="mono">${it.serialCode}</span> → <span class="mono" style="color:#86efac;">${it.relatedSerial || '—'}</span>`
+                : `<span class="mono">${it.serialCode}</span>${it.station ? ` <span style="color:#6b7280;">(${it.station})</span>` : ''}`;
+            return `<tr>
+                <td style="white-space:nowrap;color:#9ca3af;">${fmtDate(it.editedAt)}</td>
+                <td><span class="action-badge ${actionBadgeClass(it.actionType)}">${actionLabel(it.actionType)}</span></td>
+                <td>${serialText}</td>
+                <td style="max-width:260px;color:#d1d5db;">${it.reason || '—'}</td>
+                <td style="color:#9ca3af;">${it.editedBy || '—'}</td>
+                <td><button class="btn-gray" onclick="showDetail(${i})">Xem chi tiết</button></td>
+            </tr>`;
+        }).join('');
+        document.getElementById('hist-table').style.display = 'table';
+    }
+
+    function renderPagination(total, page, pageSize) {
+        const totalPages = Math.max(1, Math.ceil(total / pageSize));
+        const pag = document.getElementById('pagination');
+        const info = `<span style="font-size:12px;color:#6b7280;">Trang ${page}/${totalPages} &nbsp;·&nbsp; ${total} bản ghi</span>`;
+        let btns = `<div style="display:flex;gap:6px;">`;
+        btns += `<button class="btn-gray" onclick="loadHistory(1)" ${page===1?'disabled':''}>«</button>`;
+        btns += `<button class="btn-gray" onclick="loadHistory(${page-1})" ${page===1?'disabled':''}>‹</button>`;
+        btns += `<button class="btn-gray" onclick="loadHistory(${page+1})" ${page===totalPages?'disabled':''}>›</button>`;
+        btns += `<button class="btn-gray" onclick="loadHistory(${totalPages})" ${page===totalPages?'disabled':''}>»</button>`;
+        btns += `</div>`;
+        pag.innerHTML = info + btns;
+    }
+
+    function parseComponentArray(json) {
+        if (!json) return [];
+        try { return JSON.parse(json); } catch { return []; }
+    }
+
+    function showDetail(idx) {
+        const it = _items[idx];
+        let body = `
+            <div class="kv-row"><span>Thời gian</span><span>${fmtDate(it.editedAt)}</span></div>
+            <div class="kv-row"><span>Loại thao tác</span><span>${actionLabel(it.actionType)}</span></div>
+            <div class="kv-row"><span>Người thực hiện</span><span>${it.editedBy || '—'}</span></div>
+            <div class="kv-row"><span>Lý do</span><span>${it.reason || '—'}</span></div>
+        `;
+
+        if (it.actionType === 'RenameSerial') {
+            body += `
+                <div class="kv-row"><span>Serial cũ</span><span>${it.serialCode}</span></div>
+                <div class="kv-row"><span>Serial mới</span><span>${it.relatedSerial || '—'}</span></div>
+                <div style="margin-top:12px;font-size:11px;color:#6b7280;">
+                    Toàn bộ dữ liệu WIP/FG/Pallet của serial cũ đã được chuyển sang serial mới tại thời điểm này.
+                </div>`;
+        } else {
+            body += `<div class="kv-row"><span>Serial</span><span>${it.serialCode}</span></div>
+                      <div class="kv-row"><span>Trạm</span><span>${it.station || '—'}</span></div>`;
+
+            const oldArr = parseComponentArray(it.oldValue);
+            const newArr = parseComponentArray(it.newValue);
+            body += `<div class="comp-diff-title">Linh kiện trước khi sửa</div>`;
+            body += oldArr.length
+                ? oldArr.map(c => `<div class="comp-diff-item old">product_id: ${c.product_id} — lot: ${c.lotNumber}</div>`).join('')
+                : `<div class="comp-diff-item">—</div>`;
+            body += `<div class="comp-diff-title">Linh kiện sau khi sửa</div>`;
+            body += newArr.length
+                ? newArr.map(c => `<div class="comp-diff-item new">product_id: ${c.product_id} — lot: ${c.lotNumber}</div>`).join('')
+                : `<div class="comp-diff-item">—</div>`;
+        }
+
+        document.getElementById('detail-modal-body').innerHTML = body;
+        document.getElementById('detail-modal').style.display = 'flex';
+    }
+
+    function closeDetailModal() {
+        document.getElementById('detail-modal').style.display = 'none';
+    }
+
+    document.getElementById('f-q').addEventListener('keydown', e => { if (e.key === 'Enter') loadHistory(1); });
+
+    loadHistory(1);
+</script>

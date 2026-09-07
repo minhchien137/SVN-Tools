@@ -81,6 +81,13 @@ BEGIN
         FROM SVN_ProductionInputLogs
         WHERE component_list IS NOT NULL
         GROUP BY serial_code
+    ),
+    -- SN nao da bi doi sang SN khac (lay lan doi gan nhat neu co nhieu)
+    RenamedAway AS (
+        SELECT SerialCode AS sn, RelatedSerial AS renamed_to,
+               ROW_NUMBER() OVER (PARTITION BY SerialCode ORDER BY EditedAt DESC) AS rn
+        FROM SVN_Toast_Edit_Log
+        WHERE ActionType = 'RenameSerial'
     )
     SELECT DISTINCT
         m.sn                    AS serial_number,
@@ -91,12 +98,14 @@ BEGIN
         t.work_order,
         a.PalletID,
         sl.lots_raw,
-        mt.match_types
+        mt.match_types,
+        ra.renamed_to
     FROM DistinctSerials m
     LEFT JOIN SVN_Toast_Serial_Info t ON t.serial_number = m.sn
     LEFT JOIN SVN_Astro_Label_Data a
            ON a.isDeleted = 0 AND a.EmployeeID = 'toast'
           AND a.Serial LIKE '%' + m.sn + '%'
     LEFT JOIN SerialLots sl ON sl.sn = m.sn
-    LEFT JOIN MatchTypeAgg mt ON mt.sn = m.sn;
+    LEFT JOIN MatchTypeAgg mt ON mt.sn = m.sn
+    LEFT JOIN RenamedAway ra ON ra.sn = m.sn AND ra.rn = 1;
 END

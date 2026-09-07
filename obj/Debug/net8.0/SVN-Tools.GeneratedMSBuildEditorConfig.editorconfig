@@ -99,6 +99,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXRpbHNcU2NhblRvQ2hlY2tXaG9vcFdpdGhXTy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/SVN-Tools/Views/Utils/ToastCorrection.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXRpbHNcVG9hc3RDb3JyZWN0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/SVN-Tools/Views/Utils/ToastEditHistory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXRpbHNcVG9hc3RFZGl0SGlzdG9yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/SVN-Tools/Views/Utils/ToastLookup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXRpbHNcVG9hc3RMb29rdXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

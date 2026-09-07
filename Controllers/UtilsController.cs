@@ -4,6 +4,8 @@ using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using Dapper;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -1116,6 +1118,33 @@ namespace SVN_Tools.Controllers
             var wipComponents = EnrichComponentList(wip == null ? null : (string?)wip.component_list, productMap);
             var fgComponents  = EnrichComponentList(fg == null ? null : (string?)fg.component_list, productMap);
 
+            var renamedTo = await _context.SVNToastEditLogs
+                .Where(x => x.ActionType == ToastEditActionType.RenameSerial && x.SerialCode == serial)
+                .OrderByDescending(x => x.EditedAt)
+                .FirstOrDefaultAsync();
+            var renamedFrom = await _context.SVNToastEditLogs
+                .Where(x => x.ActionType == ToastEditActionType.RenameSerial && x.RelatedSerial == serial)
+                .OrderByDescending(x => x.EditedAt)
+                .FirstOrDefaultAsync();
+
+            object? renameInfo = (renamedTo == null && renamedFrom == null) ? null : new
+            {
+                renamedTo = renamedTo == null ? null : new
+                {
+                    newSerial = renamedTo.RelatedSerial,
+                    reason    = renamedTo.Reason,
+                    editedBy  = renamedTo.EditedBy,
+                    editedAt  = renamedTo.EditedAt
+                },
+                renamedFrom = renamedFrom == null ? null : new
+                {
+                    oldSerial = renamedFrom.SerialCode,
+                    reason    = renamedFrom.Reason,
+                    editedBy  = renamedFrom.EditedBy,
+                    editedAt  = renamedFrom.EditedAt
+                }
+            };
+
             object? matchInfo = null;
             if (!string.IsNullOrWhiteSpace(matchTypes))
             {
@@ -1158,6 +1187,7 @@ namespace SVN_Tools.Controllers
                 mode   = "detail",
                 serial,
                 matchInfo,
+                renameInfo,
                 fctFqc = fctFqcRow == null ? null : new
                 {
                     workOrder   = (string?)fctFqcRow.work_order,
@@ -1195,6 +1225,218 @@ namespace SVN_Tools.Controllers
                     componentList = fgComponents
                 }
             });
+        }
+
+        // Toast Correction (sua linh kien sai / doi SN)
+
+        [HttpGet("utils/toast-correction")]
+        public IActionResult ToastCorrection() => View("ToastCorrection");
+
+        [HttpGet("utils/toast-edit-history")]
+        public IActionResult ToastEditHistory() => View("ToastEditHistory");
+
+        [HttpGet("api/ToastCorrection/edit-log")]
+        public async Task<IActionResult> GetToastEditLog(
+            [FromQuery] string? q, [FromQuery] string? actionType,
+            [FromQuery] int page = 1, [FromQuery] int pageSize = 20)
+        {
+            page = Math.Max(1, page);
+            pageSize = Math.Clamp(pageSize, 1, 100);
+
+            var query = _context.SVNToastEditLogs.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(actionType))
+                query = query.Where(x => x.ActionType == actionType);
+
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var term = q.Trim();
+                query = query.Where(x =>
+                    x.SerialCode.Contains(term) ||
+                    (x.RelatedSerial != null && x.RelatedSerial.Contains(term)) ||
+                    (x.EditedBy != null && x.EditedBy.Contains(term)));
+            }
+
+            var total = await query.CountAsync();
+            var items = await query
+                .OrderByDescending(x => x.EditedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(new { ok = true, total, page, pageSize, items });
+        }
+
+        [HttpPost("api/ToastCorrection/replace-component")]
+        public async Task<IActionResult> ReplaceToastComponent([FromBody] ReplaceComponentRequest req)
+        {
+            if (string.IsNullOrWhiteSpace(req.Serial) || string.IsNullOrWhiteSpace(req.Station) ||
+                string.IsNullOrWhiteSpace(req.OldLotNumber) || string.IsNullOrWhiteSpace(req.NewProductCode) ||
+                string.IsNullOrWhiteSpace(req.NewLotNumber) || string.IsNullOrWhiteSpace(req.Reason) ||
+                string.IsNullOrWhiteSpace(req.SVNCode))
+                return BadRequest(new { ok = false, message = "Thiếu dữ liệu đầu vào." });
+
+            var serial = req.Serial.Trim().ToUpper();
+            var station = req.Station.Trim().ToUpper();
+            if (station != "WIP" && station != "FG")
+                return BadRequest(new { ok = false, message = "Trạm không hợp lệ (chỉ WIP hoặc FG)." });
+            var state = station == "WIP" ? "Consumed" : "Used";
+
+            using var conn = new System.Data.SqlClient.SqlConnection(connectionString);
+            await conn.OpenAsync();
+
+            var log = await Dapper.SqlMapper.QuerySingleOrDefaultAsync(conn,
+                "SELECT TOP 1 id, component_list FROM SVN_ProductionInputLogs WHERE serial_code = @serial AND state = @state ORDER BY date_finished DESC",
+                new { serial, state });
+            if (log == null)
+                return NotFound(new { ok = false, message = $"Không tìm thấy bản ghi {station} cho serial {serial}." });
+
+            string? oldJson = (string?)log.component_list;
+            if (string.IsNullOrWhiteSpace(oldJson))
+                return BadRequest(new { ok = false, message = "Serial này chưa có danh sách linh kiện." });
+
+            var productRow = await Dapper.SqlMapper.QuerySingleOrDefaultAsync(conn,
+                "SELECT TOP 1 id FROM SVN_product_product WHERE default_code = @code",
+                new { code = req.NewProductCode.Trim() });
+            if (productRow == null)
+                return BadRequest(new { ok = false, message = $"Không tìm thấy mã sản phẩm {req.NewProductCode}." });
+            int newProductId = (int)productRow.id;
+
+            JsonNode? node;
+            try { node = JsonNode.Parse(oldJson); }
+            catch { return BadRequest(new { ok = false, message = "Dữ liệu linh kiện hiện tại bị lỗi định dạng." }); }
+
+            var arr = node as JsonArray;
+            if (arr == null)
+                return BadRequest(new { ok = false, message = "Dữ liệu linh kiện hiện tại không đúng định dạng." });
+
+            JsonObject? target = null;
+            foreach (var item in arr)
+            {
+                if (item is JsonObject obj &&
+                    string.Equals((string?)obj["lotNumber"], req.OldLotNumber.Trim(), StringComparison.OrdinalIgnoreCase))
+                {
+                    target = obj;
+                    break;
+                }
+            }
+            if (target == null)
+                return NotFound(new { ok = false, message = $"Không tìm thấy linh kiện với lot {req.OldLotNumber} trong trạm {station}." });
+
+            target["product_id"] = newProductId;
+            target["lotNumber"] = req.NewLotNumber.Trim();
+            string newJson = node!.ToJsonString();
+
+            await conn.ExecuteAsync(
+                "UPDATE SVN_ProductionInputLogs SET component_list = @newJson WHERE id = @id",
+                new { newJson, id = (int)log.id });
+
+            _context.SVNToastEditLogs.Add(new SVNToastEditLog
+            {
+                ActionType = ToastEditActionType.ReplaceComponent,
+                SerialCode = serial,
+                Station    = station,
+                OldValue   = oldJson,
+                NewValue   = newJson,
+                Reason     = req.Reason.Trim(),
+                EditedBy   = req.SVNCode.Trim(),
+                EditedAt   = DateTime.UtcNow.AddHours(7)
+            });
+            await _context.SaveChangesAsync();
+
+            return Ok(new { ok = true, message = $"Đã cập nhật linh kiện cho serial {serial} ({station})." });
+        }
+
+        [HttpPost("api/ToastCorrection/rename-serial")]
+        public async Task<IActionResult> RenameToastSerial([FromBody] RenameSerialRequest req)
+        {
+            if (string.IsNullOrWhiteSpace(req.OldSerial) || string.IsNullOrWhiteSpace(req.NewSerial) ||
+                string.IsNullOrWhiteSpace(req.Reason) || string.IsNullOrWhiteSpace(req.SVNCode))
+                return BadRequest(new { ok = false, message = "Thiếu dữ liệu đầu vào." });
+
+            var oldSerial = req.OldSerial.Trim().ToUpper();
+            var newSerial = req.NewSerial.Trim().ToUpper();
+            if (oldSerial == newSerial)
+                return BadRequest(new { ok = false, message = "SN mới phải khác SN cũ." });
+
+            var newInfo = await _context.SVNToastSerialInfos.FirstOrDefaultAsync(x => x.SerialNumber == newSerial);
+            if (newInfo == null)
+                return BadRequest(new { ok = false, message = $"SN mới {newSerial} chưa tồn tại trong hệ thống." });
+            if (!string.Equals(newInfo.FCTStatus, "OK", StringComparison.OrdinalIgnoreCase) ||
+                !string.Equals(newInfo.FQCStatus, "OK", StringComparison.OrdinalIgnoreCase))
+                return BadRequest(new { ok = false, message = $"SN mới {newSerial} chưa qua đủ FCT/FQC (OK)." });
+
+            using var conn = new System.Data.SqlClient.SqlConnection(connectionString);
+            await conn.OpenAsync();
+
+            int existingLogs = await conn.ExecuteScalarAsync<int>(
+                "SELECT COUNT(*) FROM SVN_ProductionInputLogs WHERE serial_code = @newSerial", new { newSerial });
+            if (existingLogs > 0)
+                return BadRequest(new { ok = false, message = $"SN mới {newSerial} đã có dữ liệu WIP/FG riêng, không thể gộp." });
+
+            var oldPalletRows = (await conn.QueryAsync(
+                "SELECT Id, Serial FROM SVN_Astro_Label_Data WHERE isDeleted = 0 AND EmployeeID = 'toast' AND Serial LIKE '%' + @newSerial + '%'",
+                new { newSerial })).ToList();
+            bool newAlreadyInPallet = oldPalletRows.Any(r =>
+                ((string)r.Serial).Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Any(s => string.Equals(s.Trim(), newSerial, StringComparison.OrdinalIgnoreCase)));
+            if (newAlreadyInPallet)
+                return BadRequest(new { ok = false, message = $"SN mới {newSerial} đã nằm trong 1 pallet khác, không thể gộp." });
+
+            using var tran = conn.BeginTransaction();
+            try
+            {
+                await conn.ExecuteAsync(
+                    "UPDATE SVN_ProductionInputLogs SET serial_code = @newSerial WHERE serial_code = @oldSerial",
+                    new { newSerial, oldSerial }, tran);
+
+                var palletRows = (await conn.QueryAsync(
+                    "SELECT Id, Serial FROM SVN_Astro_Label_Data WHERE isDeleted = 0 AND EmployeeID = 'toast' AND Serial LIKE '%' + @oldSerial + '%'",
+                    new { oldSerial }, tran)).ToList();
+
+                foreach (var row in palletRows)
+                {
+                    var parts = ((string)row.Serial).Split(',', StringSplitOptions.RemoveEmptyEntries)
+                        .Select(s => s.Trim()).ToList();
+                    bool changed = false;
+                    for (int i = 0; i < parts.Count; i++)
+                    {
+                        if (string.Equals(parts[i], oldSerial, StringComparison.OrdinalIgnoreCase))
+                        {
+                            parts[i] = newSerial;
+                            changed = true;
+                        }
+                    }
+                    if (changed)
+                    {
+                        await conn.ExecuteAsync(
+                            "UPDATE SVN_Astro_Label_Data SET Serial = @serial WHERE Id = @id",
+                            new { serial = string.Join(",", parts), id = (int)row.Id }, tran);
+                    }
+                }
+
+                await conn.ExecuteAsync(
+                    @"INSERT INTO SVN_Toast_Edit_Log (ActionType, SerialCode, RelatedSerial, Reason, EditedBy, EditedAt)
+                      VALUES (@ActionType, @SerialCode, @RelatedSerial, @Reason, @EditedBy, @EditedAt)",
+                    new
+                    {
+                        ActionType = ToastEditActionType.RenameSerial,
+                        SerialCode = oldSerial,
+                        RelatedSerial = newSerial,
+                        Reason = req.Reason.Trim(),
+                        EditedBy = req.SVNCode.Trim(),
+                        EditedAt = DateTime.UtcNow.AddHours(7)
+                    }, tran);
+
+                tran.Commit();
+            }
+            catch
+            {
+                tran.Rollback();
+                throw;
+            }
+
+            return Ok(new { ok = true, message = $"Đã chuyển dữ liệu sản xuất từ {oldSerial} sang {newSerial}." });
         }
 
         // Toast Scan Rules
