@@ -1,0 +1,1372 @@
+@model SVN_Tools.Models.Utils.PrinterData;
+
+@{
+    ViewData["Title"] = ViewBag.oper;
+}
+
+<style>
+    /* Fix cho Select2 CSS */
+    .select2-container--default .select2-selection--single {
+        height: 42px !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: black !important;
+        line-height: 40px !important;
+        padding-left: 12px !important;
+        padding-right: 20px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 40px !important;
+        right: 10px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        border-color: #555 transparent transparent transparent !important;
+        margin-left: -4px !important;
+        margin-top: -2px !important;
+    }
+
+    .select2-dropdown {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+    }
+
+    .select2-container--default .select2-results__option {
+        color: black !important;
+        padding: 8px 12px !important;
+    }
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+        padding: 8px !important;
+        color: black !important;
+    }
+
+    /* Fix width để match với form-control */
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<h1>@ViewBag.oper</h1>
+
+<div>
+    <h4>Printer Details</h4>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Name_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Name_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.IP_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.IP_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Port_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Port_Printer)
+                </div>
+                <div class="container mt-3">
+                    <div class="col-12">
+                        <hr />
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-auto">
+                                <label for="sizeLabel" class="">Size:</label> <input type="text"
+                                    class="form-control form-control-sm" id="sizeLabel" placeholder="Size" value="24"
+                                    disabled />
+                            </div>
+                            <div class="col-auto">
+                                <label for="widthLabel" class="">Width:</label>
+                                <input type="text" class="form-control form-control-sm" id="widthLabel"
+                                    placeholder="Width" value="4" disabled />
+                            </div>
+                            <div class="col-auto">
+                                <label for="heightLabel" class="">Height:</label>
+                                <input type="text" class="form-control form-control-sm" id="heightLabel"
+                                    placeholder="Height" value="6" disabled />
+                            </div>
+                            <div class="col-auto">
+                                <label for="copies" class="">Copies:</label>
+                                <input type="number" class="form-control form-control-sm" id="copies"
+                                    placeholder="Copies" value="1" required />
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group mb-3">
+                            <label for="upcNumber" class="">Chọn mã upc</label>
+                            <select class="form-control form-control-sm select2" id="upcNumber"
+                                style="height:42px; color:black">
+                                <option selected disabled>Chọn mã upc</option>
+                            </select>
+                        </div>
+                        @* <div class="form-group mb-3">
+                            <p id="upcInfo"></p>
+                        </div> *@
+
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-md-4">
+                                <label for="poNumber" class="">PO Number:</label>
+                                <input type="text" class="form-control form-control-sm" id="poNumber"
+                                    placeholder="PO Number" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="totalCt" class="">Total C/T NO:</label>
+                                <input type="number" class="form-control form-control-sm" id="totalCt"
+                                    placeholder="C/T Total" required />
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary" type="button" id="savePO"
+                                    style="margin-top: 34px; height: 42px">Save</button>
+                            </div>
+                            @* <div class="col-md-4">
+                                <label for="itemSize" class="">Size:</label> *@
+                            @* <select class="form-control form-control-sm" id="itemSize">
+                                    <option value="">Không có</option>
+                                    <option value="S/M">S/M</option>
+                                    <option value="L/XL">L/XL</option>
+                                </select> *@
+                            @* <input type="text" class="form-control form-control-sm mb-2" id="itemSize"
+                                    placeholder="Size" disabled />
+                            </div> *@
+                        </div>
+
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-md-4">
+                                <label for="ctNo" class="">C/T NO:</label>
+                                <input type="number" class="form-control form-control-sm" id="ctNo" placeholder="C/T NO"
+                                    required />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="quantity" class="">Quantity:</label>
+                                <input type="number" class="form-control form-control-sm" id="quantity"
+                                    placeholder="Quantity" required />
+                                @* <select class="form-control form-control-sm" id="quantity" style="height: 42px;">
+                                    <option value="36">36</option>
+                                    <option value="80">80</option>
+                                </select> *@
+                            </div>
+                            <div class="col-md-4"> <label for="dateWhoop" class="">Date:</label>
+                                <input type="date" class="form-control form-control-sm" id="dateWhoop"
+                                    placeholder="Date" required />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <button class="btn btn-primary" style="margin-left: 12px" id="preview"
+                                type="submit">Preview</button>
+                            <button class="btn btn-primary" style="margin-left: 12px" id="print" type="submit">In
+                                Tem</button>
+                            <button class="btn btn-primary" style="margin-left: 12px" id="quick" type="submit">In
+                                nhanh</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <label for="startCT" class="">Start:</label>
+                            <input type="number" class="form-control form-control-sm" id="startCT" placeholder="Start"
+                                value="1" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inMotLoat" class="">End:</label>
+                            <input type="number" class="form-control form-control-sm" id="inMotLoat" placeholder="End"
+                                required />
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary" type="button" id="inMotLoatBtn"
+                                style="margin-top: 34px; height: 42px">In 1 loạt</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <ul>
+                                <li>Numpad1: Nhập KQSX</li>
+                                <li>Numpad2: Scan Check</li>
+                                <li>Numpad3: In Walter</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="imagebox">
+                <img id="labelImage" src="@ViewBag.imageUrl" style="width:80%" alt="Ấn nút Lưu Zpl và nút Load Ảnh" />
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <hr />
+    <hr />
+    <a asp-action="UltimatePrint">Back to List</a>
+</div>
+
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', async function () {
+        let zplTemplate;
+        let previewBtn = document.getElementById('preview');
+        let printBtn = document.getElementById('print');
+        let quickBtn = document.getElementById('quick');
+        let inMotLoatBtn = document.getElementById('inMotLoatBtn');
+        @* let upcItem, upcColor, upcPnNumber, upcSize = ""; *@
+
+            window.upcItem = "";
+        window.upcColor = "";
+        window.upcPnNumber = "";
+
+        window.upcSize = "";
+
+        @* const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        dateWhoopInput.value = formattedDate; *@
+
+        const savePOButton = document.getElementById("savePO");
+        savePOButton.addEventListener("click", async () => {
+            const poNumber = document.getElementById('poNumber').value;
+            const totalCt = document.getElementById('totalCt').value;
+            const dateWhoop = document.getElementById('dateWhoop').value;
+            const quantity = document.getElementById('quantity').value;
+
+            await localStorage.setItem("poNumber", poNumber);
+            await localStorage.setItem("totalCt", totalCt);
+            await localStorage.setItem("dateWhoop", dateWhoop);
+            await localStorage.setItem("quantity", quantity);
+        })
+
+        const loadPreviousData = () => {
+            const poNumber = localStorage.getItem("poNumber");
+            const totalCt = localStorage.getItem("totalCt");
+            const dateWhoop = localStorage.getItem('dateWhoop');
+            const quantity = localStorage.getItem('quantity');
+            if (poNumber) {
+                document.getElementById('poNumber').value = poNumber;
+            }
+            if (totalCt) {
+                document.getElementById('totalCt').value = totalCt;
+                document.getElementById('inMotLoat').value = totalCt;
+            }
+            if (totalCt) {
+                document.getElementById('dateWhoop').value = dateWhoop;
+            }
+            if (quantity) {
+                document.getElementById('quantity').value = quantity;
+            }
+        }
+
+        loadPreviousData();
+
+        const totalCtInput = document.getElementById('totalCt');
+        totalCtInput.addEventListener('input', () => {
+            const inMotLoatInput = document.getElementById('inMotLoat');
+            inMotLoatInput.value = totalCtInput.value;
+        })
+
+        const fetchImage = async (size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem) => {
+            const url = '@Url.Action("CreateLabel", "Utils")';
+
+            const image = $("#labelImage")[0];
+
+            const _ = window.location.pathname.split("/");
+            const id = _[_.length - 1];
+
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ size, width, height, id, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem })
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                image.setAttribute("src", result.imagePath);
+                zplTemplate = result.template;
+                console.log(result)
+                return zplTemplate;
+            }
+        }
+
+        const getCTfromUpc = async (upc_number) => {
+            upc_number = upc_number.toString();
+            const url = '@Url.Action("CheckWhoopLabel", "Utils")';
+            const res = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ upc_number })
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                return result;
+            } else {
+                return "Lỗi";
+            }
+
+        }
+
+        const printer = @Html.Raw(Json.Serialize(Model));
+        const target = printer.target;
+        const jsonPath = "/json/whoop.json";
+        let whoopData = [];
+        const fetchWhoopData = async () => {
+            try {
+                const response = await fetch(jsonPath);
+                const data = await response.json();
+
+                return data;
+            } catch (error) {
+                console.error("Error fetching Whoop data:", error);
+                return null;
+            }
+        };
+        whoopData = await fetchWhoopData();
+        console.log(whoopData)
+
+        const selectElement = document.getElementById("upcNumber");
+        if (whoopData) {
+            whoopData.forEach((item) => {
+                const optionElement = document.createElement("option");
+                optionElement.value = item.UPC;
+                optionElement.textContent = `${item.UPC} - ${item.ITEM}`;
+                selectElement.appendChild(optionElement);
+            });
+        }
+
+        @* selectElement.addEventListener("change", async () => {
+            const selectedOption = selectElement.value;
+            const selectedItem = whoopData.find((item) => item.UPC.toString() === selectedOption)
+
+            let res = await getCTfromUpc(selectedItem.UPC);
+            console.log(res)
+            if (selectedItem) {
+                upcItem = selectedItem.ITEM;
+                upcColor = selectedItem.Color;
+                upcPnNumber = selectedItem.PN;
+                upcNumber = selectedItem.UPC;
+                if (selectedItem.Size) {
+                    upcSize = selectedItem.Size;
+                }
+
+            }
+
+        }) *@
+
+            $('#upcNumber').select2({
+                placeholder: "Chọn mã upc",
+                allowClear: true,
+                width: '100%',
+                language: {
+                    noResults: function () {
+                        return "Không tìm thấy kết quả";
+                    },
+                    searching: function () {
+                        return "Đang tìm kiếm...";
+                    }
+                }
+            });
+
+        // Event handler cho Select2
+        $('#upcNumber').on('select2:select', async function (e) {
+            const selectedOption = e.params.data.id;
+            const selectedItem = whoopData.find((item) => item.UPC.toString() === selectedOption);
+
+            let res = await getCTfromUpc(selectedItem.UPC);
+            console.log(res);
+
+            if (selectedItem) {
+                window.upcItem = selectedItem.ITEM;
+                window.upcColor = selectedItem.Color;
+                window.upcPnNumber = selectedItem.PN;
+                window.upcNumber = selectedItem.UPC;
+                if (selectedItem.Size) {
+                    window.upcSize = selectedItem.Size;
+                } else {
+                    window.upcSize = "";
+                }
+            }
+        });
+
+
+        previewBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const desc = document.getElementById('desc')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            @* const upcNumber = document.getElementById('upcNumber')?.value || ""; *@
+            const upcNumber = $('#upcNumber').val() || "";
+            const poNumber = document.getElementById('poNumber')?.value || "";
+            const ctNo = document.getElementById('ctNo')?.value || "";
+            const totalCt = document.getElementById('totalCt')?.value || "";
+            const ctNumber = `${ctNo} of ${totalCt}`
+            const itemSize = window.upcSize;
+            let dateWhoop = document.getElementById('dateWhoop')?.value || "";
+            if (dateWhoop) {
+                let temp = dateWhoop.split("-");
+                let year = temp[0]; // Năm
+                let month = parseInt(temp[1], 10); // Tháng (chuyển sang số để bỏ số 0 ở đầu nếu có)
+                let date = parseInt(temp[2], 10); // Ngày (chuyển sang số để bỏ số 0 ở đầu nếu có)
+
+                // Sắp xếp lại thứ tự để có định dạng YYYY/M/D
+                dateWhoop = `${year}/${month}/${date}`;
+                console.log(dateWhoop)
+            }
+
+            fetchImage(size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, window.upcPnNumber, window.upcColor, window.upcItem);
+        });
+
+        printBtn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const printer = @Html.Raw(Json.Serialize(Model));
+            const copies = document.getElementById('copies').value;
+
+            const payload = {
+                PrinterIpAddress: printer.iP_Printer,
+                Port: printer.port_Printer,
+                ZplCode: zplTemplate,
+                Copies: copies
+            }
+
+            const url = '@Url.Action("printzpl", "Print")';
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+        })
+
+        const quickPrint = async () => {
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const desc = document.getElementById('desc')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            @* const upcNumber = document.getElementById('upcNumber')?.value || ""; *@
+            const upcNumber = $('#upcNumber').val() || "";
+            const poNumber = document.getElementById('poNumber')?.value || "";
+            const ctNo = document.getElementById('ctNo')?.value || "";
+            const totalCt = document.getElementById('totalCt')?.value || "";
+            const ctNumber = `${ctNo} of ${totalCt}`
+            const itemSize = upcSize;
+            let dateWhoop = document.getElementById('dateWhoop')?.value || "";
+            if (dateWhoop) {
+                let temp = dateWhoop.split("-");
+                let year = temp[0]; // Năm
+                let month = parseInt(temp[1], 10); // Tháng (chuyển sang số để bỏ số 0 ở đầu nếu có)
+                let date = parseInt(temp[2], 10); // Ngày (chuyển sang số để bỏ số 0 ở đầu nếu có)
+
+                // Sắp xếp lại thứ tự để có định dạng YYYY/M/D
+                dateWhoop = `${year}/${month}/${date}`;
+                console.log(dateWhoop)
+            }
+
+            const zplTemplate = await fetchImage(size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, window.upcPnNumber, window.upcColor, window.upcItem);
+
+            const printer = @Html.Raw(Json.Serialize(Model));
+            const copies = document.getElementById('copies').value;
+
+            const payload = {
+                PrinterIpAddress: printer.iP_Printer,
+                Port: printer.port_Printer,
+                ZplCode: zplTemplate,
+                Copies: copies
+            }
+
+            const url = '@Url.Action("printzpl", "Print")';
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+        }
+
+        quickBtn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            await quickPrint();
+        })
+
+        const inMotLoatPrint = async () => {
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const desc = document.getElementById('desc')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            @* const upcNumber = document.getElementById('upcNumber')?.value || ""; *@
+            const upcNumber = $('#upcNumber').val() || "";
+            const poNumber = document.getElementById('poNumber')?.value || "";
+            const startCT = document.getElementById('startCT')?.value || "";
+            const inMotLoat = document.getElementById('inMotLoat')?.value || "";
+            const totalCt = document.getElementById('totalCt')?.value || "";
+            const upcPnNumber = window.upcPnNumber
+            const upcColor = window.upcColor
+            const upcItem = window.upcItem
+            const itemSize = window.upcSize
+
+
+            @* const itemSize = upcSize; *@
+                let dateWhoop = document.getElementById('dateWhoop')?.value || "";
+            if (dateWhoop) {
+                let temp = dateWhoop.split("-");
+                let year = temp[0]; // Năm
+                let month = parseInt(temp[1], 10); // Tháng (chuyển sang số để bỏ số 0 ở đầu nếu có)
+                let date = parseInt(temp[2], 10); // Ngày (chuyển sang số để bỏ số 0 ở đầu nếu có)
+
+                // Sắp xếp lại thứ tự để có định dạng YYYY/M/D
+                dateWhoop = `${year}/${month}/${date}`;
+                console.log(dateWhoop)
+            }
+
+            const urlLabel = '@Url.Action("CreateLabelNoPreview", "Utils")';
+            const printer = @Html.Raw(Json.Serialize(Model));
+            const copies = document.getElementById('copies').value;
+            const _ = window.location.pathname.split("/");
+            const id = _[_.length - 1];
+            const urlPrint = '@Url.Action("printzpl", "Print")';
+
+
+            for (let i = startCT; i <= inMotLoat; i++) {
+                const ctNumber = `${i} of ${totalCt}`
+                console.log(size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem)
+                const res = await fetch(urlLabel, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ size, width, height, id, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem })
+                });
+                if (res.ok) {
+                    const result = await res.json();
+                    zplTemplate = result.template;
+                }
+                const payload = {
+                    PrinterIpAddress: printer.iP_Printer,
+                    Port: printer.port_Printer,
+                    ZplCode: zplTemplate,
+                    Copies: copies
+                }
+                await fetch(urlPrint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+            }
+        }
+
+        inMotLoatBtn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            await inMotLoatPrint();
+        })
+
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Numpad1') {
+                e.preventDefault();
+                window.location.href = 'http://10.10.99.10:8100/tools/workorderinfo';
+            } else if (e.code === 'Numpad2') {
+                e.preventDefault();
+                window.location.href = 'http://10.10.99.10:8102/Utils/Scantocheck/whoop';
+            } else if (e.code === 'Numpad3') {
+                e.preventDefault();
+                window.location.href = 'http://10.10.99.10:8102/Utils/Whoopnew/WALTER';
+            }
+        }, { capture: true });
+
+    });
+</script>
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+@model SVN_Tools.Models.Utils.PrinterData;
+
+@{
+    ViewData["Title"] = ViewBag.oper;
+}
+
+<style>
+    /* Fix cho Select2 CSS */
+    .select2-container--default .select2-selection--single {
+        height: 42px !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: black !important;
+        line-height: 40px !important;
+        padding-left: 12px !important;
+        padding-right: 20px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 40px !important;
+        right: 10px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        border-color: #555 transparent transparent transparent !important;
+        margin-left: -4px !important;
+        margin-top: -2px !important;
+    }
+
+    .select2-dropdown {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+    }
+
+    .select2-container--default .select2-results__option {
+        color: black !important;
+        padding: 8px 12px !important;
+    }
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+        padding: 8px !important;
+        color: black !important;
+    }
+
+    /* Fix width để match với form-control */
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<h1>@ViewBag.oper</h1>
+
+<div>
+    <h4>Printer Details</h4>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Name_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Name_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.IP_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.IP_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Port_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Port_Printer)
+                </div>
+                <div class="container mt-3">
+                    <div class="col-12">
+                        <hr />
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-auto" style="display:none">
+                                <label for="sizeLabel" class="">Size:</label> <input type="text"
+                                    class="form-control form-control-sm" id="sizeLabel" placeholder="Size" value="24"
+                                    disabled />
+                            </div>
+                            <div class="col-auto" style="display:none">
+                                <label for="widthLabel" class="">Width:</label>
+                                <input type="text" class="form-control form-control-sm" id="widthLabel"
+                                    placeholder="Width" value="4" disabled />
+                            </div>
+                            <div class="col-auto" style="display:none">
+                                <label for="heightLabel" class="">Height:</label>
+                                <input type="text" class="form-control form-control-sm" id="heightLabel"
+                                    placeholder="Height" value="6" disabled />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="copies" class="">Copies:</label>
+                                <input type="number" class="form-control form-control-sm" id="copies"
+                                    placeholder="Copies" value="2" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="workorder" class="">Work Order:</label>
+                                <input type="text" class="form-control form-control-sm" id="workorder"
+                                    placeholder="Work Order" required />
+                            </div>
+                            <div class="col-md-12 mt-6" id="calculate-message">
+                            </div>
+                            <div id="status" class="text-muted small mb-2"></div>
+                        </div>
+                        <hr />
+
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-md-4">
+                                <label for="poNumber" class="">PO Number:</label>
+                                <input type="text" class="form-control form-control-sm" id="poNumber"
+                                    placeholder="PO Number" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="totalCt" class="">Total C/T NO:</label>
+                                <input type="number" class="form-control form-control-sm" id="totalCt"
+                                    placeholder="C/T Total" required />
+                            </div>
+                        </div>
+
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-md-4">
+                                <label for="ctNo" class="">C/T NO:</label>
+                                <input type="number" class="form-control form-control-sm" id="ctNo" placeholder="C/T NO"
+                                    required />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="quantity" class="">Quantity:</label>
+                                <input type="number" class="form-control form-control-sm" id="quantity"
+                                    placeholder="Quantity" value="80" required />
+                            </div>
+                            <div class="col-md-4"> <label for="dateWhoop" class="">Date:</label>
+                                <input type="date" class="form-control form-control-sm" id="dateWhoop"
+                                    placeholder="Date" required />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <ul>
+                                <li>Kiểm tra lại thông tin</li>
+                                <li>Ấn numpad 1 để Preview</li>
+                                <li>Ấn numpad 2 để Save PO và date (nếu cần)</li>
+                                <li>Ấn numpad 3 để chuyển sang trang scan luôn</li>
+                                <li>Ấn numpad 4 để load date từ MES</li>
+                                <li>Ấn Enter để In tem</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="imagebox">
+                <img id="labelImage" src="@ViewBag.imageUrl" style="width:80%" alt="Ấn nút Lưu Zpl và nút Load Ảnh" />
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <hr />
+    <hr />
+    <a asp-action="UltimatePrint">Back to List</a>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+
+        // === setup ===
+
+        let zplTemplate;
+        let workorderInput = document.getElementById('workorder');
+
+        let upcNumber = "", upcItem = "", upcColor = "", upcPnNumber = "", upcSize = "";
+        let lastDateUpc = "";
+        const colors = [
+            "Ash Grey", "Jet Black", "Royal Blue", "Glacier", "Forest", "Graphite",
+            "Dune", "Midnight", "Emerald", "Rhodonite", "Evergreen",
+            "Cardinal", "Obsidian", "Obsidian/Titanium", "Obsidian/Gold",
+            "Midnight/Titanium", "Dune/Gold"
+        ];
+        const sizes = ["L/XL", "S/M"];
+
+        // ====== biến toàn cục phục vụ validate ctNo ======
+        let gQtyProduced = 0;      // số đã sản xuất (rec.qty_produced)
+        let gQuantityPerBox = 80;  // số cái/thùng (từ Verify API); fallback 80
+
+        // === load workorder ===
+        const processWorkorder = async (workorder, colors, sizes) => {
+            try {
+                const response = await fetch(`/api/odoo/search2?productionCode=${workorder}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+                if (!response.ok) throw new Error(await response.text());
+                const data = await response.json();
+                if (!data?.result?.records?.length) throw new Error("Dữ liệu UPC không hợp lệ.");
+
+                const rec = data.result.records[0];
+                const UPC = rec.product_id[1];
+
+                const regex = /^\[(\d+)\]\s+([\d-]+)\s+(.*)$/;
+                const match = UPC.match(regex);
+                if (!match) throw new Error("Định dạng UPC không hợp lệ.");
+
+                const upcNumber_ = match[1];
+                const upcPnNumber_ = match[2];
+                const upcItem_ = match[3];
+
+                let upcColor_ = '';
+                for (let color of colors) if (upcItem_.includes(color)) { upcColor_ = color; break; }
+
+                let upcSize_ = '';
+                for (let size of sizes) if (upcItem_.includes(size)) { upcSize_ = size; break; }
+
+                // gán biến toàn cục (nếu vẫn cần)
+                upcNumber = upcNumber_;
+                upcPnNumber = upcPnNumber_;
+                upcItem = upcItem_;
+                upcColor = upcColor_;
+                upcSize = upcSize_;
+
+                // ====== Xử lý date_deadline: cộng thêm 7 giờ ======
+                let dateUpc = rec.date_deadline; // "2025-10-09 17:00:00"
+                if (dateUpc) {
+                    const utcDate = new Date(dateUpc.replace(" ", "T") + "Z"); // ép về UTC
+                    utcDate.setHours(utcDate.getHours() + 7); // cộng 7 giờ
+                    // Format lại yyyy-mm-dd
+                    const y = utcDate.getFullYear();
+                    const m = String(utcDate.getMonth() + 1).padStart(2, '0');
+                    const d = String(utcDate.getDate()).padStart(2, '0');
+                    dateUpc = `${y}-${m}-${d}`;
+                }
+                lastDateUpc = dateUpc;
+
+                const totalQtyUpc = Number(rec.product_qty) || 0;
+                const qtyProduced = Number(rec.qty_produced) || 0; // <<< LẤY SỐ ĐÃ LÀM
+
+                return { upcNumber_, upcPnNumber_, upcItem_, upcColor_, upcSize_, totalQtyUpc, dateUpc, qtyProduced };
+            } catch (error) {
+                alert("WO không hợp lệ");
+                console.error("Lỗi xử lý Workorder:", error);
+                return null;
+            }
+        };
+
+        // === lấy số lượng mỗi thùng (quantityPerBox) từ API và set vào #quantity ===
+        async function fetchAndSetTargetFromProxy(serial) {
+            const qtyInput = document.getElementById('quantity');
+            const statusEl = document.getElementById('status');
+            const fallback = 80;
+
+            if (!qtyInput) {
+                console.error('#quantity input not found');
+                return fallback;
+            }
+
+            if (!serial) {
+                qtyInput.value = fallback;
+                if (statusEl) statusEl.textContent = 'Không có mã serial — dùng mặc định ' + fallback;
+                return fallback;
+            }
+
+            const apiUrl = '/api/verifyemployeedata/GetProductItemByCode?code=' + encodeURIComponent(serial);
+
+            try {
+                if (statusEl) statusEl.textContent = 'Đang lấy quantityPerBox cho: ' + serial + ' ...';
+
+                const resp = await fetch(apiUrl, { method: 'GET' });
+                const raw = await resp.text();
+
+                let data = null;
+                try { data = raw ? JSON.parse(raw) : null; } catch { /* JSON không hợp lệ */ }
+
+                let quantityPerBox = fallback;
+
+                if (resp.ok && data && data.ok === true) {
+                    const contentStr = String(data.content ?? '').trim();
+                    const parsed = parseInt(contentStr, 10);
+
+                    if (Number.isFinite(parsed) && parsed > 0) {
+                        quantityPerBox = parsed;
+                    } else {
+                        console.warn('Giá trị content không hợp lệ:', data?.content);
+                    }
+                } else {
+                    console.warn('API trả lỗi hoặc payload không hợp lệ:', resp.status, raw);
+                }
+
+                qtyInput.value = quantityPerBox;
+                if (statusEl) statusEl.textContent = "";
+
+                return quantityPerBox;
+            } catch (err) {
+                console.error('Lỗi khi gọi API quantityPerBox:', err);
+                qtyInput.value = fallback;
+                if (statusEl) statusEl.textContent = 'Lỗi API — dùng mặc định ' + fallback;
+                return fallback;
+            }
+        }
+
+        async function fetchPoAndDeadlineByProductionCode(productionCode) {
+            const url = '/api/odoo/getPoNumber?productionCode=' + encodeURIComponent(productionCode);
+            try {
+                const resp = await fetch(url, { method: 'GET' });
+                if (!resp.ok) throw new Error(await resp.text());
+
+                const data = await resp.json().catch(() => ({}));
+                const rawPo = (data?.poNumber ?? "").toString().trim();
+                const rawDeadline = data?.deadline ?? null;
+
+                const poNumber = rawPo !== "" ? rawPo : null;
+                const dateYmd = normalizeDeadlineToYmd(rawDeadline);
+
+                return { poNumber, dateYmd: dateYmd || null };
+            } catch (e) {
+                console.error('fetchPoAndDeadlineByProductionCode error:', e);
+                return null;
+            }
+        }
+
+        async function initPoAndDateFromParamsOrLocal() {
+            console.log("đang lấy PO + deadline từ API, nếu fail sẽ dùng localStorage");
+            const poInput = document.getElementById('poNumber');
+            const dateInput = document.getElementById('dateWhoop');
+            if (!poInput || !dateInput) return;
+
+            const poFromLocal = localStorage.getItem('poNumber');
+            const dateFromLocal = localStorage.getItem('dateWhoop');
+
+            const params = new URLSearchParams(window.location.search);
+            const fullWO =
+                params.get('wo') ||
+                params.get('workOrder') ||
+                params.get('work_order') ||
+                params.get('workorder') ||
+                params.get('work-order');
+
+            if (fullWO) {
+                const api = await fetchPoAndDeadlineByProductionCode(fullWO);
+                if (api) {
+                    if (api.poNumber) {
+                        poInput.value = api.poNumber;
+                    } else if (poFromLocal) {
+                        poInput.value = poFromLocal;
+                    }
+
+                    if (api.dateYmd) {
+                        dateInput.value = api.dateYmd;
+                    } else if (dateFromLocal && /^\d{4}-\d{2}-\d{2}$/.test(dateFromLocal)) {
+                        dateInput.value = dateFromLocal;
+                    }
+                    return;
+                }
+            }
+
+            if (poFromLocal) poInput.value = poFromLocal;
+            if (dateFromLocal && /^\d{4}-\d{2}-\d{2}$/.test(dateFromLocal)) dateInput.value = dateFromLocal;
+        }
+
+        initPoAndDateFromParamsOrLocal();
+
+        // === event đọc workorder ===
+        workorderInput.addEventListener("input", async (event) => {
+            const v = event.target.value;
+            if (v.length == 11) {
+                const woData = await processWorkorder(v, colors, sizes);
+                if (woData) {
+                    const { upcNumber_, totalQtyUpc, qtyProduced } = woData;
+                    const quantityPerBox = await fetchAndSetTargetFromProxy(upcNumber_);
+                    if (quantityPerBox && quantityPerBox > 0) {
+                        document.getElementById('quantity').value = quantityPerBox;
+
+                        const fullBoxes = Math.floor(totalQtyUpc / quantityPerBox);
+                        const remainingQty = totalQtyUpc % quantityPerBox;
+                        const totalCt = remainingQty > 0 ? fullBoxes + 1 : fullBoxes;
+
+                        document.getElementById("totalCt").value = totalCt;
+
+                        const msg = remainingQty > 0
+                            ? `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, và 1 thùng lẻ ${remainingQty} cái`
+                            : `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, không có thùng lẻ`;
+                        document.getElementById("calculate-message").innerHTML = msg;
+
+                        // >>> TÍNH THÙNG SẮP IN
+                        let nextCtNo = Math.ceil(qtyProduced / quantityPerBox);
+                        if (nextCtNo < 1) nextCtNo = 1;
+                        if (nextCtNo > totalCt) nextCtNo = totalCt;
+                        document.getElementById('ctNo').value = nextCtNo;
+
+                        // >>> NẾU LÀ THÙNG CUỐI CÙNG -> quantity = số lẻ còn lại
+                        if (nextCtNo === totalCt && remainingQty > 0) {
+                            document.getElementById('quantity').value = remainingQty;
+                        } else {
+                            document.getElementById('quantity').value = quantityPerBox;
+                        }
+
+                        // ===== gán cho validate ctNo =====
+                        gQtyProduced = Number(qtyProduced) || 0;
+                        gQuantityPerBox = Number(quantityPerBox) || 0;
+                    }
+                }
+            }
+        });
+
+        // === Auto-fill từ URL khi redirect sang ===
+        try {
+            const params = new URLSearchParams(window.location.search);
+
+            const fullWO =
+                params.get('wo') ||
+                params.get('workOrder') ||
+                params.get('workorder') ||
+                params.get('work_order') ||
+                params.get('work-order');
+
+            if (fullWO) {
+                workorderInput.value = fullWO;
+                console.log(fullWO)
+
+                const woData = await processWorkorder(fullWO, colors, sizes);
+                if (woData) {
+                    const { upcNumber_, totalQtyUpc, qtyProduced } = woData;
+                    const quantityPerBox = await fetchAndSetTargetFromProxy(upcNumber_);
+
+                    if (quantityPerBox && quantityPerBox > 0) {
+                        document.getElementById('quantity').value = quantityPerBox;
+
+                        const fullBoxes = Math.floor(totalQtyUpc / quantityPerBox);
+                        const remainingQty = totalQtyUpc % quantityPerBox;
+                        const totalCt = remainingQty > 0 ? fullBoxes + 1 : fullBoxes;
+
+                        document.getElementById("totalCt").value = totalCt;
+
+                        const msg = remainingQty > 0
+                            ? `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, và 1 thùng lẻ ${remainingQty} cái`
+                            : `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, không có thùng lẻ`;
+                        document.getElementById("calculate-message").innerHTML = msg;
+
+                        // >>> TÍNH THÙNG SẮP IN
+                        let nextCtNo = Math.ceil(qtyProduced / quantityPerBox);
+                        if (nextCtNo < 1) nextCtNo = 1;
+                        if (nextCtNo > totalCt) nextCtNo = totalCt;
+                        document.getElementById('ctNo').value = nextCtNo;
+
+                        // >>> NẾU LÀ THÙNG CUỐI CÙNG -> quantity = số lẻ còn lại
+                        if (nextCtNo === totalCt && remainingQty > 0) {
+                            document.getElementById('quantity').value = remainingQty;
+                        } else {
+                            document.getElementById('quantity').value = quantityPerBox;
+                        }
+
+                        // ===== gán cho validate ctNo =====
+                        gQtyProduced = Number(qtyProduced) || 0;
+                        gQuantityPerBox = Number(quantityPerBox) || 0;
+                    }
+                }
+            }
+        } catch (e) {
+            console.error('Lỗi auto-parse URL params:', e);
+        }
+
+        const fetchImage = async (size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem) => {
+            const url = '@Url.Action("CreateLabel", "Utils")';
+
+            const image = $("#labelImage")[0];
+
+            const _ = window.location.pathname.split("/");
+            const id = _[_.length - 1];
+            console.log(size, width, height, id, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem)
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ size, width, height, id, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem })
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                image.setAttribute("src", result.imagePath);
+                zplTemplate = result.template;
+                console.log(result)
+                return zplTemplate;
+            }
+        }
+
+        const printer = @Html.Raw(Json.Serialize(Model));
+        const target = printer.target;
+
+        const previewLabel = async () => {
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const desc = document.getElementById('desc')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            const poNumber = document.getElementById('poNumber')?.value || "";
+            const ctNo = document.getElementById('ctNo')?.value || "";
+            const totalCt = document.getElementById('totalCt')?.value || "";
+            const ctNumber = `${ctNo} of ${totalCt}`
+            const workorder = document.getElementById('workorder')?.value || "";
+            let itemSize = upcSize;
+            let dateWhoop = document.getElementById('dateWhoop')?.value || "";
+            if (dateWhoop) {
+                let temp = dateWhoop.split("-");
+                let year = temp[0];
+                let month = parseInt(temp[1], 10);
+                let date = parseInt(temp[2], 10);
+                dateWhoop = `${year}/${month}/${date}`;
+                console.log(dateWhoop)
+            }
+            fetchImage(size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem);
+        }
+
+        async function logWalter(message) {
+            try {
+                const resp = await fetch('/api/astrolabel/walterlog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: message })
+                });
+
+                if (!resp.ok) {
+                    console.error('Log thất bại:', await resp.text());
+                } else {
+                    console.log('Đã log:', message);
+                }
+            } catch (err) {
+                console.error('Lỗi khi log:', err);
+            }
+        }
+
+        const handlePrinter = async () => {
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const desc = document.getElementById('desc')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            const poNumber = document.getElementById('poNumber')?.value || "";
+            const ctNo = document.getElementById('ctNo')?.value || "";
+            const totalCt = document.getElementById('totalCt')?.value || "";
+            const ctNumber = `${ctNo} of ${totalCt}`
+            const workorder = document.getElementById('workorder')?.value || "";
+            let itemSize = upcSize;
+            let dateWhoop = document.getElementById('dateWhoop')?.value || "";
+            if (dateWhoop) {
+                let temp = dateWhoop.split("-");
+                let year = temp[0];
+                let month = parseInt(temp[1], 10);
+                let date = parseInt(temp[2], 10);
+                dateWhoop = `${year}/${month}/${date}`;
+                console.log(dateWhoop)
+            }
+            const zplTemplate = await fetchImage(size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem);
+
+            const printer = @Html.Raw(Json.Serialize(Model));
+            const copies = document.getElementById('copies').value;
+
+            const payload = {
+                PrinterIpAddress: printer.iP_Printer,
+                Port: printer.port_Printer,
+                ZplCode: zplTemplate,
+                Copies: copies
+            }
+
+            const url = '@Url.Action("printzpl", "Print")';
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    console.log("In thành công!");
+
+                    const message = `In tem số ${ctNo}/${totalCt} với PO: ${poNumber}, Date: ${dateWhoop}, WO: ${workorder}, Số lượng: ${quantity}, UPC: ${upcNumber}`;
+                    await logWalter(message);
+                    @* setTimeout(() => {
+                        window.location.href = "http://10.10.99.10:8102/Utils/scantocheckwithwo/whoop";
+                    }, 2000); *@
+                } else {
+                    console.error("Lỗi khi in:", await res.text());
+                    alert("Không thể in. Vui lòng kiểm tra máy in hoặc kết nối.");
+                }
+            } catch (error) {
+                console.error("Lỗi mạng khi in:", error);
+                alert("Lỗi kết nối khi in.");
+            }
+        }
+
+        // ===== Validate ctNo: không cho vượt qty_produced / quantityPerBox =====
+        const ctNoInput = document.getElementById('ctNo');
+
+        function validateCtNo() {
+            const val = Number(ctNoInput.value);
+            if (!Number.isFinite(val) || val <= 0) return;
+
+            const ratio = (gQuantityPerBox > 0) ? Math.ceil(gQtyProduced / gQuantityPerBox) : Infinity;
+
+            if (val > ratio) {
+                alert(`❌ Không thể in tem khi chưa sản xuất đủ.\n` +
+                    `C/T No nhập: ${val}\n` +
+                    `Tiến độ hiện tại: ${gQtyProduced}/${gQuantityPerBox} (= ${ratio.toFixed(2)} thùng)`);
+                ctNoInput.value = '';
+                ctNoInput.focus();
+            }
+        }
+
+        // Kiểm tra khi người dùng nhập xong (change) hoặc rời ô (blur)
+        ctNoInput.addEventListener('change', validateCtNo);
+        ctNoInput.addEventListener('blur', validateCtNo);
+
+        // === PHÍM TẮT ===
+        document.addEventListener('keydown', async (e) => {
+            // Phím Numpad 1 → Preview
+            if (e.code === 'Numpad1') {
+                e.preventDefault();
+                console.log('Phím Numpad 1 → Preview');
+                await previewLabel();
+            }
+            // Phím Numpad 2 → Save PO
+            else if (e.code === 'Numpad2') {
+                e.preventDefault();
+                console.log('Phím Numpad 2 → Save PO');
+                const poInput = document.getElementById('poNumber');
+                const dateWhoop = document.getElementById('dateWhoop').value;
+                const poNumber = poInput?.value?.trim();
+                if (poNumber) {
+                    await localStorage.setItem('poNumber', poNumber);
+                    alert('Đã lưu PO và date vào LocalStorage!');
+                }
+                if (dateWhoop) {
+                    await localStorage.setItem('dateWhoop', dateWhoop);
+                    alert('Đã lưu ngày làm vào LocalStorage!');
+                }
+            }
+            else if (e.code === 'Numpad3') {
+                e.preventDefault();
+                console.log('Phím Numpad 3 → Redirect sang trang scan');
+                window.location.href = "http://10.10.99.10:8102/Utils/scantocheckwithwo/whoop";
+            }
+            else if (e.code === 'Numpad4') {
+                e.preventDefault();
+                console.log('Phím Numpad 4 → Load lại ngày từ biến toàn cục');
+                const dateInput = document.getElementById('dateWhoop');
+
+                if (lastDateUpc && dateInput) {
+                    dateInput.value = lastDateUpc;
+                    alert('Đã nạp lại ngày từ cache: ' + lastDateUpc);
+                } else {
+                    alert('Chưa có ngày nào trong cache. Hãy nhập WO trước!');
+                }
+            }
+            // Phím Enter → In tem
+            else if (e.code === 'Enter') {
+                const tag = document.activeElement.tagName.toLowerCase();
+                if (tag === 'input' || tag === 'textarea') return;
+
+                e.preventDefault();
+                console.log('Phím Enter → In Tem');
+                if (!zplTemplate) await previewLabel();
+
+                await handlePrinter();
+            }
+        });
+
+        const normalizeDeadlineToYmd = (s) => {
+            if (!s) return "";
+            const t = String(s).trim();
+            if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;           // "YYYY-MM-DD"
+            if (/^\d{8}$/.test(t)) return `${t.slice(0, 4)}-${t.slice(4, 6)}-${t.slice(6, 8)}`; // "YYYYMMDD"
+            return "";
+        };
+
+        // === Khi nhấn Enter trong ô input workorder ===
+        workorderInput.addEventListener("keydown", async (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+
+                const workorder = event.target.value.trim();
+                if (!workorder) return;
+
+                console.log("Enter pressed → xử lý workorder:", workorder);
+
+                const woData = await processWorkorder(workorder, colors, sizes);
+                if (woData) {
+                    const { upcNumber_, totalQtyUpc, qtyProduced } = woData;
+                    const quantityPerBox = await fetchAndSetTargetFromProxy(upcNumber_);
+
+                    if (quantityPerBox && quantityPerBox > 0) {
+                        document.getElementById('quantity').value = quantityPerBox;
+
+                        const fullBoxes = Math.floor(totalQtyUpc / quantityPerBox);
+                        const remainingQty = totalQtyUpc % quantityPerBox;
+                        const totalCt = remainingQty > 0 ? fullBoxes + 1 : fullBoxes;
+
+                        document.getElementById("totalCt").value = totalCt;
+
+                        const msg = remainingQty > 0
+                            ? `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, và 1 thùng lẻ ${remainingQty} cái`
+                            : `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, không có thùng lẻ`;
+                        document.getElementById("calculate-message").innerHTML = msg;
+
+                        // Tính thùng sắp in
+                        let nextCtNo = Math.ceil(qtyProduced / quantityPerBox);
+                        if (nextCtNo < 1) nextCtNo = 1;
+                        if (nextCtNo > totalCt) nextCtNo = totalCt;
+                        document.getElementById('ctNo').value = nextCtNo;
+
+                        // Nếu là thùng cuối cùng → quantity = số lẻ còn lại
+                        if (nextCtNo === totalCt && remainingQty > 0) {
+                            document.getElementById('quantity').value = remainingQty;
+                        } else {
+                            document.getElementById('quantity').value = quantityPerBox;
+                        }
+                    }
+
+                    // Sau khi load WO thì cũng tự động gọi API lấy PO + deadline
+                    const api = await fetchPoAndDeadlineByProductionCode(workorder);
+                    if (api) {
+                        const poInput = document.getElementById('poNumber');
+                        const dateInput = document.getElementById('dateWhoop');
+                        if (api.poNumber) poInput.value = api.poNumber;
+                        if (api.dateYmd) dateInput.value = api.dateYmd;
+                    }
+                }
+            }
+        });
+
+    });
+</script>

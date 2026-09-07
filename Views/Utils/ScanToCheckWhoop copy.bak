@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quét serial thùng & hộp</title>
+    <style>
+        :root {
+            --ok: #16a34a;
+            /* xanh */
+            --bad: #dc2626;
+            /* đỏ */
+            --bg: #0b1020;
+            --panel: #121a33;
+            --text: #e6e8ef;
+            --muted: #9aa4b2;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            background: var(--bg);
+            color: var(--text);
+            display: grid;
+            place-items: center;
+        }
+
+        .wrap {
+            width: min(1200px, 96vw);
+        }
+
+        h1 {
+            font-weight: 700;
+            letter-spacing: .3px;
+            font-size: clamp(18px, 2.2vw, 22px);
+            margin: 8px 0 14px;
+            color: var(--muted);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .25);
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 90%;
+            font-size: clamp(22px, 4vw, 42px);
+            padding: 16px 18px;
+            border-radius: 14px;
+            border: 2px solid transparent;
+            outline: none;
+            background: #0c1430;
+            color: var(--text);
+            letter-spacing: .5px;
+        }
+
+        input[type="text"]:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, .25);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .row+.row {
+            margin-top: 16px;
+        }
+
+        /* Chỉ báo lớn chiếm ~1/2 màn hình */
+        .indicator {
+            width: min(50vw, 50vh);
+            height: min(50vw, 50vh);
+            border-radius: 24px;
+            background: #0c1430;
+            border: 4px dashed #22305d;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: clamp(22px, 3.2vw, 40px);
+            user-select: none;
+            transition: background .12s ease, box-shadow .12s ease, border-color .12s ease;
+        }
+
+        .indicator.flash-ok {
+            background: var(--ok);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 0 0 8px rgba(22, 163, 74, .35);
+        }
+
+        .indicator.flash-bad {
+            background: var(--bad);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 0 0 8px rgba(220, 38, 38, .35);
+        }
+
+        /* Ô đếm nhỏ */
+        .counter-panel {
+            display: grid;
+            gap: 10px;
+            align-content: start;
+        }
+
+        .counter-title {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .counter-value {
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            font-size: clamp(40px, 8vw, 120px);
+            letter-spacing: 1px;
+        }
+
+        .help {
+            margin-top: 14px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        kbd {
+            background: #0c1430;
+            border: 1px solid #22305d;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .status {
+            margin-top: 10px;
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        .status strong {
+            color: var(--text);
+        }
+
+        .foot {
+            margin-top: 18px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        /* cảnh báo đủ số lượng */
+        .flash-warn {
+            animation: warnFlash .5s ease-in-out;
+        }
+
+        @@keyframes warnFlash {
+            0% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, .0);
+                background: rgba(245, 158, 11, .08);
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(245, 158, 11, .35);
+                background: rgba(245, 158, 11, .15);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, .0);
+                background: rgba(245, 158, 11, .08);
+            }
+        }
+
+        .target-chip {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 14px;
+            background: #1f2937;
+            border: 1px dashed #f59e0b;
+            color: #f59e0b;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="grid">
+            <div class="panel">
+                <div class="row">
+                    <label for="bin">Serial THÙNG</label>
+                    <input id="bin" type="text" inputmode="none" autocomplete="off" autocapitalize="off"
+                        spellcheck="false" placeholder="Quét/nhập serial thùng..." />
+                </div>
+                <div class="row">
+                    <label for="box">Serial HỘP</label>
+                    <input id="box" type="text" inputmode="none" autocomplete="off" autocapitalize="off"
+                        spellcheck="false" placeholder="Quét/nhập serial hộp..." />
+                    <div class="status" id="status">Sẵn sàng. Quét serial thùng trước, sau đó quét nhiều hộp liên tục.
+                    </div>
+                </div>
+                <div class="panel" style="margin-top:18px; border:2px solid #3b82f6;">
+                    <div style="font-size:clamp(18px,3.4vw,28px); font-weight:800; margin-bottom:8px;">HƯỚNG DẪN PHÍM
+                        TẮT</div>
+                    <ul style="margin:0; padding-left:18px; font-size:clamp(16px,3vw,24px); line-height:1.5">
+                        <li><strong>Numpad 1</strong>: Reset tất cả.</li>
+                        <li><strong>Numpad 2</strong>: Xóa số đếm hộp.</li>
+                        <li><strong>Numpad 3</strong>: Mở trang nhập KQSX</li>
+                        <li><strong>Numpad 4</strong>: Mở trang In Walter</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="panel" style="display:grid;place-items:center;gap:16px;">
+                <div class="indicator" id="indicator">●</div>
+                <div class="counter-panel">
+                    <div class="counter-title">Số hộp đã scan</div>
+                    <div class="counter-value" id="counter">0</div>
+                    <div id="targetDisplay" class="target-chip">Mốc: <strong>80</strong> chiếc (nhấn <kbd>Numpad 5</kbd>
+                        để đổi 36/80)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @* <script>
+        (function () {
+            const bin = document.getElementById('bin');
+            const box = document.getElementById('box');
+            const indicator = document.getElementById('indicator');
+            const status = document.getElementById('status');
+            const counterEl = document.getElementById('counter');
+            const targetDisplay = document.getElementById('targetDisplay');
+            let targetCount = 80; // mặc định mốc 80
+            function updateTargetChip() { targetDisplay.innerHTML = `Mốc: <strong>${targetCount}</strong> chiếc (nhấn <kbd>Numpad 5</kbd> để đổi 36/80)`; }
+            updateTargetChip();
+
+            let count = 0;
+
+            [bin, box].forEach(el => el.addEventListener('focus', () => el.select()));
+
+            window.addEventListener('load', () => bin.focus());
+
+            let binDebounce;
+            bin.addEventListener('input', () => {
+                clearTimeout(binDebounce);
+                if (bin.value.trim().length === 0) return;
+                binDebounce = setTimeout(() => {
+                    box.focus();
+                    status.textContent = 'Đang quét hộp cho thùng: ' + bin.value.trim();
+                }, 350);
+            });
+
+            bin.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (bin.value.trim().length === 0) return;
+                    box.focus();
+                    status.textContent = 'Đang quét hộp cho thùng: ' + bin.value.trim();
+                }
+            });
+
+            let boxDebounce;
+            const processBox = () => {
+                const binVal = normalize(bin.value);
+                const boxVal = normalize(box.value);
+                if (!boxVal) return;
+                const ok = binVal && boxVal && binVal === boxVal;
+                flash(ok ? 'ok' : 'bad');
+                status.innerHTML = ok
+                    ? '✔ Khớp: <strong>' + boxVal + '</strong>'
+                    : '✖ KHÔNG khớp! Hộp: <strong>' + boxVal + '</strong> ≠ Thùng: <strong>' + binVal + '</strong>';
+                if (ok) incrementCounter();
+                box.value = '';
+                box.focus();
+            };
+
+            box.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    processBox();
+                }
+            });
+            box.addEventListener('input', () => {
+                clearTimeout(boxDebounce);
+                if (box.value.trim().length === 0) return;
+                boxDebounce = setTimeout(processBox, 300);
+            });
+
+            window.addEventListener('keydown', (e) => {
+                if (e.code === 'Numpad1') {
+                    e.preventDefault();
+                    resetAll();
+                } else if (e.code === 'Numpad2') {
+                    e.preventDefault();
+                    resetCounter();
+                } else if (e.code === 'Numpad3') {
+                    e.preventDefault();
+                    window.location.href = 'http://10.10.99.10:8100/tools/workorderinfo';
+                } else if (e.code === 'Numpad4') {
+                    e.preventDefault();
+                    window.location.href = 'http://10.10.99.10:8102/Utils/Whoop/WHOOP';
+
+                } else if (e.code === 'Numpad5') {
+                    e.preventDefault();
+                    targetCount = (targetCount === 80) ? 36 : 80;
+                    updateTargetChip();
+                    if (count >= targetCount) {
+                        // Nếu đang vượt mốc mới, cảnh báo ngay
+                        flash('warn');
+                        alert('ĐÃ ĐỦ SỐ LƯỢNG ' + targetCount + ' - KHÔNG ĐƯỢC BỎ THÊM!');
+                    }
+
+                }
+            }, { capture: true });
+
+            function resetAll() {
+                bin.value = '';
+                box.value = '';
+                resetCounter();
+                status.textContent = 'Đã reset. Quét serial thùng mới.';
+                indicator.classList.remove('flash-ok', 'flash-bad');
+                bin.focus();
+            }
+
+            function resetCounter() {
+                count = 0;
+                counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+            }
+
+            function incrementCounter() {
+                if (count >= targetCount) {
+                    // Đã đủ, không cộng thêm
+                    flash('warn');
+                    alert('ĐÃ ĐỦ SỐ LƯỢNG ' + targetCount + ' - KHÔNG ĐƯỢC BỎ THÊM!');
+                    resetCounter();
+                    return;
+                }
+                count += 1;
+                counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+
+            }
+
+            function normalize(s) {
+                return (s || '').trim().replace(/\s+/g, '').toUpperCase();
+            }
+
+            let flashTimer;
+            function flash(type) {
+                clearTimeout(flashTimer);
+                indicator.classList.remove('flash-ok', 'flash-bad');
+                indicator.classList.add(type === 'ok' ? 'flash-ok' : (type === 'warn' ? 'flash-warn' : 'flash-bad'));
+                flashTimer = setTimeout(() => {
+                    indicator.classList.remove('flash-ok', 'flash-bad');
+                }, 500);
+            }
+
+            document.addEventListener('mousedown', (e) => { e.preventDefault(); }, { capture: true });
+            document.addEventListener('contextmenu', (e) => { e.preventDefault(); });
+        })();
+    </script> *@
+
+    <script>
+        (function () {
+            const bin = document.getElementById('bin');
+            const box = document.getElementById('box');
+            const indicator = document.getElementById('indicator');
+            const status = document.getElementById('status');
+            const counterEl = document.getElementById('counter');
+            const targetDisplay = document.getElementById('targetDisplay');
+
+            // Mốc mặc định (dùng khi server lỗi / trả content không hợp lệ)
+            let targetCount = 80;
+            function updateTargetChip() {
+                targetDisplay.innerHTML = `Mốc: <strong>${targetCount}</strong> chiếc`;
+            }
+            updateTargetChip();
+
+            let count = 0;
+
+            [bin, box].forEach(el => el.addEventListener('focus', () => el.select()));
+            window.addEventListener('load', () => bin.focus());
+
+            // =========================
+            // BIN: debounce + gọi proxy
+            // =========================
+            let binDebounce;
+            bin.addEventListener('input', () => {
+                clearTimeout(binDebounce);
+                if (bin.value.trim().length === 0) return;
+                binDebounce = setTimeout(async () => {
+                    const serial = normalize(bin.value);
+                    status.textContent = 'Đang lấy thông tin thùng: ' + serial;
+                    await fetchAndSetTargetFromProxy(serial);
+                    status.textContent = 'Đang quét hộp cho thùng: ' + serial;
+                    box.focus();
+                }, 350);
+            });
+
+            bin.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (bin.value.trim().length === 0) return;
+                    const serial = normalize(bin.value);
+                    status.textContent = 'Đang lấy thông tin thùng: ' + serial;
+                    fetchAndSetTargetFromProxy(serial).then(() => {
+                        status.textContent = 'Đang quét hộp cho thùng: ' + serial;
+                    });
+                    box.focus();
+                }
+            });
+
+            // Gọi proxy backend thay vì API gốc (tránh CORS)
+            async function fetchAndSetTargetFromProxy(serial) {
+                if (!serial) return;
+                // Dùng đường dẫn tương đối để trúng đúng origin của app
+                const apiUrl = '/api/verifyemployeedata/GetProductItemByCode?code=' + encodeURIComponent(serial);;
+
+                try {
+                    status.textContent = 'Lấy mốc từ server cho: ' + serial + ' ...';
+                    const resp = await fetch(apiUrl, { method: 'GET' });
+
+                    // Proxy trả nguyên status code của upstream; vẫn nên cố gắng parse JSON nếu có
+                    let data = null;
+                    const text = await resp.text();
+                    try { data = text ? JSON.parse(text) : null; } catch { /* giữ data = null nếu parse lỗi */ }
+
+                    if (!resp.ok) {
+                        status.textContent = `Lỗi server (${resp.status}) khi lấy mốc cho ${serial}`;
+                        return;
+                    }
+
+                    if (data && data.content !== undefined && data.content !== null) {
+                        const parsed = parseInt(String(data.content).trim(), 10);
+                        if (!Number.isNaN(parsed) && parsed > 0) {
+                            targetCount = parsed;
+                            updateTargetChip();
+                            // Nếu đang vượt mốc mới, cảnh báo ngay
+                            if (count >= targetCount) {
+                                flash('warn');
+                                alert('ĐÃ ĐỦ SỐ LƯỢNG ' + targetCount + ' - KHÔNG ĐƯỢC BỎ THÊM!');
+                            }
+                            status.textContent = 'Mốc đặt bởi server: ' + targetCount;
+                        } else {
+                            status.textContent = 'Server trả mốc không hợp lệ: ' + String(data?.content);
+                        }
+                    } else {
+                        status.textContent = 'Server trả dữ liệu rỗng/không hợp lệ.';
+                    }
+                } catch (err) {
+                    console.error('Proxy error:', err);
+                    status.textContent = 'Lỗi khi gọi proxy — dùng mốc mặc định ' + targetCount;
+                }
+            }
+
+            // =========================
+            // BOX: giữ nguyên logic so khớp
+            // =========================
+            let boxDebounce;
+            const processBox = () => {
+                const binVal = normalize(bin.value);
+                const boxVal = normalize(box.value);
+                if (!boxVal) return;
+
+                const ok = binVal && boxVal && binVal === boxVal;
+                flash(ok ? 'ok' : 'bad');
+                status.innerHTML = ok
+                    ? '✔ Khớp: <strong>' + boxVal + '</strong>'
+                    : '✖ KHÔNG khớp! Hộp: <strong>' + boxVal + '</strong> ≠ Thùng: <strong>' + binVal + '</strong>';
+
+                if (ok) incrementCounter();
+
+                box.value = '';
+                box.focus();
+            };
+
+            box.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    processBox();
+                }
+            });
+            box.addEventListener('input', () => {
+                clearTimeout(boxDebounce);
+                if (box.value.trim().length === 0) return;
+                boxDebounce = setTimeout(processBox, 300);
+            });
+
+            // =========================
+            // Hotkeys (đã bỏ Numpad5)
+            // =========================
+            window.addEventListener('keydown', (e) => {
+                if (e.code === 'Numpad1') {
+                    e.preventDefault();
+                    resetAll();
+                } else if (e.code === 'Numpad2') {
+                    e.preventDefault();
+                    resetCounter();
+                } else if (e.code === 'Numpad3') {
+                    e.preventDefault();
+                    window.location.href = 'http://10.10.99.10:8100/tools/workorderinfo';
+                } else if (e.code === 'Numpad4') {
+                    e.preventDefault();
+                    window.location.href = 'http://10.10.99.10:8102/Utils/Whoop/WHOOP';
+                }
+            }, { capture: true });
+
+            // =========================
+            // Counter / helpers / UX
+            // =========================
+            function resetAll() {
+                bin.value = '';
+                box.value = '';
+                resetCounter();
+                status.textContent = 'Đã reset. Quét serial thùng mới.';
+                indicator.classList.remove('flash-ok', 'flash-bad', 'flash-warn');
+                bin.focus();
+            }
+
+            function resetCounter() {
+                count = 0;
+                counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+            }
+
+            function incrementCounter() {
+                if (count >= targetCount) {
+                    flash('warn');
+                    alert('ĐÃ ĐỦ SỐ LƯỢNG ' + targetCount + ' - KHÔNG ĐƯỢC BỎ THÊM!');
+                    resetCounter();
+                    return;
+                }
+                count += 1;
+                counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+            }
+
+            function normalize(s) {
+                return (s || '').trim().replace(/\s+/g, '').toUpperCase();
+            }
+
+            let flashTimer;
+            function flash(type) {
+                clearTimeout(flashTimer);
+                indicator.classList.remove('flash-ok', 'flash-bad', 'flash-warn');
+                indicator.classList.add(type === 'ok' ? 'flash-ok' : (type === 'warn' ? 'flash-warn' : 'flash-bad'));
+                flashTimer = setTimeout(() => {
+                    indicator.classList.remove('flash-ok', 'flash-bad', 'flash-warn');
+                }, 500);
+            }
+
+            document.addEventListener('mousedown', (e) => { e.preventDefault(); }, { capture: true });
+            document.addEventListener('contextmenu', (e) => { e.preventDefault(); });
+        })();
+    </script>
+</body>
+
+</html>

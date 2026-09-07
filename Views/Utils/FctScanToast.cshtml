@@ -1,0 +1,396 @@
+@{
+    ViewData["Title"] = "FCT Scan";
+}
+
+<style>
+    body {
+        background: #0f1115;
+        color: #f9fafb;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .wrap {
+        display: flex;
+        gap: 48px;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 48px;
+    }
+
+    .card {
+        max-width: 520px;
+        padding: 24px;
+        border: 1px solid #374151;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, .3);
+        background: #1f2937;
+        /* nền tối */
+    }
+
+    /* Indicator block */
+    .indicator {
+        width: 600px;
+        min-width: 600px;
+        text-align: center;
+        user-select: none;
+    }
+
+    .indicator-title {
+        color: #9ca3af;
+        font-size: 16px;
+        letter-spacing: .08em;
+        margin-bottom: 12px;
+    }
+
+    .indicator-circle {
+        width: 560px;
+        height: 560px;
+        border-radius: 999px;
+        margin: 0 auto 16px;
+        transition: background-color .2s ease, box-shadow .2s ease, transform .1s ease;
+        box-shadow: 0 0 0 12px rgba(255, 255, 255, 0.05) inset, 0 20px 60px rgba(0, 0, 0, .25);
+    }
+
+    .indicator-label {
+        font-weight: 600;
+        font-size: 24px;
+        color: #e5e7eb;
+    }
+
+    /* Base mode colors */
+    .mode-ok {
+        background: white;
+    }
+
+    /* xanh nước biển */
+    .mode-ng {
+        background: red;
+    }
+
+    /* hồng */
+
+    /* Flash states */
+    .flash-success {
+        background: #22c55e !important;
+    }
+
+    /* xanh lá */
+    .flash-error {
+        background: #dc2626 !important;
+    }
+
+    #msg {
+        font-size: 24px;
+        /* To và dễ đọc */
+        font-weight: 700;
+        /* Đậm */
+        text-align: center;
+        /* Canh giữa */
+        padding: 18px 40px !important;
+        /* Dày hơn */
+        border-radius: 14px;
+        margin-bottom: 20px;
+        display: none;
+        color: #fff !important;
+        /* Text trắng */
+        box-shadow: 0 0 25px rgba(0, 0, 0, .5);
+        transition: all .3s ease;
+    }
+
+    /* SUCCESS */
+    #msg.show-success {
+        background: #16a34a !important;
+        /* xanh lá đậm */
+        border: 6px solid green;
+        animation: borderBlinkGreen 1s infinite;
+    }
+
+    /* ERROR */
+    #msg.show-error {
+        background: #dc2626 !important;
+        /* đỏ đậm */
+        border: 6px solid red;
+        animation: borderBlinkRed 1s infinite;
+    }
+
+    /* Hiệu ứng nhấp nháy viền */
+    @@keyframes borderBlinkGreen {
+
+        0%,
+        100% {
+            border-color: green;
+            @* box-shadow: 0 0 15px #22c55e; *@
+        }
+
+        50% {
+            border-color: white;
+            @* box-shadow: 0 0 25px #bbf7d0; *@
+        }
+    }
+
+    @@keyframes borderBlinkRed {
+
+        0%,
+        100% {
+            border-color: red;
+            @* box-shadow: 0 0 15px #f87171; *@
+        }
+
+        50% {
+            border-color: white;
+            @* box-shadow: 0 0 25px #fecaca; *@
+        }
+    }
+
+    /* Bảng nhắc kiểm tra (màu vàng, giống showMsg nhưng to hơn) */
+    .check-notice {
+        margin-top: 20px;
+        padding: 18px 40px;
+        border-radius: 12px;
+        background: #facc15;
+        /* vàng đậm */
+        color: #1f2937;
+        /* chữ xám đậm để dễ đọc */
+        font-size: 32px;
+        font-weight: 600;
+        text-align: center;
+        border: 6px solid white;
+        /* viền vàng nhạt */
+        box-shadow: 0 0 12px rgba(250, 204, 21, 0.3);
+        animation: pulseBorder 2s infinite;
+    }
+
+    /* Hiệu ứng viền nhấp nháy nhẹ */
+    @@keyframes pulseBorder {
+
+        0%,
+        100% {
+            border-color: yellow;
+            @* box-shadow: 0 0 10px rgba(250, 204, 21, 0.3); *@
+        }
+
+        50% {
+            border-color: white;
+            @* box-shadow: 0 0 16px rgba(250, 204, 21, 0.6); *@
+        }
+    }
+</style>
+
+<div class="wrap">
+    <!-- CARD BÊN TRÁI -->
+    <div class="card">
+        <h2 style="margin:0 0 8px;">FCT Scan</h2>
+
+        <div id="modeBadge"
+            style="margin-bottom:12px;padding:4px 8px;border-radius:8px;display:inline-block;background:#dcfce7;color:#166534;">
+            Chế độ: Bình thường (OK)
+        </div>
+
+        <div id="msg"
+            style="display:none;margin-bottom:12px;padding:8px 12px;border-radius:8px;background:#eff6ff;color:#1d4ed8;">
+        </div>
+
+        <form id="scanForm" method="post" action="/FctScanToast/Submit" onsubmit="return false;">
+            @Html.AntiForgeryToken()
+            <label for="code" style="display:block;margin-bottom:8px;">Quét mã (Serial 13 kí tự hoặc “NG”):</label>
+            <input id="code" name="code" type="text" autocomplete="off"
+                style="width:100%;padding:14px 16px;border:2px solid #cbd5e1;border-radius:12px;font-size:18px;outline:none;background:#111827;color:#f9fafb;"
+                onfocus="this.select();" />
+        </form>
+
+        <p style="margin-top:12px;color:#9ca3af;">
+            Mẹo: Quét <strong>NG</strong> để bật/tắt chế độ NG (viền đỏ). Khi đang NG, quét <strong>serial 13 ký
+                tự</strong> sẽ gửi NG.
+        </p>
+
+        <!-- BẢNG NHẮC KIỂM TRA -->
+        <div id="checkNotice" class="check-notice">
+            ⚠️ Xin vui lòng kiểm tra <strong>5 đèn trên sản phẩm</strong> rồi <strong>scan trạng thái</strong>.
+        </div>
+    </div>
+
+    <!-- INDICATOR BÊN PHẢI -->
+    <div class="indicator">
+        <div class="indicator-title">TRẠNG THÁI</div>
+        <div id="indicatorCircle" class="indicator-circle mode-ok"></div>
+        <div id="indicatorText" class="indicator-label">OK MODE</div>
+    </div>
+
+
+</div>
+
+<script>
+    (function () {
+        const input = document.getElementById('code');
+        const msg = document.getElementById('msg');
+        const badge = document.getElementById('modeBadge');
+        const circle = document.getElementById('indicatorCircle');
+        const indText = document.getElementById('indicatorText');
+
+        function getAntiXsrfToken() {
+            const el = document.querySelector('input[name="__RequestVerificationToken"]');
+            return el ? el.value : null;
+        }
+
+        // Load rule active tu server
+        let activeRule = null;
+        fetch('/api/ToastScanRule/active')
+            .then(r => r.json())
+            .then(rule => { activeRule = rule; })
+            .catch(() => {});
+
+        function validateByRule(serial) {
+            if (!activeRule) return null;
+            if (!serial.toUpperCase().startsWith(activeRule.prefix))
+                return `Serial phai bat dau bang "${activeRule.prefix}".`;
+            const suffix = serial.slice(activeRule.prefix.length);
+            const seq = parseInt(suffix, 10);
+            if (isNaN(seq) || seq < activeRule.minSeq)
+                return `So cuoi phai tu ${String(activeRule.minSeq).padStart(4,'0')} tro len.`;
+            return null;
+        }
+
+        let ngMode = localStorage.getItem('fct_ng_mode') === '1';
+        @* let ngMode = true; // Mặc định NG *@
+            let flashTimer = null;
+
+        function setModeVisual() {
+            if (ngMode) {
+                badge.textContent = 'Chế độ: NG (áp dụng cho lần quét serial kế tiếp)';
+                badge.style.background = '#fee2e2';
+                badge.style.color = '#b91c1c';
+                input.style.borderColor = '#ef4444';
+            } else {
+                badge.textContent = 'Chế độ: Bình thường (OK)';
+                badge.style.background = '#dcfce7';
+                badge.style.color = '#166534';
+                input.style.borderColor = '#3b82f6';
+            }
+            circle.classList.remove('mode-ok', 'mode-ng');
+            circle.classList.add(ngMode ? 'mode-ng' : 'mode-ok');
+            indText.textContent = ngMode ? 'NG MODE' : 'OK MODE';
+        }
+
+        function showMsg(text, isError = false) {
+            msg.style.display = 'block';
+            msg.textContent = text;
+
+            msg.classList.remove('show-success', 'show-error');
+            msg.classList.add(isError ? 'show-error' : 'show-success');
+        }
+
+        function flashIndicator(type) {
+            if (flashTimer) {
+                clearTimeout(flashTimer);
+                flashTimer = null;
+            }
+            circle.classList.remove('flash-success', 'flash-error');
+            circle.classList.add(type === 'success' ? 'flash-success' : 'flash-error');
+
+            flashTimer = setTimeout(() => {
+                circle.classList.remove('flash-success', 'flash-error');
+                setModeVisual();
+            }, 2000);
+        }
+
+            async function submitSerial(serial, status) {
+                const token = getAntiXsrfToken();
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['X-CSRF-TOKEN'] = token;
+
+                try {
+                    const res = await fetch('/FctScanToast/Submit', {
+                        method: 'POST',
+                        headers,
+                        body: JSON.stringify({ serial, status })
+                    });
+
+                    // Cố gắng parse JSON (có thể lỗi nếu server không trả JSON khi lỗi nặng)
+                    let data = null;
+                    try { data = await res.json(); } catch { data = null; }
+
+                    if (!res.ok || !data?.ok) {
+                        // Nếu là trùng serial (409) -> thông báo rõ ràng
+                        const msgText = res.status === 409
+                            ? (data?.message || `Serial đã tồn tại: ${serial}`)
+                            : (data?.message || 'Gửi thất bại.');
+                        showMsg(msgText, true);
+                        flashIndicator('error');
+                        return false;
+                    }
+
+                    showMsg(`Đã ghi Serial: ${data.serial} | FCT Status: ${data.status}`, false);
+                    flashIndicator('success');
+                    return true;
+
+                } catch (e) {
+                    showMsg(e.message || 'Lỗi không xác định.', true);
+                    flashIndicator('error');
+                    return false;
+                }
+            }
+
+        async function handleScan(valueRaw) {
+            let v = (valueRaw || '').trim().replace(/[\r\n]+/g, '').toUpperCase();
+            if (!v) return;
+
+            // Toggle NG khi quét "NG"
+            if (v === 'NG') {
+                ngMode = !ngMode;
+                localStorage.setItem('fct_ng_mode', ngMode ? '1' : '0');
+                setModeVisual();
+                showMsg(ngMode ? 'Đã bật chế độ NG.' : 'Đã tắt chế độ NG, trở về OK.');
+                input.value = '';
+                input.focus();
+                return;
+            }
+
+            // Serial 13 ký tự
+            if (v.length === 13) {
+                const ruleErr = validateByRule(v);
+                if (ruleErr) {
+                    showMsg(ruleErr, true);
+                    flashIndicator('error');
+                    input.select();
+                    return;
+                }
+
+                const status = ngMode ? 'NG' : 'OK';
+                const ok = await submitSerial(v, status);
+
+                if (ok) {
+                    // thành công: nếu đang NG thì tự về OK
+                    if (ngMode) {
+                        ngMode = false;
+                        localStorage.setItem('fct_ng_mode', '0');
+                    }
+                    setModeVisual();
+                    input.value = '';
+                    input.focus();
+                } else {
+                    // thất bại: bôi đen toàn bộ để quét đè lại ngay
+                    input.focus();
+                    input.select();
+                }
+                return;
+            }
+
+            showMsg('Mã không hợp lệ. Quét "NG" hoặc serial 13 ký tự.', true);
+            flashIndicator('error');
+            input.select();
+        }
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleScan(input.value);
+            }
+        });
+
+        window.addEventListener('load', () => {
+            setModeVisual();
+            input.focus();
+            input.select();
+        });
+    })();
+</script>

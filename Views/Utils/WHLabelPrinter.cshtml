@@ -1,0 +1,260 @@
+@model SVN_Tools.Models.Utils.PrinterData;
+
+@{
+    ViewData["Title"] = ViewBag.oper;
+}
+
+<h1>@ViewBag.oper</h1>
+
+<div>
+    <h4>Printer Details</h4>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Name_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Name_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.IP_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.IP_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Port_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Port_Printer)
+                </div>
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-2" style="display: none">
+                            <label for="sizeLabel">Size:</label>
+                            <input type="text" id="sizeLabel" placeholder="Size" value="12" required />
+                        </div>
+                        <div class="col-2" style="display: none">
+                            <label for="widthLabel">Width:</label>
+                            <input type="text" id="widthLabel" placeholder="Width" value="3.15" required />
+                        </div>
+                        <div class="col-2" style="display: none">
+                            <label for="heightLabel">Height:</label>
+                            <input type="text" id="heightLabel" placeholder="Height" value="4.33" required />
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="copies">Copies:</label>
+                                <input type="number" class="form-control" id="copies" placeholder="Copies" value="1"
+                                    required />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="lotId">Lot Id:</label>
+                                <input type="text" class="form-control" id="lotId" placeholder="Lot Id" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="itemcode">Item code:</label>
+                                <input type="text" class="form-control" id="itemcode" placeholder="Item code"
+                                    required />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="datecode">Date:</label>
+                                <input type="date" class="form-control" id="datecode" placeholder="Date" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="quantity">Qty:</label>
+                                <input type="number" class="form-control" id="quantity" placeholder="Quantity"
+                                    required />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="location">Location:</label>
+                                <input type="text" class="form-control" id="location" placeholder="Location" required />
+                            </div>
+                        </div>
+                        @* <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="rackId">Số Rack:</label></br>
+                                <select id="rackId" name="rackId" style="height:42px;width:100%">
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="rowId">Số Hàng:</label></br>
+                                <select id="rowId" name="rowId" style="height:42px;width:100%">
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="rowId">Số Cột:</label></br>
+                                <select id="rowId" name="rowId" style="height:42px;width:100%">
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                </select>
+                            </div>
+                        </div> *@
+                        <div class="col-md-6 col-lg-3 mb-3" style="margin-top: 36px">
+                            <button class="btn btn-primary me-2" id="printButton" type="submit">In</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="UltimatePrint">Back to List</a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById("datecode").value = today;
+
+
+
+
+        const printLabel = async () => {
+            const itemcode = document.getElementById("itemcode").value;
+            const date = document.getElementById("datecode").value;
+            const quantity = document.getElementById("quantity").value;
+            let barcode = document.getElementById("lotId").value;
+            @* const rackId = document.getElementById("rackId").value;
+            const rowId = document.getElementById("rowId").value;
+            const columnId = document.getElementById("columnId").value;
+            const location = rackId + "." + rowId + "." + columnId; *@
+            const location = document.getElementById("location").value;
+
+
+            async function getNextLabelId() {
+                const date = document.getElementById("datecode").value;
+                const prefix = date.replace(/-/g, "");
+                const response = await fetch(`/api/WHLabelInfo/next-id?prefix=${prefix}`);
+                const data = await response.json();
+                barcode = data.nextId;   // gán giá trị vào biến barcode
+                console.log("Barcode:", barcode);
+                @* console.log(data); *@
+            }
+
+            if (barcode === "") {
+                await getNextLabelId();
+            }
+
+            @* print *@
+                const printer = @Html.Raw(Json.Serialize(Model));
+            const copies = document.getElementById('copies').value;
+            const zplTemplate = `CT~~CD,~CC^~CT~
+                ^XA
+                ~TA000
+                ~JSN
+                ^LT0
+                ^MNW
+                ^MTT
+                ^PON
+                ^PMN
+                ^LH0,0
+                ^JMA
+                ^PR4,4
+                ~SD15
+                ^JUS
+                ^LRN
+                ^CI27
+                ^PA0,1,1,0
+                ^XZ
+                ^XA
+                ^MMT
+                ^PW2008
+                ^LL2598
+                ^LS0
+                ^FT142,266^A0N,91,91^FH\^CI28^FDItem code:^FS^CI27
+                ^FT142,452^A0N,91,91^FH\^CI28^FDDate:^FS^CI27
+                ^FT142,638^A0N,91,91^FH\^CI28^FDQty:^FS^CI27
+                ^FT639,266^A0N,91,91^FH\^CI28^FD${itemcode}^FS^CI27
+                ^FT639,452^A0N,91,91^FH\^CI28^FD${date}^FS^CI27
+                ^FT639,638^A0N,91,91^FH\^CI28^FD${quantity}^FS^CI27
+                ^BY8,3,285^FT142,1071^BCN,,Y,N
+                ^FH\^FD>;${barcode}^FS
+                ^PQ1,0,1,Y
+                ^XZ
+
+                `
+
+            const payload = {
+                PrinterIpAddress: printer.iP_Printer,
+                Port: printer.port_Printer,
+                ZplCode: zplTemplate,
+                Copies: copies
+            }
+
+            @* const urlPrint = '@Url.Action("printzpl", "Print")';
+
+            const res = await fetch(urlPrint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const res_ = await res.text();
+            if (res_) { *@
+            if (true) {
+                const labelData = {
+                    label_id: barcode,
+                    item_code: itemcode,
+                    qty: quantity,
+                    date: date,
+                    location: location
+                };
+                const saveRes = await fetch("/api/WHLabelInfo/create", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(labelData)
+                });
+
+                if (saveRes.ok) {
+                    const saved = await saveRes.json();
+                    console.log("Đã lưu Label:", saved);
+                    getNextLabelId();
+                } else {
+                    console.error("Lỗi khi lưu Label:", saveRes.status);
+                }
+
+            }
+        }
+
+        const printBtn = document.getElementById("printButton");
+        printBtn.addEventListener("click", printLabel);
+    });
+
+
+
+</script>

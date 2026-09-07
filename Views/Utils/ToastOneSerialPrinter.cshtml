@@ -1,0 +1,300 @@
+﻿@model SVN_Tools.Models.Utils.PrinterData;
+
+@{
+    ViewData["Title"] = ViewBag.oper;
+}
+
+<h1>@ViewBag.oper</h1>
+
+<div>
+    <h4>Printer Details</h4>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-3">
+                    Name:
+                </div>
+                <div class="col-9">
+                    @Html.DisplayFor(model => model.Name_Printer)
+                </div>
+                <div class="col-3">
+                    IP:
+                </div>
+                <div class="col-9">
+                    @Html.DisplayFor(model => model.IP_Printer)
+                </div>
+                <div class="col-3">
+                    Port:
+                </div>
+                <div class="col-9">
+                    @Html.DisplayFor(model => model.Port_Printer)
+                </div>
+                <div class="col-3">
+                    Size:
+                </div>
+                <div class="col-9">
+                    @Html.DisplayFor(model => model.Size)
+                </div>
+                <div class="col-3">
+                    WxH (inch):
+                </div>
+                <div class="col-9">
+                    @Html.DisplayFor(model => model.width) x @Html.DisplayFor(model => model.height)
+                </div>
+                <hr />
+                <div class="col-3 mb-2">
+                    <label for="copies">Copies:</label>
+                </div>
+                <div class="col-9 mb-2">
+                    <input type="text" id="copies" placeholder="Copies" value="1" style="width: 60%;height:42px"
+                           required />
+                </div>
+                <div class="col-3 mb-2">
+                    <label for="lotId">Lot Id:</label>
+                </div>
+                <div class="col-9 mb-2">
+                    <input type="text" id="lotId" placeholder="Lot Id" style="width: 60%;height:42px" required />
+                    <button class=" btn btn-primary" id="lotIdSaveBtn" style="margin-top: -6px">Save</button>
+                </div>
+                <div class=" col-3 mb-2">
+                    <label for="serialNumber">SN:</label>
+                </div>
+                <div class="col-9 mb-2">
+                    <input type="text" id="serialNumber" placeholder="Serial Number" style="width: 60%;height:42px;"
+                           required />
+                    <button class="btn btn-primary" id="reprint" style="margin-top: -6px">In lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-warning" style="margin-top: 200px;">
+            <a asp-action="UltimatePrint">Back to List</a>
+        </button>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        console.log('script loaded v2');
+        const saveLotIdBtn = document.getElementById('lotIdSaveBtn');
+        const serialNumberInput = document.getElementById('serialNumber');
+        const reprintBtn = document.getElementById('reprint');
+        const DEBOUNCE_DELAY = 300;
+        let timerId;
+
+        // -------------------------------
+        //  NG mode lưu trên localStorage
+        // -------------------------------
+        let ngMode = localStorage.getItem('fqc_ng_mode') === '1';
+
+        const updateVisualMode = () => {
+            if (ngMode) {
+                serialNumberInput.style.borderColor = '#ef4444';
+                serialNumberInput.style.backgroundColor = '#fee2e2';
+            } else {
+                serialNumberInput.style.borderColor = '#cbd5e1';
+                serialNumberInput.style.backgroundColor = 'white';
+            }
+        };
+        updateVisualMode();
+
+        const toggleNgMode = () => {
+            ngMode = !ngMode;
+            localStorage.setItem('fqc_ng_mode', ngMode ? '1' : '0');
+            updateVisualMode();
+        };
+
+        // -------------------------------
+        //  Lưu & lấy Lot Id
+        // -------------------------------
+        const checkLotId = () => {
+            const lotIdInput = document.getElementById('lotId');
+            const lotIdValueInLS = localStorage.getItem('lotIdToastOneSerial');
+            if (lotIdValueInLS) lotIdInput.value = lotIdValueInLS;
+        };
+        checkLotId();
+
+        const saveLotId = () => {
+            const lotIdInput = document.getElementById('lotId');
+            localStorage.setItem('lotIdToastOneSerial', lotIdInput.value);
+        };
+        saveLotIdBtn.addEventListener('click', saveLotId);
+
+        // -------------------------------
+        //  Gọi API check serial (đã qua FCT)
+        // -------------------------------
+        const checkSerialNumber = async (serialNumber) => {
+            const url = '@Url.Action("CheckToastOneSerialNumber", "Utils")';
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ serialNumber })
+            });
+            return await res.json();
+        };
+
+        // -------------------------------
+        //  Gọi API update FQC_status
+        // -------------------------------
+        const updateFqcStatus = async (serialNumber, status) => {
+            const url = '@Url.Action("UpdateFqcStatus", "Utils")';
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ serialNumber, status })
+            });
+            return await res.json();
+        };
+        const encodeSerial = (serial) => {
+            const fmt = serial.match(/^([A-Z])(\d{12})$/);
+            if (!fmt) return null;
+            const [, s1, s2] = fmt;
+            return `${s1}>5${s2}`;
+        };
+
+        // -------------------------------
+        //  Xử lý in + update FQC
+        // -------------------------------
+        const printer = async () => {
+            const serialNumber = serialNumberInput.value.trim();
+            if (!serialNumber) return;
+
+            // Trường hợp quét NG để đổi mode
+            if (serialNumber.toUpperCase() === 'NG') {
+                toggleNgMode();
+                serialNumberInput.value = '';
+                return;
+            }
+
+            // Chỉ nhận serial hợp lệ 13 ký tự
+            if (serialNumber.length !== 13) {
+                alert('Serial không hợp lệ.');
+                serialNumberInput.value = '';
+                return;
+            }
+
+            const check = await checkSerialNumber(serialNumber);
+            if (!check.result) {
+                alert('Serial không hợp lệ (chưa qua FCT hoặc sai).');
+                serialNumberInput.value = '';
+                return;
+            }
+
+            // ✅ Update FQC_status theo mode hiện tại
+            const update = await updateFqcStatus(serialNumber, ngMode ? 'NG' : 'OK');
+            if (!update.ok) {
+                alert('Cập nhật FQC thất bại.');
+                serialNumberInput.value = '';
+                return;
+            }
+
+            // ✅ Tiến hành in
+            const printer = @Html.Raw(Json.Serialize(Model));
+            const lotId = document.getElementById('lotId').value;
+            const copies = document.getElementById('copies').value;
+            let zplTemplate = printer.zpL_Temp.toString();
+
+            const encodedSerial = encodeSerial(serialNumber);
+            console.log('serial:', serialNumber, 'encoded:', encodedSerial);
+            if (!encodedSerial) {
+                alert('Serial không đúng định dạng.');
+                serialNumberInput.value = '';
+                return;
+            }
+
+            const lotIds = lotId.split('-');
+            zplTemplate = zplTemplate
+                .replaceAll('{lotId}', lotId)
+                .replaceAll('{serialNumber}', serialNumber)
+                .replaceAll('{lotId1}', lotIds[0])
+                .replaceAll('{lotId2}', lotIds[1])
+                .replaceAll('{lotId3}', lotIds[2])
+                .replaceAll('{sn}', encodedSerial);
+
+            const payload = {
+                PrinterIpAddress: printer.iP_Printer,
+                Port: printer.port_Printer,
+                ZplCode: zplTemplate,
+                Copies: copies
+            };
+
+            const printUrl = '@Url.Action("printzpl", "Print")';
+            await fetch(printUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            // ✅ Nếu đang ở NG mode thì reset về OK
+            if (ngMode) toggleNgMode();
+
+            // Xóa input sau khi in
+            serialNumberInput.value = '';
+        };
+
+
+
+        // -------------------------------
+        //  Sự kiện nhập serial
+        // -------------------------------
+        serialNumberInput.addEventListener('input', () => {
+            clearTimeout(timerId);
+            timerId = setTimeout(() => {
+                if (serialNumberInput.value.trim() !== '') {
+                    localStorage.setItem('lastSerialNumber', serialNumberInput.value.trim());
+                    printer();
+                }
+            }, DEBOUNCE_DELAY);
+        });
+
+        // -------------------------------
+        //  Nút reprint
+        // -------------------------------
+        reprintBtn.addEventListener('click', async () => {
+            const serialNumber = localStorage.getItem('lastSerialNumber');
+            if (!serialNumber) {
+                alert('Không có serial để in lại.');
+                return;
+            }
+
+            const lotId = document.getElementById('lotId').value;
+            const printer = @Html.Raw(Json.Serialize(Model));
+            const copies = document.getElementById('copies').value;
+            let zplTemplate = printer.zpL_Temp.toString();
+            const encodedSerial = encodeSerial(serialNumber);
+            console.log('serial:', serialNumber, 'encoded:', encodedSerial);
+            if (!encodedSerial) {
+                alert('Serial không đúng định dạng.');
+                serialNumberInput.value = '';
+                return;
+            }
+
+            const lotIds = lotId.split('-');
+            zplTemplate = zplTemplate
+                .replaceAll('{lotId}', lotId)
+                .replaceAll('{serialNumber}', serialNumber)
+                .replaceAll('{lotId1}', lotIds[0])
+                .replaceAll('{lotId2}', lotIds[1])
+                .replaceAll('{lotId3}', lotIds[2])
+                .replaceAll('{sn}', encodedSerial);
+
+            const payload = {
+                PrinterIpAddress: printer.iP_Printer,
+                Port: printer.port_Printer,
+                ZplCode: zplTemplate,
+                Copies: copies
+            };
+
+            const url = '@Url.Action("printzpl", "Print")';
+            await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+        });
+    });
+</script>

@@ -1,0 +1,3377 @@
+{
+  "Files": [
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\obj\\Debug\\net8.0\\win-x64\\scopedcss\\projectbundle\\SVN-Tools.bundle.scp.css",
+      "PackagePath": "staticwebassets\\SVN-Tools.bundle.scp.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\css\\animate.css",
+      "PackagePath": "staticwebassets\\css\\animate.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\css\\helper.css",
+      "PackagePath": "staticwebassets\\css\\helper.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\css\\spinners.css",
+      "PackagePath": "staticwebassets\\css\\spinners.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flag-icon.min.css",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flag-icon.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ad.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ad.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ae.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ae.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\af.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\af.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ag.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ag.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ai.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ai.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\al.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\al.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\am.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\am.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ao.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ao.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\aq.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\aq.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ar.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ar.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\as.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\as.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\at.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\at.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\au.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\au.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\aw.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\aw.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ax.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ax.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\az.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\az.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ba.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ba.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bb.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bb.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bd.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bd.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\be.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\be.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bf.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bf.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bg.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bg.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bh.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bh.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bi.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bi.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bj.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bj.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bl.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bl.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bn.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bn.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bo.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bo.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bq.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bq.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\br.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\br.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bs.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bs.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bt.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bt.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bv.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bv.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bw.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bw.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\by.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\by.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\bz.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\bz.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ca.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ca.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cc.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cc.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cd.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cd.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cf.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cf.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cg.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cg.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ch.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ch.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ci.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ci.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ck.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ck.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cl.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cl.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cn.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cn.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\co.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\co.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cr.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cr.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cu.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cu.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cv.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cv.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cw.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cw.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cx.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cx.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cy.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cy.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\cz.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\cz.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\de.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\de.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\dj.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\dj.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\dk.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\dk.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\dm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\dm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\do.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\do.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\dz.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\dz.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ec.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ec.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ee.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ee.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\eg.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\eg.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\eh.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\eh.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\er.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\er.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\es.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\es.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\et.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\et.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\fi.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\fi.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\fj.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\fj.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\fk.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\fk.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\fm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\fm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\fo.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\fo.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\fr.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\fr.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ga.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ga.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gb.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gb.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gd.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gd.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ge.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ge.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gf.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gf.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gg.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gg.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gh.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gh.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gi.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gi.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gl.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gl.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gn.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gn.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gp.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gp.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gq.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gq.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gr.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gr.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gs.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gs.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gt.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gt.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gu.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gu.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gw.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gw.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\gy.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\gy.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\hk.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\hk.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\hm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\hm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\hn.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\hn.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\hr.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\hr.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ht.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ht.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\hu.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\hu.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\id.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\id.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ie.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ie.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\il.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\il.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\im.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\im.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\in.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\in.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\io.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\io.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\iq.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\iq.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ir.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ir.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\is.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\is.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\it.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\it.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\je.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\je.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\jm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\jm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\jo.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\jo.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\jp.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\jp.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ke.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ke.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\kg.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\kg.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\kh.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\kh.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ki.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ki.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\km.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\km.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\kn.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\kn.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\kp.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\kp.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\kr.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\kr.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\kw.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\kw.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ky.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ky.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\kz.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\kz.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\la.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\la.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\lb.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\lb.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\lc.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\lc.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\li.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\li.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\lk.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\lk.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\lr.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\lr.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ls.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ls.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\lt.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\lt.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\lu.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\lu.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\lv.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\lv.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ly.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ly.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ma.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ma.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mc.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mc.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\md.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\md.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\me.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\me.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mf.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mf.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mg.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mg.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mh.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mh.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mk.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mk.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ml.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ml.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mn.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mn.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mo.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mo.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mp.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mp.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mq.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mq.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mr.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mr.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ms.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ms.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mt.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mt.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mu.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mu.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mv.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mv.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mw.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mw.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mx.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mx.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\my.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\my.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\mz.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\mz.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\na.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\na.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\nc.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\nc.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ne.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ne.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\nf.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\nf.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ng.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ng.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ni.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ni.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\nl.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\nl.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\no.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\no.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\np.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\np.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\nr.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\nr.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\nu.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\nu.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\nz.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\nz.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\om.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\om.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\pa.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\pa.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\pe.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\pe.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\pf.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\pf.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\pg.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\pg.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ph.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ph.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\pk.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\pk.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\pl.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\pl.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\pm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\pm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\pn.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\pn.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\pr.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\pr.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ps.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ps.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\pt.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\pt.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\pw.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\pw.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\py.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\py.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\qa.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\qa.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\re.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\re.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ro.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ro.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\rs.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\rs.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ru.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ru.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\rw.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\rw.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sa.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sa.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sb.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sb.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sc.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sc.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sd.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sd.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\se.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\se.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sg.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sg.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sh.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sh.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\si.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\si.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sj.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sj.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sk.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sk.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sl.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sl.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sn.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sn.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\so.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\so.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sr.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sr.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ss.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ss.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\st.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\st.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sv.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sv.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sx.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sx.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sy.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sy.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\sz.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\sz.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tc.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tc.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\td.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\td.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tf.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tf.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tg.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tg.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\th.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\th.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tj.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tj.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tk.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tk.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tl.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tl.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tn.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tn.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\to.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\to.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tr.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tr.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tt.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tt.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tv.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tv.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tw.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tw.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\tz.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\tz.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ua.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ua.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ug.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ug.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\um.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\um.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\us.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\us.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\uy.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\uy.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\uz.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\uz.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\va.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\va.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\vc.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\vc.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ve.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ve.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\vg.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\vg.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\vi.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\vi.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\vn.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\vn.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\vu.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\vu.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\wf.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\wf.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ws.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ws.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\ye.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\ye.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\yt.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\yt.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\za.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\za.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\zm.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\zm.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\flag-icon-css\\flags\\zw.svg",
+      "PackagePath": "staticwebassets\\icons\\flag-icon-css\\flags\\zw.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\font-awesome\\css\\font-awesome.min.css",
+      "PackagePath": "staticwebassets\\icons\\font-awesome\\css\\font-awesome.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\font-awesome\\fonts\\fontawesome-webfont3e6e.eot",
+      "PackagePath": "staticwebassets\\icons\\font-awesome\\fonts\\fontawesome-webfont3e6e.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\font-awesome\\fonts\\fontawesome-webfont3e6e.svg",
+      "PackagePath": "staticwebassets\\icons\\font-awesome\\fonts\\fontawesome-webfont3e6e.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\font-awesome\\fonts\\fontawesome-webfont3e6e.ttf",
+      "PackagePath": "staticwebassets\\icons\\font-awesome\\fonts\\fontawesome-webfont3e6e.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\font-awesome\\fonts\\fontawesome-webfont3e6e.woff",
+      "PackagePath": "staticwebassets\\icons\\font-awesome\\fonts\\fontawesome-webfont3e6e.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\font-awesome\\fonts\\fontawesome-webfont3e6e.woff2",
+      "PackagePath": "staticwebassets\\icons\\font-awesome\\fonts\\fontawesome-webfont3e6e.woff2"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\font-awesome\\fonts\\fontawesome-webfontd41d.eot",
+      "PackagePath": "staticwebassets\\icons\\font-awesome\\fonts\\fontawesome-webfontd41d.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-arrows-10.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-arrows-10.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-arrows-10.svg",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-arrows-10.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-arrows-10.ttf",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-arrows-10.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-arrows-10.woff",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-arrows-10.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-arrows-10d41d.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-arrows-10d41d.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-basic-10.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-basic-10.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-basic-10.svg",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-basic-10.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-basic-10.ttf",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-basic-10.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-basic-10.woff",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-basic-10.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-basic-10d41d.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-basic-10d41d.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-basic-elaboration-10.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-basic-elaboration-10.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-basic-elaboration-10.svg",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-basic-elaboration-10.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-basic-elaboration-10.ttf",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-basic-elaboration-10.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-basic-elaboration-10.woff",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-basic-elaboration-10.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-basic-elaboration-10d41d.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-basic-elaboration-10d41d.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-ecommerce-10.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-ecommerce-10.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-ecommerce-10.svg",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-ecommerce-10.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-ecommerce-10.ttf",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-ecommerce-10.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-ecommerce-10.woff",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-ecommerce-10.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-ecommerce-10d41d.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-ecommerce-10d41d.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-music-10.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-music-10.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-music-10.svg",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-music-10.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-music-10.ttf",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-music-10.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-music-10.woff",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-music-10.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-music-10d41d.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-music-10d41d.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-software-10.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-software-10.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-software-10.svg",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-software-10.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-software-10.ttf",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-software-10.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-software-10.woff",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-software-10.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-software-10d41d.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-software-10d41d.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-weather-10.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-weather-10.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-weather-10.svg",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-weather-10.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-weather-10.ttf",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-weather-10.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-weather-10.woff",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-weather-10.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\fonts\\linea-weather-10d41d.eot",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\fonts\\linea-weather-10d41d.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\linea-icons\\linea.css",
+      "PackagePath": "staticwebassets\\icons\\linea-icons\\linea.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\material-design-iconic-font\\css\\materialdesignicons.min.css",
+      "PackagePath": "staticwebassets\\icons\\material-design-iconic-font\\css\\materialdesignicons.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontd41d.eot",
+      "PackagePath": "staticwebassets\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontd41d.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontdc99.eot",
+      "PackagePath": "staticwebassets\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontdc99.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontdc99.svg",
+      "PackagePath": "staticwebassets\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontdc99.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontdc99.ttf",
+      "PackagePath": "staticwebassets\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontdc99.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontdc99.woff",
+      "PackagePath": "staticwebassets\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontdc99.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontdc99.woff2",
+      "PackagePath": "staticwebassets\\icons\\material-design-iconic-font\\fonts\\materialdesignicons-webfontdc99.woff2"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\simple-line-icons\\css\\simple-line-icons.css",
+      "PackagePath": "staticwebassets\\icons\\simple-line-icons\\css\\simple-line-icons.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\simple-line-icons\\fonts\\Simple-Line-Icons4c82.eot",
+      "PackagePath": "staticwebassets\\icons\\simple-line-icons\\fonts\\Simple-Line-Icons4c82.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\simple-line-icons\\fonts\\Simple-Line-Icons4c82.svg",
+      "PackagePath": "staticwebassets\\icons\\simple-line-icons\\fonts\\Simple-Line-Icons4c82.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\simple-line-icons\\fonts\\Simple-Line-Icons4c82.ttf",
+      "PackagePath": "staticwebassets\\icons\\simple-line-icons\\fonts\\Simple-Line-Icons4c82.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\simple-line-icons\\fonts\\Simple-Line-Icons4c82.woff",
+      "PackagePath": "staticwebassets\\icons\\simple-line-icons\\fonts\\Simple-Line-Icons4c82.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\simple-line-icons\\fonts\\Simple-Line-Icons4c82.woff2",
+      "PackagePath": "staticwebassets\\icons\\simple-line-icons\\fonts\\Simple-Line-Icons4c82.woff2"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\simple-line-icons\\fonts\\Simple-Line-Iconsd41d.eot",
+      "PackagePath": "staticwebassets\\icons\\simple-line-icons\\fonts\\Simple-Line-Iconsd41d.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\themify-icons\\fonts\\themify.ttf",
+      "PackagePath": "staticwebassets\\icons\\themify-icons\\fonts\\themify.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\themify-icons\\fonts\\themify.woff",
+      "PackagePath": "staticwebassets\\icons\\themify-icons\\fonts\\themify.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\themify-icons\\fonts\\themify9f24.eot",
+      "PackagePath": "staticwebassets\\icons\\themify-icons\\fonts\\themify9f24.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\themify-icons\\fonts\\themify9f24.svg",
+      "PackagePath": "staticwebassets\\icons\\themify-icons\\fonts\\themify9f24.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\themify-icons\\fonts\\themifyd41d.eot",
+      "PackagePath": "staticwebassets\\icons\\themify-icons\\fonts\\themifyd41d.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\themify-icons\\themify-icons.css",
+      "PackagePath": "staticwebassets\\icons\\themify-icons\\themify-icons.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\weather-icons\\css\\weather-icons.min.css",
+      "PackagePath": "staticwebassets\\icons\\weather-icons\\css\\weather-icons.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\weather-icons\\fonts\\weathericons-regular-webfont.eot",
+      "PackagePath": "staticwebassets\\icons\\weather-icons\\fonts\\weathericons-regular-webfont.eot"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\weather-icons\\fonts\\weathericons-regular-webfont.svg",
+      "PackagePath": "staticwebassets\\icons\\weather-icons\\fonts\\weathericons-regular-webfont.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\weather-icons\\fonts\\weathericons-regular-webfont.ttf",
+      "PackagePath": "staticwebassets\\icons\\weather-icons\\fonts\\weathericons-regular-webfont.ttf"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\weather-icons\\fonts\\weathericons-regular-webfont.woff",
+      "PackagePath": "staticwebassets\\icons\\weather-icons\\fonts\\weathericons-regular-webfont.woff"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\icons\\weather-icons\\fonts\\weathericons-regular-webfont.woff2",
+      "PackagePath": "staticwebassets\\icons\\weather-icons\\fonts\\weathericons-regular-webfont.woff2"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\1.png",
+      "PackagePath": "staticwebassets\\images\\1.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\2.png",
+      "PackagePath": "staticwebassets\\images\\2.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\3.jpg",
+      "PackagePath": "staticwebassets\\images\\3.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\3.png",
+      "PackagePath": "staticwebassets\\images\\3.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\4.jpg",
+      "PackagePath": "staticwebassets\\images\\4.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\8.png",
+      "PackagePath": "staticwebassets\\images\\8.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\alert\\alert.png",
+      "PackagePath": "staticwebassets\\images\\alert\\alert.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\alert\\alert2.png",
+      "PackagePath": "staticwebassets\\images\\alert\\alert2.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\alert\\alert3.png",
+      "PackagePath": "staticwebassets\\images\\alert\\alert3.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\alert\\alert4.png",
+      "PackagePath": "staticwebassets\\images\\alert\\alert4.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\alert\\alert5.png",
+      "PackagePath": "staticwebassets\\images\\alert\\alert5.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\alert\\alert6.png",
+      "PackagePath": "staticwebassets\\images\\alert\\alert6.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\alert\\alert7.png",
+      "PackagePath": "staticwebassets\\images\\alert\\alert7.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\alert\\model.png",
+      "PackagePath": "staticwebassets\\images\\alert\\model.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\alert\\model2.png",
+      "PackagePath": "staticwebassets\\images\\alert\\model2.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\alert\\model3.png",
+      "PackagePath": "staticwebassets\\images\\alert\\model3.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\attached-files\\img-1.jpg",
+      "PackagePath": "staticwebassets\\images\\attached-files\\img-1.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\attached-files\\img-2.jpg",
+      "PackagePath": "staticwebassets\\images\\attached-files\\img-2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\attached-files\\img-3.jpg",
+      "PackagePath": "staticwebassets\\images\\attached-files\\img-3.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\avatar.png",
+      "PackagePath": "staticwebassets\\images\\avatar.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\avatar\\1.jpg",
+      "PackagePath": "staticwebassets\\images\\avatar\\1.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\avatar\\2.jpg",
+      "PackagePath": "staticwebassets\\images\\avatar\\2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\avatar\\3.jpg",
+      "PackagePath": "staticwebassets\\images\\avatar\\3.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\avatar\\4.jpg",
+      "PackagePath": "staticwebassets\\images\\avatar\\4.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\avatar\\5.jpg",
+      "PackagePath": "staticwebassets\\images\\avatar\\5.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\avatar\\6.jpg",
+      "PackagePath": "staticwebassets\\images\\avatar\\6.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\avatar\\7.jpg",
+      "PackagePath": "staticwebassets\\images\\avatar\\7.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\avatar\\8.jpg",
+      "PackagePath": "staticwebassets\\images\\avatar\\8.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\avatar\\usa-flag.png",
+      "PackagePath": "staticwebassets\\images\\avatar\\usa-flag.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\background\\error-bg.jpg",
+      "PackagePath": "staticwebassets\\images\\background\\error-bg.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\background\\login-register.jpg",
+      "PackagePath": "staticwebassets\\images\\background\\login-register.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\background\\profile-bg.jpg",
+      "PackagePath": "staticwebassets\\images\\background\\profile-bg.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\background\\socialbg.jpg",
+      "PackagePath": "staticwebassets\\images\\background\\socialbg.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\background\\user-bg.jpg",
+      "PackagePath": "staticwebassets\\images\\background\\user-bg.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\background\\user-info.jpg",
+      "PackagePath": "staticwebassets\\images\\background\\user-info.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\bg.jpg",
+      "PackagePath": "staticwebassets\\images\\bg.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\big\\img1.jpg",
+      "PackagePath": "staticwebassets\\images\\big\\img1.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\big\\img2.jpg",
+      "PackagePath": "staticwebassets\\images\\big\\img2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\big\\img3.jpg",
+      "PackagePath": "staticwebassets\\images\\big\\img3.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\big\\img4.jpg",
+      "PackagePath": "staticwebassets\\images\\big\\img4.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\big\\img5.jpg",
+      "PackagePath": "staticwebassets\\images\\big\\img5.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\big\\img6.jpg",
+      "PackagePath": "staticwebassets\\images\\big\\img6.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\bookingSystem\\1.png",
+      "PackagePath": "staticwebassets\\images\\bookingSystem\\1.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\bookingSystem\\2.png",
+      "PackagePath": "staticwebassets\\images\\bookingSystem\\2.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\bookingSystem\\3.png",
+      "PackagePath": "staticwebassets\\images\\bookingSystem\\3.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\bookingSystem\\4.png",
+      "PackagePath": "staticwebassets\\images\\bookingSystem\\4.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\bookingSystem\\5.png",
+      "PackagePath": "staticwebassets\\images\\bookingSystem\\5.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\bookingSystem\\6.png",
+      "PackagePath": "staticwebassets\\images\\bookingSystem\\6.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\bookingSystem\\7.png",
+      "PackagePath": "staticwebassets\\images\\bookingSystem\\7.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\bookingSystem\\8.png",
+      "PackagePath": "staticwebassets\\images\\bookingSystem\\8.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\browser\\chrome-logo.png",
+      "PackagePath": "staticwebassets\\images\\browser\\chrome-logo.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\browser\\firefox-logo.png",
+      "PackagePath": "staticwebassets\\images\\browser\\firefox-logo.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\browser\\internet-logo.png",
+      "PackagePath": "staticwebassets\\images\\browser\\internet-logo.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\browser\\opera-logo.png",
+      "PackagePath": "staticwebassets\\images\\browser\\opera-logo.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\browser\\safari-logo.png",
+      "PackagePath": "staticwebassets\\images\\browser\\safari-logo.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\c1.jpg",
+      "PackagePath": "staticwebassets\\images\\c1.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\c2.jpg",
+      "PackagePath": "staticwebassets\\images\\c2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\c3.jpg",
+      "PackagePath": "staticwebassets\\images\\c3.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\card\\c1.jpg",
+      "PackagePath": "staticwebassets\\images\\card\\c1.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\card\\c2.jpg",
+      "PackagePath": "staticwebassets\\images\\card\\c2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\card\\c3.jpg",
+      "PackagePath": "staticwebassets\\images\\card\\c3.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\card\\c4.jpg",
+      "PackagePath": "staticwebassets\\images\\card\\c4.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\chat-person-add.png",
+      "PackagePath": "staticwebassets\\images\\chat-person-add.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\close.png",
+      "PackagePath": "staticwebassets\\images\\close.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\custom-select.png",
+      "PackagePath": "staticwebassets\\images\\custom-select.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\favicon.png",
+      "PackagePath": "staticwebassets\\images\\favicon.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\fjords.jpg",
+      "PackagePath": "staticwebassets\\images\\fjords.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\gallery\\chair.jpg",
+      "PackagePath": "staticwebassets\\images\\gallery\\chair.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\gallery\\chair2.jpg",
+      "PackagePath": "staticwebassets\\images\\gallery\\chair2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\gallery\\chair3.jpg",
+      "PackagePath": "staticwebassets\\images\\gallery\\chair3.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\gallery\\chair4.jpg",
+      "PackagePath": "staticwebassets\\images\\gallery\\chair4.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\hand.jpg",
+      "PackagePath": "staticwebassets\\images\\hand.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\lights.jpg",
+      "PackagePath": "staticwebassets\\images\\lights.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\logo-text.png",
+      "PackagePath": "staticwebassets\\images\\logo-text.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\logo.png",
+      "PackagePath": "staticwebassets\\images\\logo.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\maximize.png",
+      "PackagePath": "staticwebassets\\images\\maximize.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\minimize.png",
+      "PackagePath": "staticwebassets\\images\\minimize.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\nature.jpg",
+      "PackagePath": "staticwebassets\\images\\nature.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\newyork.jpg",
+      "PackagePath": "staticwebassets\\images\\newyork.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\paris.jpg",
+      "PackagePath": "staticwebassets\\images\\paris.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\paypal.png",
+      "PackagePath": "staticwebassets\\images\\paypal.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\picture.png",
+      "PackagePath": "staticwebassets\\images\\picture.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\preview1.png",
+      "PackagePath": "staticwebassets\\images\\preview1.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product-2.jpg",
+      "PackagePath": "staticwebassets\\images\\product-2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product.jpg",
+      "PackagePath": "staticwebassets\\images\\product.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product_1\\1.jpg",
+      "PackagePath": "staticwebassets\\images\\product_1\\1.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product_1\\2.jpg",
+      "PackagePath": "staticwebassets\\images\\product_1\\2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product_1\\3.jpg",
+      "PackagePath": "staticwebassets\\images\\product_1\\3.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product_1\\burger.jpg",
+      "PackagePath": "staticwebassets\\images\\product_1\\burger.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product_1\\download.jpg",
+      "PackagePath": "staticwebassets\\images\\product_1\\download.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product_1\\image-10.jpg",
+      "PackagePath": "staticwebassets\\images\\product_1\\image-10.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product_1\\image-8-226x223.jpg",
+      "PackagePath": "staticwebassets\\images\\product_1\\image-8-226x223.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product_1\\image-9.jpg",
+      "PackagePath": "staticwebassets\\images\\product_1\\image-9.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product_1\\images.jpg",
+      "PackagePath": "staticwebassets\\images\\product_1\\images.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\product_1\\pizza2.jpg",
+      "PackagePath": "staticwebassets\\images\\product_1\\pizza2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\profile-bg.jpg",
+      "PackagePath": "staticwebassets\\images\\profile-bg.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\rangeSliderimg\\sprite-skin-flat.png",
+      "PackagePath": "staticwebassets\\images\\rangeSliderimg\\sprite-skin-flat.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\rangeSliderimg\\sprite-skin-modern.png",
+      "PackagePath": "staticwebassets\\images\\rangeSliderimg\\sprite-skin-modern.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\rangeSliderimg\\sprite-skin-nice.png",
+      "PackagePath": "staticwebassets\\images\\rangeSliderimg\\sprite-skin-nice.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\rangeSliderimg\\sprite-skin-simple.png",
+      "PackagePath": "staticwebassets\\images\\rangeSliderimg\\sprite-skin-simple.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\sanfran.jpg",
+      "PackagePath": "staticwebassets\\images\\sanfran.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\scrollable\\view-1-1200x800.jpg",
+      "PackagePath": "staticwebassets\\images\\scrollable\\view-1-1200x800.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\smile.png",
+      "PackagePath": "staticwebassets\\images\\smile.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\tooltip\\Euclid.png",
+      "PackagePath": "staticwebassets\\images\\tooltip\\Euclid.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\user-1.png",
+      "PackagePath": "staticwebassets\\images\\user-1.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\user-bg.jpg",
+      "PackagePath": "staticwebassets\\images\\user-bg.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\user-female.png",
+      "PackagePath": "staticwebassets\\images\\user-female.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\user-profile.jpg",
+      "PackagePath": "staticwebassets\\images\\user-profile.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\user.jpg",
+      "PackagePath": "staticwebassets\\images\\user.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\1.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\1.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\2.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\3.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\3.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\4.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\4.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\5.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\5.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\6.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\6.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\7.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\7.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\8.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\8.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\avatar-1.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\avatar-1.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\avatar-2.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\avatar-2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\avatar-3.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\avatar-3.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\avatar-4.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\avatar-4.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\avatar-5.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\avatar-5.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\avatar-6.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\avatar-6.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\avatar-7.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\avatar-7.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\avatar-8.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\avatar-8.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\avatar-9.jpg",
+      "PackagePath": "staticwebassets\\images\\users\\avatar-9.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\users\\profile.png",
+      "PackagePath": "staticwebassets\\images\\users\\profile.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\video-cam.png",
+      "PackagePath": "staticwebassets\\images\\video-cam.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\images\\watch.jpg",
+      "PackagePath": "staticwebassets\\images\\watch.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\js\\jquery.slimscroll.js",
+      "PackagePath": "staticwebassets\\js\\jquery.slimscroll.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\js\\popper.min.js",
+      "PackagePath": "staticwebassets\\js\\popper.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\js\\scripts.js",
+      "PackagePath": "staticwebassets\\js\\scripts.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\js\\sidebarmenu.js",
+      "PackagePath": "staticwebassets\\js\\sidebarmenu.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\json\\whoop.json",
+      "PackagePath": "staticwebassets\\json\\whoop.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\amchart\\export.css",
+      "PackagePath": "staticwebassets\\lib\\amchart\\export.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrap"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\amchart-init.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\amchart-init.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\amcharts.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\amcharts.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\ammap.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\ammap.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\amstock.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\amstock.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\export.min.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\export.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\funnel.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\funnel.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\gantt.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\gantt.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\gauge.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\gauge.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIcon.gif",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIcon.gif"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconBlack.gif",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconBlack.gif"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconH.gif",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconH.gif"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconHBlack.gif",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconHBlack.gif"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectBig.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectBig.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectBig.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectBig.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectBigBlack.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectBigBlack.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectBigBlack.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectBigBlack.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectBigBlackH.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectBigBlackH.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectBigBlackH.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectBigBlackH.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectBigH.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectBigH.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectBigH.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectBigH.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectSmall.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectSmall.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectSmall.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectSmall.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectSmallBlack.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectSmallBlack.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectSmallBlack.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectSmallBlack.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectSmallBlackH.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectSmallBlackH.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectSmallBlackH.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectSmallBlackH.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectSmallH.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectSmallH.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRectSmallH.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRectSmallH.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundBig.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundBig.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundBig.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundBig.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundBigBlack.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundBigBlack.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundBigBlack.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundBigBlack.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundBigBlackH.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundBigBlackH.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundBigBlackH.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundBigBlackH.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundBigH.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundBigH.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundBigH.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundBigH.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundSmall.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundSmall.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundSmall.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundSmall.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundSmallBlack.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundSmallBlack.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundSmallBlack.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundSmallBlack.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundSmallBlackH.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundSmallBlackH.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundSmallBlackH.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundSmallBlackH.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundSmallH.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundSmallH.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\dragIconRoundSmallH.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\dragIconRoundSmallH.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\eraserIcon.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\eraserIcon.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\eraserIconH.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\eraserIconH.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\export.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\export.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\exportWhite.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\exportWhite.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\lens.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\lens.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\lens.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\lens.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\lensWhite.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\lensWhite.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\lensWhite.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\lensWhite.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\lensWhite_old.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\lensWhite_old.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\lens_old.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\lens_old.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\pencilIcon.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\pencilIcon.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\pencilIconH.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\pencilIconH.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\xIcon.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\xIcon.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\images\\xIconH.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\images\\xIconH.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\az.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\az.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\bg.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\bg.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\cs.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\cs.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\de.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\de.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\es.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\es.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\fi.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\fi.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\fo.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\fo.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\fr.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\fr.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\hr.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\hr.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\hu.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\hu.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\id.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\id.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\is.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\is.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\it.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\it.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\ja.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\ja.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\ko.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\ko.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\lt.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\lt.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\lv.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\lv.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\mk.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\mk.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\mn.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\mn.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\mt.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\mt.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\nl.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\nl.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\no.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\no.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\pl.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\pl.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\pt.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\pt.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\ro.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\ro.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\ru.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\ru.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\rw.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\rw.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\sk.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\sk.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\sl.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\sl.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\so.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\so.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\th.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\th.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\tr.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\tr.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\uk.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\uk.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\lang\\zh.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\lang\\zh.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\light.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\light.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern1.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern1.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern10.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern10.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern11.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern11.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern12.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern12.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern13.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern13.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern14.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern14.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern15.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern15.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern16.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern16.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern17.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern17.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern18.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern18.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern19.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern19.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern2.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern2.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern20.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern20.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern21.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern21.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern3.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern3.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern4.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern4.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern5.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern5.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern6.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern6.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern7.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern7.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern8.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern8.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\black\\pattern9.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\black\\pattern9.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\chalk\\pattern1.jpg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\chalk\\pattern1.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\chalk\\pattern1r.jpg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\chalk\\pattern1r.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\chalk\\pattern2.jpg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\chalk\\pattern2.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\chalk\\pattern3.jpg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\chalk\\pattern3.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\chalk\\pattern4.jpg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\chalk\\pattern4.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\chalk\\pattern5.jpg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\chalk\\pattern5.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\chalk\\pattern6.jpg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\chalk\\pattern6.jpg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern1.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern1.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern10.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern10.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern11.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern11.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern12.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern12.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern13.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern13.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern14.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern14.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern15.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern15.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern16.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern16.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern17.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern17.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern18.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern18.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern19.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern19.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern2.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern2.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern20.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern20.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern21.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern21.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern3.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern3.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern4.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern4.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern5.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern5.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern6.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern6.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern7.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern7.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern8.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern8.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\patterns\\white\\pattern9.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\patterns\\white\\pattern9.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\pie.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\pie.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\README.md",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\README.md"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\animate.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\animate.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\animate.min.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\animate.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\bower.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\bower.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\examples\\funnel.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\examples\\funnel.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\examples\\pie.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\examples\\pie.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\examples\\radar.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\examples\\radar.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\examples\\serial_column.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\examples\\serial_column.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\examples\\serial_line.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\examples\\serial_line.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\examples\\xy.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\examples\\xy.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\index.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\index.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\animate\\package.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\animate\\package.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\bower.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\bower.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\dataloader.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\dataloader.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\dataloader.min.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\dataloader.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\MSFT.csv",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\MSFT.csv"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\MSFT_events.csv",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\MSFT_events.csv"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\TXN.csv",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\TXN.csv"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\gantt.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\gantt.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\gauge.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\gauge.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\map.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\map.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\map_areas.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\map_areas.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\pie.csv",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\pie.csv"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\pie.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\pie.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\serial.csv",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\serial.csv"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\serial.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\serial.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\serial2.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\data\\serial2.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\gantt_json.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\gantt_json.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\gauge_json.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\gauge_json.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\map_json.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\map_json.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\map_json_external_function.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\map_json_external_function.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\pie_csv.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\pie_csv.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\pie_json.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\pie_json.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\serial2_json.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\serial2_json.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\serial_csv.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\serial_csv.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\serial_json.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\serial_json.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\serial_with_dynamic_graphs.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\serial_with_dynamic_graphs.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\stock_csv_data_and_events.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\stock_csv_data_and_events.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\examples\\stock_csv_progressbar.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\examples\\stock_csv_progressbar.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\index.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\index.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\lang\\cs.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\lang\\cs.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\lang\\en.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\lang\\en.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\lang\\fr.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\lang\\fr.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\lang\\lt.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\lang\\lt.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\license.txt",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\license.txt"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\package.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\package.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\dataloader\\readme.md",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\dataloader\\readme.md"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\.gitignore",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\.gitignore"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\README.md",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\README.md"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\bower.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\bower.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\advanced.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\advanced.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\export.config.advanced.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\export.config.advanced.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\export.config.default.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\export.config.default.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\funnel.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\funnel.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\gantt.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\gantt.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\gauge.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\gauge.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\images\\bicycle.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\images\\bicycle.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\images\\car.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\images\\car.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\images\\motorcycle.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\images\\motorcycle.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\index.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\index.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\map.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\map.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\pie1.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\pie1.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\pie2.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\pie2.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\pie3.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\pie3.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\pie4.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\pie4.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\radar.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\radar.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\serial1.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\serial1.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\serial2.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\serial2.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\serial3.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\serial3.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\stock.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\stock.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\examples\\xy.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\examples\\xy.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\export.css",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\export.css"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\export.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\export.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\export.min.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\export.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\index.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\index.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\cs.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\cs.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\de.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\de.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\en.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\en.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\es.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\es.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\fr.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\fr.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\hu.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\hu.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\it.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\it.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\ko.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\ko.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\lt.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\lt.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\nl.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\nl.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\pl.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\pl.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\pt.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\pt.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\tr.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\tr.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\lang\\zh.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\lang\\zh.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\FileSaver.js\\FileSaver.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\FileSaver.js\\FileSaver.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\FileSaver.js\\FileSaver.min.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\FileSaver.js\\FileSaver.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\blob.js\\blob.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\blob.js\\blob.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\classList.js\\classList.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\classList.js\\classList.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\classList.js\\classList.min.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\classList.js\\classList.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\fabric.js\\fabric.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\fabric.js\\fabric.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\fabric.js\\fabric.min.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\fabric.js\\fabric.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\jszip\\jszip.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\jszip\\jszip.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\jszip\\jszip.min.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\jszip\\jszip.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\pdfmake\\pdfmake.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\pdfmake\\pdfmake.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\pdfmake\\pdfmake.min.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\pdfmake\\pdfmake.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\pdfmake\\pdfmake.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\pdfmake\\pdfmake.min.js.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\pdfmake\\vfs_fonts.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\pdfmake\\vfs_fonts.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\xlsx\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\xlsx"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\xlsx\\xlsx.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\xlsx\\xlsx.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\xlsx\\xlsx.min.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\xlsx\\xlsx.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\libs\\xlsx\\xlsx.min.map",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\libs\\xlsx\\xlsx.min.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\package.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\package.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\1.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\1.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\10.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\10.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\11.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\11.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\12.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\12.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\13.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\13.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\14.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\14.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\15.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\15.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\16.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\16.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\17.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\17.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\18.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\18.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\19.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\19.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\2.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\2.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\20.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\20.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\21.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\21.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\22.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\22.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\23.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\23.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\24.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\24.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\25.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\25.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\26.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\26.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\27.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\27.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\28.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\28.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\29.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\29.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\3.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\3.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\30.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\30.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\31.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\31.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\4.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\4.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\5.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\5.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\6.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\6.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\7.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\7.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\8.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\8.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\export\\shapes\\9.svg",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\export\\shapes\\9.svg"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\bower.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\bower.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\funnel.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\funnel.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\gantt.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\gantt.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\gauge.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\gauge.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\images\\bicycle.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\images\\bicycle.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\images\\car.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\images\\car.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\images\\motorcycle.png",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\images\\motorcycle.png"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\index.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\index.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\map.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\map.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\pie1.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\pie1.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\pie2.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\pie2.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\pie3.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\pie3.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\radar.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\radar.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\serial1.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\serial1.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\serial2.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\serial2.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\serial3.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\serial3.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\stock.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\stock.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\examples\\xy.html",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\examples\\xy.html"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\index.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\index.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\license.txt",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\license.txt"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\package.json",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\package.json"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\readme.md",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\readme.md"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\responsive.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\responsive.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\responsive.min.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\responsive.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\plugins\\responsive\\responsive.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\plugins\\responsive\\responsive.min.js.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\radar.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\radar.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\serial.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\serial.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\themes\\black.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\themes\\black.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\themes\\chalk.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\themes\\chalk.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\themes\\dark.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\themes\\dark.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\themes\\light.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\themes\\light.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\themes\\patterns.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\themes\\patterns.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\worldLow.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\worldLow.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\chart-amchart\\xy.js",
+      "PackagePath": "staticwebassets\\lib\\chart-amchart\\xy.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "E:\\Sigma\\Code\\SVN-Tool\\wwwroot\\lib\\sticky-kit-master\\dist\\sticky-kit.min.js",
+      "PackagePath": "staticwebassets\\lib\\sticky-kit-master\\dist\\sticky-kit.min.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\win-x64\\staticwebassets\\msbuild.SVN-Tools.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\win-x64\\staticwebassets\\msbuild.build.SVN-Tools.props",
+      "PackagePath": "build\\SVN-Tools.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\win-x64\\staticwebassets\\msbuild.buildMultiTargeting.SVN-Tools.props",
+      "PackagePath": "buildMultiTargeting\\SVN-Tools.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\win-x64\\staticwebassets\\msbuild.buildTransitive.SVN-Tools.props",
+      "PackagePath": "buildTransitive\\SVN-Tools.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

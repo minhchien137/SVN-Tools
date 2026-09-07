@@ -1,0 +1,1 @@
+GET http://localhost:5072/api/FqcReport/send?date=2026-05-22

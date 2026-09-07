@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>SVN_Tools</RootNamespace>
+    <!--<RuntimeIdentifier>win-x64</RuntimeIdentifier>-->
+    <DotNetWatchItems>
+        <Content Include="**\*" Exclude="wwwroot\**\*" />
+    </DotNetWatchItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.7.0" />
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="Dapper" Version="2.1.79" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="QRCoder" Version="1.4.1" />
+    <PackageReference Include="Quartz.AspNetCore" Version="3.18.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PrinterServices">
+      <HintPath>bin\Release\net8.0\win-x64\PrinterServices.dll</HintPath>
+    </Reference>
+    <Reference Include="SVNShareLib">
+      <HintPath>bin\Release\net8.0\win-x64\SVNShareLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,223 @@
+@{
+    ViewData["Title"] = "Quan ly Rule Scan Toast";
+}
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #0f1115;
+        color: #f9fafb;
+        margin: 0;
+        padding: 40px 24px;
+    }
+
+    h2 { margin: 0 0 24px; font-size: 26px; }
+
+    .card {
+        background: #1f2937;
+        border: 1px solid #374151;
+        border-radius: 14px;
+        padding: 24px;
+        max-width: 900px;
+        margin: 0 auto 32px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: flex-end;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 13px; color: #9ca3af; }
+
+    input[type=text], input[type=number] {
+        background: #111827;
+        border: 1px solid #4b5563;
+        border-radius: 8px;
+        color: #f9fafb;
+        padding: 10px 14px;
+        font-size: 15px;
+        outline: none;
+    }
+
+    input[type=text]:focus, input[type=number]:focus {
+        border-color: #3b82f6;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity .15s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn-blue  { background: #2563eb; color: #fff; }
+    .btn-green { background: #16a34a; color: #fff; }
+    .btn-red   { background: #dc2626; color: #fff; }
+    .btn-gray  { background: #374151; color: #d1d5db; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #374151; }
+    th { color: #9ca3af; font-size: 13px; font-weight: 600; }
+    td { font-size: 14px; }
+
+    .badge-active   { background: #14532d; color: #86efac; padding: 3px 10px; border-radius: 999px; font-size: 12px; }
+    .badge-inactive { background: #1f2937; color: #6b7280; padding: 3px 10px; border-radius: 999px; font-size: 12px; border: 1px solid #374151; }
+
+    #toast-msg {
+        max-width: 900px;
+        margin: 0 auto 16px;
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        display: none;
+    }
+    #toast-msg.ok  { background: #14532d; color: #86efac; border: 1px solid #16a34a; }
+    #toast-msg.err { background: #7f1d1d; color: #fca5a5; border: 1px solid #dc2626; }
+</style>
+
+<div style="max-width:900px;margin:0 auto;">
+    <h2>Quan ly Rule Scan Serial Toast</h2>
+
+    <div id="toast-msg"></div>
+
+    <div class="card">
+        <h3 style="margin:0 0 16px;font-size:17px;">Them Rule Moi</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Prefix (ky tu dau co dinh)</label>
+                <input type="text" id="inp-prefix" placeholder="VD: A10126918" maxlength="12" style="width:180px;" />
+            </div>
+            <div class="form-group">
+                <label>Tu so (MinSeq)</label>
+                <input type="number" id="inp-min" placeholder="1" min="1" style="width:110px;" />
+            </div>
+            <div class="form-group">
+                <label>Ghi chu</label>
+                <input type="text" id="inp-note" placeholder="Dot thang 9..." style="width:200px;" />
+            </div>
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="btn btn-blue" onclick="createRule()">Them Rule</button>
+            </div>
+        </div>
+        <p style="margin:12px 0 0;color:#6b7280;font-size:13px;">
+            Serial hop le = Prefix + so thu tu >= MinSeq, tong 13 ky tu.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3 style="margin:0 0 16px;font-size:17px;">Danh Sach Rule</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Prefix</th>
+                    <th>Tu so</th>
+                    <th>Ghi chu</th>
+                    <th>Ngay tao</th>
+                    <th>Trang thai</th>
+                    <th>Hanh dong</th>
+                </tr>
+            </thead>
+            <tbody id="rule-tbody">
+                <tr><td colspan="7" style="color:#6b7280;text-align:center;">Dang tai...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function showMsg(text, isOk) {
+        const el = document.getElementById('toast-msg');
+        el.textContent = text;
+        el.className = isOk ? 'ok' : 'err';
+        el.style.display = 'block';
+        setTimeout(() => el.style.display = 'none', 3500);
+    }
+
+    async function loadRules() {
+        const res = await fetch('/api/ToastScanRule');
+        const rules = await res.json();
+        const tbody = document.getElementById('rule-tbody');
+        if (!rules.length) {
+            tbody.innerHTML = '<tr><td colspan="7" style="color:#6b7280;text-align:center;">Chua co rule nao.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = rules.map(r => {
+            const date = new Date(r.createdAt).toLocaleString('vi-VN');
+            const badge = r.isActive
+                ? `<span class="badge-active">ACTIVE</span>`
+                : `<span class="badge-inactive">Tat</span>`;
+            const actions = r.isActive
+                ? `<button class="btn btn-gray" onclick="deactivate(${r.id})" style="font-size:12px;padding:6px 12px;">Tat</button>`
+                : `<button class="btn btn-green" onclick="activate(${r.id})" style="font-size:12px;padding:6px 12px;">Bat</button>`;
+            const del = `<button class="btn btn-red" onclick="deleteRule(${r.id})" style="font-size:12px;padding:6px 12px;margin-left:6px;">Xoa</button>`;
+            return `<tr>
+                <td>${r.id}</td>
+                <td><strong>${r.prefix}</strong></td>
+                <td>${String(r.minSeq).padStart(4,'0')}</td>
+                <td>${r.note || '-'}</td>
+                <td style="color:#6b7280;font-size:12px;">${date}</td>
+                <td>${badge}</td>
+                <td>${actions}${del}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    async function createRule() {
+        const prefix = document.getElementById('inp-prefix').value.trim().toUpperCase();
+        const min = parseInt(document.getElementById('inp-min').value);
+        const note = document.getElementById('inp-note').value.trim();
+
+        if (!prefix) return showMsg('Nhap prefix.', false);
+        if (!min || min <= 0) return showMsg('MinSeq phai lon hon 0.', false);
+
+        const res = await fetch('/api/ToastScanRule', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prefix, minSeq: min, note })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.ok) return showMsg(data.message || 'Loi.', false);
+
+        showMsg('Them rule thanh cong!', true);
+        document.getElementById('inp-prefix').value = '';
+        document.getElementById('inp-min').value = '';
+        document.getElementById('inp-note').value = '';
+        loadRules();
+    }
+
+    async function activate(id) {
+        const res = await fetch(`/api/ToastScanRule/${id}/activate`, { method: 'PUT' });
+        const data = await res.json();
+        if (!res.ok) return showMsg(data.message || 'Loi.', false);
+        showMsg('Da bat rule.', true);
+        loadRules();
+    }
+
+    async function deactivate(id) {
+        const res = await fetch(`/api/ToastScanRule/${id}/deactivate`, { method: 'PUT' });
+        const data = await res.json();
+        if (!res.ok) return showMsg(data.message || 'Loi.', false);
+        showMsg('Da tat rule.', true);
+        loadRules();
+    }
+
+    async function deleteRule(id) {
+        if (!confirm('Xoa rule nay?')) return;
+        const res = await fetch(`/api/ToastScanRule/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (!res.ok) return showMsg(data.message || 'Loi.', false);
+        showMsg('Da xoa.', true);
+        loadRules();
+    }
+
+    loadRules();
+</script>

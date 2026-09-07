@@ -1,0 +1,256 @@
+import tkinter as tk
+from tkinter import messagebox
+import subprocess
+import threading
+import time
+import pyautogui
+import requests
+import json
+from datetime import datetime
+
+# --- Cấu hình ---
+CORRECT_PASSWORD = "123456"
+KIOSK_URL = "http://10.10.99.10:8102/utils/astro/test_astro"
+AREA_NAME = "may in Astro"
+CREATE_LOG_URL = "http://10.10.99.10:8102/api/verifyEmployeeData"
+VERIFY_URL = "http://10.10.99.10:8102/api/verifyemployeedata/verify/"
+
+# --- Mở Chromium ---
+def open_chromium():
+    subprocess.Popen([
+        "chromium-browser",
+        "--kiosk",
+        "--noerrdialogs",
+        "--disable-infobars",
+        "--disable-session-crashed-bubble",
+        "--disable-features=TranslateUI",
+        KIOSK_URL
+    ])
+
+# --- Xử lý sau khi nhập đúng mật khẩu ---
+def start_browser_and_show_black_screen():
+    root.withdraw()  # Ẩn login GUI
+
+    # Tạo cửa sổ đen che desktop
+    black_screen = tk.Toplevel()
+    black_screen.overrideredirect(True)
+
+    screen_width = black_screen.winfo_screenwidth()
+    screen_height = black_screen.winfo_screenheight()
+    black_screen.geometry(f"{screen_width}x{screen_height}+0+0")
+
+    black_screen.configure(bg='black')
+    black_screen.lift()
+    black_screen.attributes('-topmost', True)
+
+    # Dòng chữ Loading ở giữa
+    loading_label = tk.Label(black_screen, text="Loading...", font=("Arial", 36), fg="white", bg="black")
+    loading_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+    black_screen.update_idletasks()
+
+    # Mở Chromium trong luồng riêng
+    def launch():
+        open_chromium()
+        time.sleep(5)  # Đợi một chút cho Chromium hiển thị
+        black_screen.destroy()
+
+    threading.Thread(target=launch, daemon=True).start()
+
+# --- Khôi phục giao diện login ---
+def restore_login_interface():
+    for widget in root.winfo_children():
+        widget.destroy()
+    
+    label = tk.Label(root, text="Nhập mã nhân viên:", font=("Arial", 32), fg="white", bg="black")
+    label.pack(pady=50)
+
+    global entry
+    entry = tk.Entry(root, show="", font=("Arial", 32), width=20, justify="center")
+    entry.pack(pady=20)
+    
+    button = tk.Button(root, text="Đăng nhập", command=check_password, font=("Arial", 24))
+    button.pack(pady=30)
+    
+    # Focus vào entry sau một delay nhỏ
+    root.after(100, lambda: entry.focus_force())
+    root.after(200, lambda: entry.focus_set())
+
+# --- Kiểm tra mật khẩu ---
+def check_password():
+    SVNCODE = entry.get().strip()
+    
+    if not SVNCODE:
+        show_error_message("Vui lòng nhập mã nhân viên!")
+        return
+    
+    try:
+        # Hiển thị loading tạm thời
+        show_loading_screen()
+        root.update()
+        
+        # Gọi API kiểm tra
+        res = requests.get(VERIFY_URL + SVNCODE, timeout=10)
+        
+        if res.status_code != 200:
+            restore_login_interface()
+            show_error_message(f"Lỗi kết nối server! Status: {res.status_code}")
+            return
+            
+        check = res.json()
+        
+        if not check:
+            restore_login_interface()
+            show_error_message("SVNCODE không đúng!")
+            return
+        
+        # Nếu đúng, tạo log và mở browser
+        now = datetime.now()
+        date = now.strftime("%Y-%m-%d %H:%M:%S")
+        payload = {
+            "SVNCODE": SVNCODE,
+            "Date": date, 
+            "Area": AREA_NAME
+        }
+        
+        try:
+            resp = requests.post(CREATE_LOG_URL, json=payload, timeout=10)
+            print("HTTP status:", resp.status_code)
+        except Exception as log_error:
+            print(f"Warning: Failed to create log: {log_error}")
+            # Vẫn tiếp tục mở browser dù log fail
+        
+        start_browser_and_show_black_screen()
+        
+    except requests.exceptions.Timeout:
+        restore_login_interface()
+        show_error_message("Timeout kết nối server!")
+    except requests.exceptions.ConnectionError:
+        restore_login_interface()
+        show_error_message("Không thể kết nối đến server!")
+    except requests.exceptions.RequestException as e:
+        restore_login_interface()
+        show_error_message(f"Lỗi kết nối: {str(e)}")
+    except json.JSONDecodeError:
+        restore_login_interface()
+        show_error_message("Server trả về dữ liệu không hợp lệ!")
+    except Exception as e:
+        restore_login_interface()
+        show_error_message(f"Lỗi không xác định: {str(e)}")
+
+# --- Hiển thị thông báo lỗi custom ---
+def show_error_message(message):
+    # Tạo cửa sổ thông báo lỗi custom
+    error_window = tk.Toplevel(root)
+    error_window.overrideredirect(True)
+    error_window.configure(bg='red')
+    
+    # Đặt kích thước và vị trí giữa màn hình
+    window_width = 500
+    window_height = 200
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+    
+    error_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+    error_window.lift()
+    error_window.attributes('-topmost', True)
+    
+    # Nội dung thông báo
+    error_label = tk.Label(error_window, text="LỖI", font=("Arial", 20, "bold"), fg="white", bg="red")
+    error_label.pack(pady=20)
+    
+    message_label = tk.Label(error_window, text=message, font=("Arial", 16), fg="white", bg="red", wraplength=450)
+    message_label.pack(pady=10)
+    
+    ok_button = tk.Button(error_window, text="OK", font=("Arial", 14), command=error_window.destroy, 
+                         bg="white", fg="red", width=10)
+    ok_button.pack(pady=20)
+    
+    # Tự động đóng sau 5 giây
+    error_window.after(5000, error_window.destroy)
+    
+    # Focus vào button OK
+    ok_button.focus_set()
+
+# --- Giao diện Loading tạm ---
+def show_loading_screen():
+    for widget in root.winfo_children():
+        widget.destroy()
+    loading_label = tk.Label(root, text="Đang kiểm tra...", font=("Arial", 36), fg="white", bg="black")
+    loading_label.pack(expand=True)
+
+# --- Giao diện chính ---
+root = tk.Tk()
+root.overrideredirect(True)
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+root.geometry(f"{screen_width}x{screen_height}+0+0")
+root.attributes('-topmost', True)
+root.configure(bg="black")
+
+# Khởi tạo giao diện login
+restore_login_interface()
+
+root.bind("<Return>", lambda event: check_password())
+
+# --- Ép focus khi restart qua systemd ---
+def auto_click_for_focus():
+    try:
+        # Click vào giữa màn hình bằng xdotool
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        subprocess.run([
+            "xdotool", "mousemove", 
+            str(screen_width // 2), str(screen_height // 2)
+        ], check=False)
+        subprocess.run(["xdotool", "click", "1"], check=False)
+        
+        # Focus vào entry với delay
+        root.after(200, lambda: entry.focus_force() if 'entry' in globals() else None)
+    except:
+        pass  # Bỏ qua lỗi nếu xdotool không có
+
+root.after(1000, auto_click_for_focus)
+
+def auto_click_to_focus():
+    # Click nhẹ vào giữa màn hình để focus cửa sổ
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x = screen_width // 2
+    y = screen_height // 2
+
+    # Delay nhỏ để chắc chắn cửa sổ GUI hiển thị
+    time.sleep(2)
+
+    try:
+        pyautogui.click(x, y)
+        # Focus vào entry sau khi click
+        if 'entry' in globals():
+            root.after(300, lambda: entry.focus_force())
+    except:
+        pass
+
+# Chỉ chạy auto click 1 lần khi khởi động
+threading.Thread(target=auto_click_to_focus, daemon=True).start()
+
+root.mainloop()
+
+# [Unit]
+# Description=Kiosk Login Interface
+# After=graphical.target
+# Requires=graphical.target
+
+# [Service]
+# User=pi-it
+# Environment=DISPLAY=:0
+# Environment=XAUTHORITY=/home/pi-it/.Xauthority
+# ExecStartPre=/bin/sleep 5
+# ExecStart=/usr/bin/python3 /home/pi-it/kiosk_login.py
+# Restart=on-failure
+# StandardOutput=journal
+# StandardError=journal
+
+# [Install]
+# WantedBy=graphical.target

@@ -1,0 +1,348 @@
+﻿@using PrinterServices.Objects
+@model List<PrinterConfigData>
+@{
+    Layout = "~/Views/Shared/_ToolsLayout.cshtml";
+    ViewData["Title"] = "Quản lý máy in";
+}
+<form method="post">
+    <div class="row">
+        <div class="col-12">
+            <button type="button" data-toggle="modal" data-target="#modalInsert" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i></button>
+        </div>
+        <div class="col-12">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">ID máy in</th>
+                        <th scope="col">Tên máy in</th>
+                        <th scope="col">Tùy chọn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        for (int i = 0; i < Model.Count(); i++)
+                        {
+                            <tr>
+                                @{
+                                    int no = i + 1;
+                                }
+                                <th scope="row">@no</th>
+                                <td>
+                                    <span id="spanPrinterID">@Model[i].ID_Printer</span>
+                                </td>
+                                <td>
+                                    @Model[i].Name_Printer
+                                </td>
+                                <td>
+                                    <button type="button" data-toggle="modal" data-target="#modalEdit" class="btn btn-success" onclick="GetPrinterInfoByPrinterID('@Model[i].ID_Printer')"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                    <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">Không có dữ liệu</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="exampleModalLabel">Thông tin máy in</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">ID máy in</label>
+                                        <input type="text" id="printerID" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Tên máy in</label>
+                                        <input type="text" id="printerName" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Địa chỉ MAC</label>
+                                        <input type="text" id="printerMAC" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Địa chỉ IP</label>
+                                        <input type="text" id="printerIP" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Port</label>
+                                        <input type="text" id="printerPort" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Size</label>
+                                        <input type="text" id="printerSize" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Loại</label>
+                                        <input type="text" id="printerType" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Mẫu ZPL</label>
+                                        <textarea rows="5" id="printerZPLTemp" class="form-control" style="height:200px"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Mẫu DPL</label>
+                                        <textarea rows="5" id="printerDPLTemp" class="form-control" style="height:200px"></textarea>
+                                    </div>
+                                    <button type="button" class="btn btn-primary" onclick="sendZPLtoLabelaryFetch()">Load Image</button>
+                                </div>
+                                <div class="col-6"">
+                                    <div id="imagebox" style="width:100%">
+                                        <img id="labelImage" style="object-fit:contain;width:100%;border: 1px solid black" src="/images/label/test.png" alt="Label" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="UpdatePrinterInfo()">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalInsert" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="insertModalLabel">Thêm máy in</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">ID máy in</label>
+                                        <input type="text" id="insert_printerID" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Tên máy in</label>
+                                        <input type="text" id="insert_printerName" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Địa chỉ MAC</label>
+                                        <input type="text" id="insert_printerMAC" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Địa chỉ IP</label>
+                                        <input type="text" id="insert_printerIP" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Port</label>
+                                        <input type="text" id="insert_printerPort" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Size</label>
+                                        <input type="text" id="insert_printerSize" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Loại</label>
+                                        <input type="text" id="insert_printerType" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Mẫu ZPL</label>
+                                        <textarea rows="10" id="insert_printerZPLTemp" class="form-control" style="height:200px"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="control-label text-dark">Mẫu DPL</label>
+                                        <textarea rows="10" id="insert_printerDPLTemp" class="form-control" style="height:200px"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="InsertPrinterInfo()">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    function InsertPrinterInfo(){
+        var printerID = $('#insert_printerID').val();
+        var printerName = $('#insert_printerName').val();
+        var printerMAC = $('#insert_printerMAC').val();
+        var printerIP = $('#insert_printerIP').val();
+        var printerPort = $('#insert_printerPort').val();
+        var printerSize = $('#insert_printerSize').val();
+        var printerType = $('#insert_printerType').val();
+        var printerZPLTemp = $('#insert_printerZPLTemp').val();
+        var printerDPLTemp = $('#insert_printerDPLTemp').val();
+
+        var insertData = {
+                ID_Printer: printerID,
+                Name_Printer: printerName,
+                MAC_Printer: printerMAC,
+                IP_Printer: printerIP,
+                Port_Printer: printerPort,
+                Size: printerSize,
+                Type: printerType,
+                ZPL_Temp: printerZPLTemp,
+                DPL_Temp: printerDPLTemp
+        };
+        $.ajax({
+                url: '@Url.Action("InsertPrinterInfo", "Home")',  // Adjust the controller name if needed
+                type: 'POST',
+                data: JSON.stringify(insertData),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX error:", error);
+                    alert("An error occurred while printing.");
+                }
+            });
+    }
+
+    function UpdatePrinterInfo(){
+        var printerID = $('#printerID').val();
+        var printerName = $('#printerName').val();
+        var printerMAC = $('#printerMAC').val();
+        var printerIP = $('#printerIP').val();
+        var printerPort = $('#printerPort').val();
+        var printerSize = $('#printerSize').val();
+        var printerType = $('#printerType').val();
+        var printerZPLTemp = $('#printerZPLTemp').val();
+        var printerDPLTemp = $('#printerDPLTemp').val();
+
+        var updateData = {
+                ID_Printer: printerID,
+                Name_Printer: printerName,
+                MAC_Printer: printerMAC,
+                IP_Printer: printerIP,
+                Port_Printer: printerPort,
+                Size: printerSize,
+                Type: printerType,
+                ZPL_Temp: printerZPLTemp,
+                DPL_Temp: printerDPLTemp
+        };
+        $.ajax({
+                url: '@Url.Action("UpdatePrinterInfo", "Home")',  // Adjust the controller name if needed
+                type: 'POST',
+                data: JSON.stringify(updateData),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX error:", error);
+                    alert("An error occurred while printing.");
+                }
+            });
+    }
+
+    function GetPrinterInfoByPrinterID(printerID){
+        $.ajax({
+                url: '@Url.Action("GetPrinterInfoByID", "Home")',  // Adjust the controller name if needed
+                type: 'POST',
+                data: {printerID: printerID},
+                dataType: 'json',
+                success: function (response) {
+                    
+                    if(response.ok == true){
+                        var printerName = response.name_Printer;
+                        var printerMAC = response.mac_Address;
+                        var printerIP = response.ip_Address;
+                        var printerPort = response.port;
+                        var printerSize = response.size;
+                        var printerType = response.type;
+                        var printerZPLTemp = response.zpl_Template;
+                        var printerDPLTemp = response.dpl_Template;
+                        $('#printerID').val(printerID);
+                        $('#printerName').val(printerName);
+                        $('#printerMAC').val(printerMAC);
+                        $('#printerIP').val(printerIP);
+                        $('#printerPort').val(printerPort);
+                        $('#printerSize').val(printerSize);
+                        $('#printerType').val(printerType);
+                        $('#printerZPLTemp').val(printerZPLTemp);
+                        $('#printerDPLTemp').val(printerDPLTemp);
+                    }
+                    else{
+                        alert(response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX error:", error);
+                    alert("An error occurred while printing.");
+                }
+            });
+    }
+        async function sendZPLtoLabelaryFetch() {
+            const url = '@Url.Action("GetImageFromLabelary", "Utils")'; // Ví dụ: 8dpmm, nhãn 4x6 inch, không offset
+
+            const image = $("#labelImage")[0];
+
+            const _zplString = $('#printerZPLTemp').val(); // Lấy chuỗi ZPL từ textarea
+            const zplString = encodeURIComponent(_zplString);
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                     'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ZplString: zplString })
+            });
+
+            if (res.ok){
+                const result = await res.json();
+                image.setAttribute("src",result.imagePath);
+            }
+
+        }
+    
+</script>

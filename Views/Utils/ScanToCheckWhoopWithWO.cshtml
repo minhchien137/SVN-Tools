@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quét serial thùng & hộp</title>
+    <style>
+        :root {
+            --ok: #16a34a;
+            /* xanh */
+            --bad: #dc2626;
+            /* đỏ */
+            --bg: #0b1020;
+            --panel: #121a33;
+            --text: #e6e8ef;
+            --muted: #9aa4b2;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            background: var(--bg);
+            color: var(--text);
+            display: grid;
+            place-items: center;
+        }
+
+        .wrap {
+            width: min(1200px, 96vw);
+        }
+
+        h1 {
+            font-weight: 700;
+            letter-spacing: .3px;
+            font-size: clamp(18px, 2.2vw, 22px);
+            margin: 8px 0 14px;
+            color: var(--muted);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .25);
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 90%;
+            font-size: clamp(22px, 4vw, 42px);
+            padding: 16px 18px;
+            border-radius: 14px;
+            border: 2px solid transparent;
+            outline: none;
+            background: #0c1430;
+            color: var(--text);
+            letter-spacing: .5px;
+        }
+
+        input[type="text"]:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, .25);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .row+.row {
+            margin-top: 16px;
+        }
+
+        /* Chỉ báo lớn chiếm ~1/2 màn hình */
+        .indicator {
+            width: min(50vw, 50vh);
+            height: min(50vw, 50vh);
+            border-radius: 24px;
+            background: #0c1430;
+            border: 4px dashed #22305d;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: clamp(22px, 3.2vw, 40px);
+            user-select: none;
+            transition: background .12s ease, box-shadow .12s ease, border-color .12s ease;
+        }
+
+        .indicator.flash-ok {
+            background: var(--ok);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 0 0 8px rgba(22, 163, 74, .35);
+        }
+
+        .indicator.flash-bad {
+            background: var(--bad);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 0 0 8px rgba(220, 38, 38, .35);
+        }
+
+        /* Ô đếm nhỏ */
+        .counter-panel {
+            display: grid;
+            gap: 10px;
+            align-content: start;
+        }
+
+        .counter-title {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .counter-value {
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            font-size: clamp(40px, 8vw, 120px);
+            letter-spacing: 1px;
+        }
+
+        .help {
+            margin-top: 14px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        kbd {
+            background: #0c1430;
+            border: 1px solid #22305d;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .status {
+            margin-top: 10px;
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        .status strong {
+            color: var(--text);
+        }
+
+        .foot {
+            margin-top: 18px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        /* cảnh báo đủ số lượng */
+        .flash-warn {
+            animation: warnFlash .5s ease-in-out;
+        }
+
+        @@keyframes warnFlash {
+            0% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, .0);
+                background: rgba(245, 158, 11, .08);
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(245, 158, 11, .35);
+                background: rgba(245, 158, 11, .15);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, .0);
+                background: rgba(245, 158, 11, .08);
+            }
+        }
+
+        .target-chip {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 14px;
+            background: #1f2937;
+            border: 1px dashed #f59e0b;
+            color: #f59e0b;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        /* === Overlay khoá UI + modal cảnh báo === */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--panel);
+            border: 2px solid #f59e0b;
+            padding: 24px;
+            border-radius: 16px;
+            max-width: 560px;
+            width: min(560px, 92vw);
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, .45);
+        }
+
+        .modal h2 {
+            margin: 0 0 8px;
+            font-size: clamp(18px, 3.2vw, 24px);
+        }
+
+        .modal p {
+            margin: 0;
+            color: var(--muted);
+            font-size: clamp(16px, 3vw, 20px);
+        }
+
+        .modal .countdown {
+            font-weight: 800;
+            font-size: clamp(26px, 4vw, 32px);
+            margin-top: 12px;
+        }
+
+        /* Nền đỏ + nhấp nháy */
+        #redOverlay {
+            background: #ff0000;
+            /* nhấp nháy giữa đỏ rực và đỏ đậm */
+            animation: redFlash 1s infinite;
+        }
+
+        /* .cshtml cần @@keyframes, khi render ra client sẽ là */
+
+        @@keyframes redFlash {
+
+            0%,
+            100% {
+                background: #ff0000;
+            }
+
+            /* đỏ rực */
+            50% {
+                background: #8b0000;
+            }
+
+            /* đỏ sẫm */
+        }
+
+        /* (tuỳ chọn) thêm viền viền-pulse để dữ dội hơn */
+        #redOverlay.danger-ring {
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.0) inset, 0 0 40px 10px rgba(255, 255, 255, 0.25);
+            animation:
+                redFlash 1s infinite,
+                ringPulse 1.2s infinite ease-in-out;
+        }
+
+        @@keyframes ringPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.00) inset, 0 0 40px 10px rgba(255, 255, 255, 0.25);
+            }
+
+            50% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.12) inset, 0 0 70px 18px rgba(255, 255, 255, 0.40);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.00) inset, 0 0 40px 10px rgba(255, 255, 255, 0.25);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="grid">
+            <div class="panel">
+                <div class="row">
+                    <label for="bin">Nhập Work Order</label>
+                    <input id="bin" type="text" inputmode="none" autocomplete="off" autocapitalize="off"
+                        spellcheck="false" placeholder="Quét/nhập serial thùng..." />
+                </div>
+                <div class="row">
+                    <label for="box">Serial HỘP</label>
+                    <input id="box" type="text" inputmode="none" autocomplete="off" autocapitalize="off"
+                        spellcheck="false" placeholder="Quét/nhập serial hộp..." />
+                    <div class="status" id="status">Sẵn sàng. Quét serial thùng trước, sau đó quét nhiều hộp liên tục.
+                    </div>
+                </div>
+                <div class="panel" style="margin-top:18px; border:2px solid #3b82f6;">
+                    <div style="font-size:clamp(18px,3.4vw,28px); font-weight:800; margin-bottom:8px;">HƯỚNG DẪN PHÍM
+                        TẮT</div>
+                    <ul style="margin:0; padding-left:18px; font-size:clamp(16px,3vw,24px); line-height:1.5">
+                        <li><strong>Numpad 1</strong>: Reset tất cả.</li>
+                        <li><strong>Numpad 2</strong>: Xóa số đếm hộp.</li>
+                        @* <li><strong>Numpad 3</strong>: Mở trang nhập KQSX</li> *@
+                        <li><strong>Numpad 4</strong>: Mở trang In Lại Walter (chỉ in được trang đã từng in)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="panel" style="display:grid;place-items:center;gap:16px;">
+                <div class="indicator" id="indicator">●</div>
+                <div class="counter-panel">
+                    <div class="counter-title">Số hộp đã scan</div>
+                    <div class="counter-value" id="counter">0</div>
+                    <div id="targetDisplay" class="target-chip">Mốc: <strong>80</strong> chiếc (nhấn <kbd>Numpad 5</kbd>
+                        để đổi 36/80)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ov-title">
+            <h2 id="ov-title">Đã đủ số lượng</h2>
+            <p id="overlayMsg">
+                Đã đủ số lượng của thùng này, sẽ chuyển sang trang nhập kết quả sản xuất trong
+                <span id="cd" class="countdown">3</span> giây.
+            </p>
+        </div>
+    </div>
+
+    <div id="redOverlay" aria-hidden="true" style="position:fixed;inset:0;display:none;z-index:99999;">
+    </div>
+
+    <script>
+        (function () {
+            const bin = document.getElementById('bin');
+            const box = document.getElementById('box');
+            const indicator = document.getElementById('indicator');
+            const status = document.getElementById('status');
+            const counterEl = document.getElementById('counter');
+            const targetDisplay = document.getElementById('targetDisplay');
+
+            let currentWorkorder = "";
+            let currentUpcNumber = "";
+            let uiLocked = false;
+            let isLightWork = false;
+
+            // ===== LocalStorage keys =====
+            const LS_WO_KEY = 'wo_last';       // lưu Work Order lần cuối
+            const LS_COUNT_PREFIX = 'wo_count_';
+            const LS_TARGET_PREFIX = 'wo_target_';
+
+            function countKey(wo) { return `${LS_COUNT_PREFIX}${wo}`; }
+            function targetKey(wo) { return `${LS_TARGET_PREFIX}${wo}`; }
+
+            function loadCount(wo) {
+                const s = localStorage.getItem(countKey(wo));
+                const n = parseInt(s, 10);
+                return Number.isFinite(n) && n >= 0 ? n : 0;
+            }
+            function saveCount() {
+                if (currentWorkorder) localStorage.setItem(countKey(currentWorkorder), String(count));
+            }
+            function clearCount(wo) {
+                localStorage.removeItem(countKey(wo));
+            }
+
+            function loadTarget(wo) {
+                const s = localStorage.getItem(targetKey(wo));
+                const n = parseInt(s, 10);
+                return Number.isFinite(n) && n > 0 ? n : null;
+            }
+            function saveTarget() {
+                if (currentWorkorder) localStorage.setItem(targetKey(currentWorkorder), String(targetCount));
+            }
+            function clearTarget(wo) {
+                localStorage.removeItem(targetKey(wo));
+            }
+            function clearProgress(wo) {
+                clearCount(wo);
+                clearTarget(wo);
+            }
+
+            // ===== Overlay khoá UI + modal cảnh báo =====
+            const overlay = document.getElementById('overlay');
+            const cd = document.getElementById('cd');
+            const overlayMsg = document.getElementById('overlayMsg');
+
+            function lockUIAndRedirect(seconds, redirectUrl) {
+                uiLocked = true;
+                bin.disabled = true;
+                box.disabled = true;
+
+                overlay.classList.add('show');
+                let remaining = seconds;
+                cd.textContent = String(remaining);
+
+                const iv = setInterval(() => {
+                    remaining -= 1;
+                    cd.textContent = String(remaining);
+                    if (remaining <= 0) {
+                        clearInterval(iv);
+                        window.location.href = redirectUrl;
+                    }
+                }, 1000);
+            }
+
+            // ===== Mốc mặc định + hiển thị =====
+            let targetCount = 80;
+            function updateTargetChip() {
+                targetDisplay.innerHTML = `Mốc: <strong>${targetCount}</strong> chiếc`;
+            }
+            updateTargetChip();
+
+            // ===== Counter =====
+            let count = 0;
+
+            // ===== UX nhỏ =====
+            [bin, box].forEach(el => el.addEventListener('focus', () => el.select()));
+
+            window.addEventListener('load', async () => {
+                const lastWO = localStorage.getItem(LS_WO_KEY);
+
+                if (lastWO) {
+                    // Tự fill, tự gọi API, sau đó phục hồi tiến độ
+                    bin.value = lastWO;
+                    await applyWorkorder(lastWO); // sẽ set currentWorkorder + targetCount
+                    const saved = loadCount(lastWO);
+                    count = Math.max(0, Math.min(saved, targetCount));
+                    counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+                } else {
+                    bin.focus();
+                }
+            });
+
+            // ====== API & xử lý Work Order ======
+            const processWorkorder = async (workorder) => {
+                const response = await fetch(`/api/odoo/search2?productionCode=${encodeURIComponent(workorder)}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! Status: ${response.status}, Details: ${errorText}`);
+                }
+
+                const data = await response.json();
+
+                if (!data || !data.result || !data.result.records || data.result.records.length === 0) {
+                    throw new Error("Dữ liệu search2 không hợp lệ.");
+                }
+
+                const rec = data.result.records[0];
+                const UPC = rec.product_id?.[1]; // ví dụ "[810114362556] 955-... SuperKnit ..."
+                if (!UPC) throw new Error("Không tìm thấy UPC trong search2.");
+
+                const regex = /^\[(\d+)\]\s+([\d-]+)\s+(.*)$/;
+                const match = String(UPC).match(regex);
+                if (!match) throw new Error("Định dạng UPC không hợp lệ.");
+                const upcNumber_ = match[1];
+
+                const product_qty = Number(rec.product_qty);
+                const qty_produced = Number(rec.qty_produced);
+                window.lastProductQty = product_qty;
+                window.lastQtyProduced = qty_produced;
+                let remainingQty_ = null;
+                if (Number.isFinite(product_qty) && Number.isFinite(qty_produced)) {
+                    remainingQty_ = Math.max(0, Math.round(product_qty - qty_produced));
+                }
+
+                return { upcNumber: upcNumber_, remainingQty: remainingQty_ };
+            };
+
+            async function applyWorkorder(serial) {
+                const workorder = normalize(serial);
+                if (!workorder) return;
+
+                bin.disabled = true;
+                status.textContent = 'Đang lấy thông tin thùng: ' + workorder + ' ...';
+
+                try {
+                    const { upcNumber, remainingQty } = await processWorkorder(workorder);
+                    currentWorkorder = workorder;
+                    currentUpcNumber = normalize(upcNumber);
+
+                    await fetchAndSetTargetMin(upcNumber, remainingQty); // sẽ quyết định targetCount (min)
+
+                    // Lưu target cho WO hiện tại
+                    saveTarget();
+
+                    // Phục hồi số đếm đang dở (clamp theo target mới)
+                    const saved = loadCount(workorder);
+                    count = Math.max(0, Math.min(saved, targetCount));
+                    counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+
+                    status.innerHTML = `Đang quét hộp cho Work Order: <strong>${workorder}</strong><br>
+          Mã sản phẩm (UPC): <strong>${currentUpcNumber}</strong>`;
+
+                    // Lưu WO hợp lệ
+                    localStorage.setItem(LS_WO_KEY, workorder);
+
+                    box.value = '';
+                    box.focus();
+                } catch (err) {
+                    console.error('Lỗi lấy thông tin thùng:', err);
+                    flash('bad');
+                    status.textContent = 'Không lấy được thông tin thùng. Vui lòng kiểm tra Work Order.';
+
+                    // WO lỗi → không lưu
+                    localStorage.removeItem(LS_WO_KEY);
+
+                    bin.focus();
+                } finally {
+                    bin.disabled = false;
+                }
+            }
+
+            bin.addEventListener('keydown', async (e) => {
+                if (e.key !== 'Enter' || e.repeat) return;
+                e.preventDefault();
+
+                const raw = bin.value;
+                const serial = normalize(raw);
+                if (!serial) return;
+
+                await applyWorkorder(serial);
+            });
+
+            // Lấy quantity server & chọn MIN với remainingQty
+            async function fetchAndSetTargetMin(upcCode, remainingQty) {
+                if (!upcCode) return;
+
+                const verifyUrl = '/api/verifyemployeedata/GetProductItemByCode?code=' + encodeURIComponent(upcCode);
+                status.textContent = 'Đang lấy mốc server & so sánh với số còn lại...';
+
+                try {
+                    const resp = await fetch(verifyUrl, { method: 'GET' });
+
+                    let data = null;
+                    const text = await resp.text();
+                    try { data = text ? JSON.parse(text) : null; } catch { /* ignore parse error */ }
+
+                    let serverQty = targetCount;
+                    if (resp.ok && data && data.content != null) {
+                        const parsed = parseInt(String(data.content).trim(), 10);
+                        if (!Number.isNaN(parsed) && parsed > 0) serverQty = parsed;
+                    }
+
+                    targetCount = (remainingQty != null && Number.isFinite(remainingQty))
+                        ? Math.min(serverQty, remainingQty)
+                        : serverQty;
+
+                    updateTargetChip();
+                    saveTarget();
+
+                    status.textContent = `Mốc chọn: ${targetCount}` + (remainingQty != null
+                        ? ` (min giữa còn lại=${remainingQty} & server=${serverQty})`
+                        : ` (theo server)`);
+
+                    // Nếu đã >= mốc (ví dụ mốc=0), có thể chuyển trang (ở đây chỉ cảnh báo nhẹ)
+                    if (count >= targetCount) {
+                        flash('warn');
+                        status.textContent = `🎯 ĐÃ ĐỦ SỐ LƯỢNG ${targetCount} — chuẩn bị chuyển trang...`;
+                        const redirectUrl = `http://10.10.99.10:8100/Tools/WorkOrderInfoV1?workOrder=${encodeURIComponent(currentWorkorder)}&operation=Walter`;
+                        overlayMsg.innerHTML = `Đã đủ số lượng của thùng này, sẽ chuyển sang trang nhập kết quả sản xuất trong <span id="cd" class="countdown">3</span> giây.`;
+                        const newCd = document.getElementById('cd'); if (newCd) newCd.textContent = '3';
+                        // lockUIAndRedirect(3, redirectUrl); // nếu muốn auto
+                    }
+                } catch (err) {
+                    console.error('Lỗi lấy mốc:', err);
+                    status.textContent = 'Lỗi khi lấy mốc — dùng mốc hiện tại ' + targetCount;
+                }
+            }
+
+            // ====== BOX: so khớp UPC ======
+            let isProcessing = false;
+
+            box.addEventListener('keydown', (e) => {
+                if (uiLocked) return;
+                if (e.key === 'Enter' && !e.repeat && document.activeElement === box) {
+                    e.preventDefault();
+                    processBox();
+                }
+            });
+
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            const processBox = async () => {
+                if (uiLocked) return;
+                if (isProcessing) return;
+                isProcessing = true;
+
+                try {
+                    const boxVal = normalize(box.value);
+                    if (!boxVal) { isProcessing = false; return; }
+
+                    if (!currentUpcNumber) {
+                        flash('bad');
+                        status.innerHTML = '⚠ Chưa có Work Order hợp lệ. Vui lòng quét thùng trước.';
+                        bin.focus();
+                        return;
+                    }
+
+                    const ok = boxVal === currentUpcNumber;
+                    flash(ok ? 'ok' : 'bad');
+
+                    if (ok) {
+                        status.innerHTML = '✔ Hợp lệ: <strong>' + boxVal + '</strong> với WO: ' + currentWorkorder + " có serial: " + currentUpcNumber;
+                        await incrementCounter();
+                    } else {
+                        status.innerHTML = `✖ KHÔNG khớp! Hộp: <strong>${boxVal}</strong> ≠ UPC: <strong>${currentUpcNumber}</strong>`;
+                        await triggerWhoopLight(currentWorkorder, boxVal);
+                    }
+
+                    box.value = '';
+                    box.focus();
+                } finally {
+                    isProcessing = false;
+                }
+            };
+
+            async function triggerWhoopLight(binValue, boxValue) {
+                try {
+                    if (isLightWork) {
+                        await fetch('/utils/check-whoop-light', { method: 'GET' });
+                        await delay(1000);
+                        await fetch('/utils/blink-light', { method: 'GET' });
+                    }
+
+                    // Nháy màn đỏ 1s
+                    const redOverlay = document.getElementById('redOverlay');
+                    redOverlay.style.display = 'block';
+                    void redOverlay.offsetHeight; // ép reflow
+                    await delay(1000);
+                    redOverlay.style.display = 'none';
+
+                    // Sau đó yêu cầu pass giám sát
+                    await requireSupervisorPassSimple();
+
+                    if (isLightWork) {
+                        await fetch('/utils/turn-off-light', { method: 'GET' });
+                    }
+                    await delay(1000);
+                } catch (err) {
+                    console.error("Error calling light API:", err);
+                }
+            }
+
+            async function checkPass(password) {
+                try {
+                    const resp = await fetch(`/utils/scan_pass_check_whoop/${encodeURIComponent(password)}`, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    const text = await resp.text();
+                    if (!resp.ok) {
+                        console.error('Check pass failed status:', resp.status, text);
+                        return false;
+                    }
+                    try {
+                        const j = JSON.parse(text);
+                        return j === true;
+                    } catch {
+                        return text.trim().toLowerCase() === 'true';
+                    }
+                } catch (e) {
+                    console.error('Error calling scan_pass_check_whoop:', e);
+                    return false;
+                }
+            }
+
+            async function requireSupervisorPassSimple() {
+                while (true) {
+                    const input = prompt(
+                        "⚠️ Hộp này không chính xác!\n\nVui lòng nhập mật khẩu giám sát để tiếp tục:",
+                        ""
+                    );
+                    if (input === null) continue;
+
+                    const ok = await checkPass((input || '').trim());
+                    if (ok) return true;
+
+                    alert("❌ Mật khẩu không đúng. Vui lòng thử lại.");
+                }
+            }
+
+            // ====== Hotkeys ======
+            window.addEventListener('keydown', (e) => {
+                if (uiLocked) { e.preventDefault(); return; }
+                if (e.code === 'Numpad1') {
+                    e.preventDefault();
+                    resetAll();
+                } else if (e.code === 'Numpad2') {
+                    e.preventDefault();
+                    resetCounter();
+                } else if (e.code === 'Numpad3') {
+                    @* e.preventDefault();
+                    window.location.href = 'http://10.10.99.10:8100/tools/workorderinfo'; *@
+                } else if (e.code === 'Numpad4') {
+                    e.preventDefault();
+                    window.location.href = 'http://10.10.99.10:8102/Utils/Whoop/WHOOP';
+                } else if (e.code === 'Numpad5') {
+                    @* e.preventDefault();
+                    isLightWork = !isLightWork;
+                    console.log('Chế độ đèn: ' + (isLightWork ? 'BẬT' : 'TẮT')); *@
+                }
+            }, { capture: true });
+
+            // ====== Counter / helpers / UX ======
+            function resetAll() {
+                const wo = currentWorkorder;
+
+                bin.value = '';
+                box.value = '';
+
+                // Xoá WO đã lưu + tiến độ gắn với WO hiện tại
+                localStorage.removeItem(LS_WO_KEY);
+                if (wo) clearProgress(wo);
+
+                resetCounter();
+                status.textContent = 'Đã reset. Quét serial thùng mới.';
+                indicator.classList.remove('flash-ok', 'flash-bad', 'flash-warn');
+                bin.focus();
+            }
+
+            function resetCounter() {
+                count = 0;
+                counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+                saveCount(); // lưu ngay sau khi reset
+            }
+
+            async function incrementCounter() {
+                // Nếu lần tăng này chạm mốc
+                if (count + 1 === targetCount) {
+                    count = targetCount;
+                    counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+                    flash('warn');
+                    status.textContent = `🎯 ĐÃ ĐỦ SỐ LƯỢNG ${targetCount} — chuẩn bị chuyển trang...`;
+
+                    const producedAfter = (Number(window.lastQtyProduced) || 0) + (Number(targetCount) || 0);
+                    const totalPlanned = (Number(window.lastProductQty) || Number(targetCount) || 0);
+                    await logWalter(`Đã scan ${targetCount} cái, được ${producedAfter}/${totalPlanned} (WO: ${currentWorkorder})`);
+
+                    // ✅ Reset về 0 TRƯỚC khi chuyển trang + lưu 0
+                    count = 0;
+                    saveCount();
+                    counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+
+                    const redirectUrl = `http://10.10.99.10:8100/Tools/WorkOrderInfoV1?workOrder=${encodeURIComponent(currentWorkorder)}&operation=Walter`;
+                    overlayMsg.innerHTML = `Đã đủ số lượng của thùng này, sẽ chuyển sang trang nhập kết quả sản xuất trong <span id="cd" class="countdown">3</span> giây.`;
+                    const newCd = document.getElementById('cd');
+                    if (newCd) { newCd.textContent = '3'; }
+                    lockUIAndRedirect(3, redirectUrl);
+                    return;
+                }
+
+                // Nếu vượt mốc (trường hợp hiếm)
+                if (count + 1 > targetCount) {
+                    flash('bad');
+                    alert(`⚠ ĐÃ VƯỢT MỐC ${targetCount}!`);
+                    resetCounter();
+                    return;
+                }
+
+                // Tăng bình thường
+                count += 1;
+                counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+                saveCount(); // lưu sau mỗi lần tăng
+            }
+
+            async function logWalter(content) {
+                try {
+                    await fetch('/api/astrolabel/walterlog', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ content })
+                    });
+                    console.log('✅ Logged:', content);
+                } catch (err) {
+                    console.error('❌ Log error:', err);
+                }
+            }
+
+            function normalize(s) {
+                return (s || '').trim().replace(/\s+/g, '').toUpperCase();
+            }
+
+            let flashTimer;
+            function flash(type) {
+                clearTimeout(flashTimer);
+                indicator.classList.remove('flash-ok', 'flash-bad', 'flash-warn');
+                indicator.classList.add(type === 'ok' ? 'flash-ok' : (type === 'warn' ? 'flash-warn' : 'flash-bad'));
+                flashTimer = setTimeout(() => {
+                    indicator.classList.remove('flash-ok', 'flash-bad', 'flash-warn');
+                }, 500);
+            }
+
+            // Vô hiệu hoá thao tác chuột trái/phải
+            document.addEventListener('mousedown', (e) => { e.preventDefault(); }, { capture: true });
+            document.addEventListener('contextmenu', (e) => { e.preventDefault(); });
+        })();
+    </script>
+</body>
+
+</html>

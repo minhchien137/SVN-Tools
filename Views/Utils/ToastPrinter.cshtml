@@ -1,0 +1,784 @@
+﻿@model SVN_Tools.Models.Utils.PrinterData;
+
+@{
+    ViewData["Title"] = ViewBag.oper;
+}
+<style>
+    /* Modal full màn hình */
+    #manageModal .modal-dialog {
+        max-width: 100vw;
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+
+    #manageModal .modal-content {
+        height: 100vh;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #manageModal .modal-body {
+        flex: 1 1 auto;
+        overflow-y: auto;
+    }
+
+    #manageModal .table-responsive {
+        max-height: calc(100vh - 200px);
+        /* giữ phần header/footer */
+        overflow-y: auto;
+    }
+
+    /* Tùy chọn: làm header modal cố định khi cuộn */
+    #manageModal .modal-header,
+    #manageModal .modal-footer {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: #fff;
+    }
+
+    #manageModal .modal-footer {
+        bottom: 0;
+        top: auto;
+    }
+</style>
+
+<h1>@ViewBag.oper</h1>
+
+<div>
+    <h4>Printer Details</h4>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Name_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Name_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.IP_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.IP_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Port_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Port_Printer)
+                </div>
+                <div class="container my-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2 class="mb-4">Label and Pallet Information</h2>
+                            <div class="col-2" style="display:none">
+                                <label for="sizeLabel">Size:</label>
+                                <input type="text" id="sizeLabel" placeholder="Size" value="24" required />
+                            </div>
+                            <div class="col-2" style="display:none">
+                                <label for="widthLabel">Width:</label>
+                                <input type="text" id="widthLabel" placeholder="Width" value="4" required />
+                            </div>
+                            <div class="col-2" style="display:none">
+                                <label for="heightLabel">Height:</label>
+                                <input type="text" id="heightLabel" placeholder="Height" value="6" required />
+                            </div>
+                            <hr>
+                            <div class="row g-3">
+                                <div class="col-md-6 col-lg-3">
+                                    <label for="copies" class="form-label">Copies:</label>
+                                    <input type="number" id="copies" class="form-control" placeholder="Number of copies"
+                                        value="2" required>
+                                </div>
+                                <div class="col-md-6 col-lg-3">
+                                    <label for="palletId" class="form-label">Pallet ID:</label>
+                                    <input type="text" id="palletId" class="form-control" placeholder="Enter Pallet ID"
+                                        required>
+                                </div>
+                                <div class="col-md-6 col-lg-3">
+                                    <label for="PoNumber" class="form-label">Po Number:</label>
+                                    <input type="text" id="PoNumber" class="form-control" placeholder="Enter Po Number"
+                                        required>
+                                </div>
+                                <div class="col-md-6 col-lg-3">
+                                    <label for="lotId" class="form-label">Lot ID:</label>
+                                    <input type="text" id="lotId" class="form-control" placeholder="Enter Lot ID"
+                                        required>
+                                </div>
+                                <div class="col-md-6 col-lg-3">
+                                    <label for="skuNumber" class="form-label">SKU:</label>
+                                    <input type="text" id="skuNumber" class="form-control" placeholder="Enter SKU"
+                                        required>
+                                </div>
+                                <div class="col-md-5 col-lg-2">
+                                    <button class="btn btn-primary me-2" style="margin-top: 36px" id="SaveBtn"
+                                        type="button">Lưu thông tin</button>
+                                </div>
+                                <div class="col-md-5 col-lg-2">
+                                    <button class="btn btn-primary me-2" style="margin-top: 36px" id="checkBtn"
+                                        type="button">Đếm thùng: <b id="countPallet">xxx</b></button>
+                                </div>
+                                <div class="col-md-5 col-lg-2">
+                                    <button class="btn btn-primary me-2" style="margin-top: 36px" id="printPallet"
+                                        type="button">In tem pallet</button>
+                                </div>
+                                <div class="col-md-5 col-lg-2">
+                                    <button class="btn btn-primary me-2" style="margin-top: 36px" id="manageBtn"
+                                        type="button">
+                                        Quản lý
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+                            <h2 class="mb-4 mt-5">Part Details</h2>
+                            <div class="row g-3">
+                                <div class="col-md-6 col-lg-3" style="display:none">
+                                    <label for="toast_part_number" class="form-label">Toast Part Number:</label>
+                                    <input type="text" id="toast_part_number" class="form-control"
+                                        placeholder="Toast Part Number" value="HW0032" required>
+                                </div>
+                                <div class="col-md-6 col-lg-3" style="display:none">
+                                    <label for="model_number" class="form-label">Model Number:</label>
+                                    <input type="text" id="model_number" class="form-control" placeholder="Model Number"
+                                        value="TDC300" required>
+                                </div>
+                                <div class="col-md-6 col-lg-3" style="display:none">
+                                    <label for="desc" class="form-label">Part Description:</label>
+                                    <input type="text" id="desc" class="form-control" placeholder="Part Description"
+                                        value="TOAST GO® 3 DESKTOP CHARGER" required>
+                                </div>
+                                <div class="col-md-6 col-lg-3">
+                                    <label for="quantity" class="form-label">Quantity:</label>
+                                    <div class="input-group">
+                                        <input type="number" id="quantity" class="form-control" placeholder="Quantity"
+                                            value="5" required>
+                                        <button class="btn btn-primary" id="quantityBtn" type="submit">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row inputContainer mt-4"></div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    @* <button class="btn btn-primary me-2" id="preview" type="submit">Preview</button>
+                                    <button class="btn btn-primary" id="print" type="submit">In Tem</button> *@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* <div class="col-6">
+            <div class="imagebox">
+                <img id="labelImage" src="@ViewBag.imageUrl" style="width:80%" alt="Ấn nút Lưu Zpl và nút Load Ảnh" />
+            </div>
+        </div> *@
+    </div>
+</div>
+<div>
+    <a asp-action="UltimatePrint">Back to List</a>
+</div>
+
+<!-- Modal Quản lý Pallet -->
+<div class="modal fade" id="manageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Quản lý Pallet <small class="text-muted" id="modalPalletId"></small>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <div id="manageAlert" class="alert alert-warning d-none"></div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle" id="manageTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 90px;">ID</th>
+                                <th>Serial</th>
+                                <th style="width: 180px;">Pallet ID</th>
+                                <th style="width: 120px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- rows được render bằng JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+
+
+        let zplTemplate;
+        let previewBtn = document.getElementById('preview');
+        let printBtn = document.getElementById('print');
+        @* let serialString = ""; *@
+            let serialList = [];
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = (today.getMonth() + 1).toString().padStart(2, '0');
+        let day = today.getDate().toString().padStart(2, '0');
+        const prefix = `${year}${month}${day}`;
+        let countPallet = 0;
+
+        const savePOButton = document.getElementById("SaveBtn");
+        savePOButton.addEventListener("click", async () => {
+            const PoNumber = document.getElementById('PoNumber').value;
+            const palletId = document.getElementById('palletId').value;
+            const lotId = document.getElementById('lotId').value;
+            const skuNumber = document.getElementById("skuNumber").value;
+
+            await localStorage.setItem("PoNumber", PoNumber);
+            await localStorage.setItem("palletId", palletId);
+            await localStorage.setItem("lotId", lotId);
+            await localStorage.setItem("skuNumber", skuNumber);
+        })
+
+        const loadPreviousData = () => {
+            const PoNumber = localStorage.getItem("PoNumber");
+            const palletId = localStorage.getItem("palletId");
+            const lotId = localStorage.getItem('lotId');
+            const skuNumber = localStorage.getItem('skuNumber');
+
+            if (PoNumber) {
+                document.getElementById('PoNumber').value = PoNumber;
+            }
+            if (palletId) {
+                document.getElementById('palletId').value = palletId;
+            }
+            if (lotId) {
+                document.getElementById('lotId').value = lotId;
+            }
+            if (skuNumber) {
+                document.getElementById('skuNumber').value = skuNumber;
+
+            }
+        }
+
+        loadPreviousData();
+
+
+        @* Tạo Label *@
+
+        const fetchImage = async (size, width, height, packageId, desc, quantity, serialNumber1, serialNumber2, serialNumber3, serialNumber4, serialNumber5, toastPartNumber, modelNumber, poNumber, lotId, descFr) => {
+            const url = '@Url.Action("CreateLabelNoPreview", "Utils")';
+            @* const image = $("#labelImage")[0]; *@
+
+            const _ = window.location.pathname.split("/");
+            const id = _[_.length - 1];
+
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ size, width, height, id, packageId, desc, quantity, serialNumber1, serialNumber2, serialNumber3, serialNumber4, serialNumber5, toastPartNumber, modelNumber, poNumber, lotId, descFr })
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                @* image.setAttribute("src", result.imagePath); *@
+                    zplTemplate = result.template;
+            }
+            return zplTemplate;
+        }
+
+        @* In *@
+        const checkSerialInDB = async (serial) => {
+            const url = `/api/AstroLabel/checkserial/${prefix}/${serial}`;
+            const res = await fetch(url);
+            let check = await res.json();
+            return check;
+        }
+
+
+        const createLabelData = async (payload) => {
+            const url = "/api/astrolabel";
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            console.log(await res.json());
+        }
+
+        const printLabel = async () => {
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const packageId = document.getElementById('palletId')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            const serialNumber1 = document.getElementById('serial_number1')?.value || "";
+            const serialNumber2 = document.getElementById('serial_number2')?.value || "";
+            const serialNumber3 = document.getElementById('serial_number3')?.value || "";
+            const serialNumber4 = document.getElementById('serial_number4')?.value || "";
+            const serialNumber5 = document.getElementById('serial_number5')?.value || "";
+            const serialString = serialList.join(",") + ",";
+            const poNumber = document.getElementById('PoNumber')?.value || "";
+            const lotId = document.getElementById('lotId')?.value || "";
+            const toastPartNumber = document.getElementById("skuNumber").value || "";
+            let desc = "", modelNumber = "", descFr = "";
+            switch (toastPartNumber) {
+                case "HW0032":
+                    desc = "Toast Go  3 Charging Dock";
+                    descFr = "Station de recharge Toast Go  3";
+                    modelNumber = "TDC300";
+                    break;
+                case "HW0172":
+                    desc = "Toast Go  3 Charging Dock";
+                    descFr = "Station de recharge Toast Go  3";
+                    modelNumber = "TDC300";
+                    break;
+                case "HW0170":
+                    desc = "Toast Go  3 Charging Dock";
+                    descFr = "Station de recharge Toast Go  3";
+                    modelNumber = "TDC300";
+                    break;
+            }
+
+            const zplTemplate = await fetchImage(size, width, height, packageId, desc, quantity, serialNumber1, serialNumber2, serialNumber3, serialNumber4, serialNumber5, toastPartNumber, modelNumber, poNumber, lotId, descFr);
+
+            @* print *@
+                const printer = @Html.Raw(Json.Serialize(Model));
+            const copies = document.getElementById('copies').value;
+
+            const payload = {
+                PrinterIpAddress: printer.iP_Printer,
+                Port: printer.port_Printer,
+                ZplCode: zplTemplate,
+                Copies: copies
+            }
+
+            const urlPrint = '@Url.Action("printzpl", "Print")';
+
+            const res = await fetch(urlPrint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const res_ = await res.text();
+            @* const res_ = true; *@
+            if (res_) {
+                @* if (true) { *@
+
+                const payload = {
+                    date: prefix,
+                    PackageID: prefix,
+                    Serial: serialString,
+                    ScanDate: new Date(Date.now()).toLocaleString(),
+                    PalletID: document.getElementById("palletId").value,
+                    CountSerial: quantity,
+                    EmployeeID: "toast"
+
+                }
+                console.log(payload)
+
+                await createLabelData(payload);
+                await handleCheckPalletId();
+
+                const serialInputs = document.querySelectorAll('.serialInput');
+                serialInputs.forEach((item) => {
+                    item.value = "";
+                })
+                @* packageIdInput.value = parseInt(packageIdInput.value) + 1; *@
+                    @* serialString = ""; *@
+                    serialList =[];
+                serialInputs[0].focus();
+            }
+        }
+
+        @* Input *@
+        const inputContainer = document.querySelector('.inputContainer');
+        const quantity = document.getElementById('quantity');
+        const addBtn = document.getElementById('quantityBtn');
+
+        const addInput = () => {
+            const num = parseInt(quantity.value);
+            inputContainer.innerHTML = ''; // Xóa các input hiện tại
+            if (isNaN(num) || num <= 0) {
+                alert('Vui lòng nhập một số nguyên dương!');
+                return;
+            }
+            for (let i = 1; i <= num; i++) {
+                // Tạo một thẻ div để bọc mỗi ô input (tùy chọn, để dễ quản lý bố cục)
+                const inputWrapper = document.createElement('div');
+                inputWrapper.className = "col-3 mt-2";
+
+                const inputElement = document.createElement('input');
+                inputElement.type = 'text'; // Loại input là text
+                inputElement.id = `serial_number${i}`; // Gán class là số tăng dần từ 1
+                inputElement.className = 'serialInput'; // Gán class để dễ dàng truy cập
+                inputElement.placeholder = `Serial Number ${i}`; // Đặt placeholder
+                inputElement.value = ''; // Đặt giá trị mặc định là rỗng
+
+                inputWrapper.appendChild(inputElement);
+                inputContainer.appendChild(inputWrapper);
+            }
+
+            const serialInputs = document.querySelectorAll('.serialInput');
+            serialInputs[0].focus();
+            let typingTimer; // Biến để lưu trữ timer
+            const doneTypingInterval = 200; // Thời gian chờ (miligiây) sau khi không có thêm input nào để xác định rằng barcode đã được quét xong
+
+            serialInputs.forEach((input, index) => {
+                input.addEventListener('input', function () {
+                    clearTimeout(typingTimer);
+                    typingTimer = setTimeout(async () => {
+                        const val = this.value.trim();
+
+                        // Nếu người dùng xóa nội dung => xóa luôn khỏi array
+                        if (val.length === 0) {
+                            serialList = serialList.filter(s => s !== this.dataset.oldValue);
+                            this.dataset.oldValue = ""; // reset giá trị cũ
+                            console.log("Đã xóa khỏi serialList:", serialList);
+                            return;
+                        }
+
+                        // Nếu chưa đủ 13 ký tự thì chưa xử lý gì
+                        if (val.length < 13) return;
+
+                        // Kiểm tra đủ 13 ký tự rồi mới validate
+                        if (val.length !== 13) {
+                            alert("Số serial không hợp lệ");
+                            this.value = "";
+                            return;
+                        }
+
+                        if (serialList.includes(val)) {
+                            alert("Số serial đã có trong các serial ở đây");
+                            this.value = "";
+                            return;
+                        }
+
+                        const isExist = await checkSerialInDB(val);
+                        if (isExist) {
+                            alert("Số serial đã từng in rồi");
+                            this.value = "";
+                            return;
+                        }
+
+                        // Nếu input này đã từng có serial cũ, thay thế trong mảng
+                        if (this.dataset.oldValue) {
+                            const oldIdx = serialList.indexOf(this.dataset.oldValue);
+                            if (oldIdx > -1) serialList.splice(oldIdx, 1);
+                        }
+
+                        // Cập nhật mảng với giá trị mới
+                        serialList.push(val);
+                        this.dataset.oldValue = val;
+
+                        console.log("Danh sách serial hiện tại:", serialList);
+
+                        // Nếu chưa phải input cuối cùng → focus sang ô tiếp
+                        if (index < serialInputs.length - 1) {
+                            serialInputs[index + 1].focus();
+                        } else {
+                            // Khi đến input cuối và tất cả đều hợp lệ → in
+                            if (serialList.length === serialInputs.length) {
+                                console.log("Đã nhập hết serial. In tem...");
+                                await printLabel();
+                            }
+                        }
+
+                    }, doneTypingInterval);
+                });
+            });
+        }
+
+        addInput();
+        if (addBtn) {
+            addBtn.addEventListener("click", addInput);
+        }
+
+        const handleCheckPalletId = async () => {
+            const palletId = document.getElementById("palletId").value;
+            const url = `/api/AstroLabel/count/${palletId}`;
+            const res = await fetch(url);
+            let count = await res.json();
+            countPallet = count;
+            document.getElementById("countPallet").innerHTML = count;
+            console.log(count);
+            return count;
+        }
+
+        const palletId = document.getElementById("palletId").value;
+        if (palletId) {
+            handleCheckPalletId();
+        }
+
+        const checkBtn = document.getElementById("checkBtn");
+        if (checkBtn) {
+            checkBtn.addEventListener("click", async () => {
+                let countPallet = await handleCheckPalletId();
+                alert("Pallet này đã có " + countPallet + " thùng");
+            });
+        }
+
+        const handlePrintPallet = async () => {
+            const palletIdAtTime = document.getElementById("palletId").value;
+            const poNumber = document.getElementById('PoNumber')?.value || "";
+            const lotId = document.getElementById('lotId')?.value || "";
+            const toastPartNumber = document.getElementById("skuNumber").value || "";
+            let desc = "", modelNumber = "", descFr = "";
+            switch (toastPartNumber) {
+                case "HW0032":
+                    desc = "Toast Go  3 Charging Dock";
+                    descFr = "Station de recharge Toast Go  3";
+                    modelNumber = "TDC300";
+                    break;
+                case "HW0172":
+                    desc = "Toast Go  3 Charging Dock";
+                    descFr = "Station de recharge Toast Go  3";
+                    modelNumber = "TDC300";
+                    break;
+                case "HW0170":
+                    desc = "Toast Go  3 Charging Dock";
+                    descFr = "Station de recharge Toast Go  3";
+                    modelNumber = "TDC300";
+                    break;
+            }
+            const url = `/api/AstroLabel/printPalletWithBody/${palletIdAtTime}`;
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ desc, toastPartNumber, modelNumber, poNumber, lotId, descFr })
+            });
+            @* const res = await fetch(url); *@
+                let check = await res.json();
+        }
+
+        const printPalletBtn = document.getElementById("printPallet");
+        if (printPalletBtn) {
+            printPalletBtn.addEventListener("click", handlePrintPallet);
+        }
+
+        // === Quản lý Pallet: JS thuần (không phụ thuộc Bootstrap) ===
+        const manageBtn = document.getElementById('manageBtn');
+        const manageModalEl = document.getElementById('manageModal');
+        const manageTableBody = document.querySelector('#manageTable tbody');
+        const manageAlert = document.getElementById('manageAlert');
+        const modalPalletIdEl = document.getElementById('modalPalletId');
+
+        const hideModal = (el) => {
+            el.classList.remove('show');
+            el.style.display = 'none';
+            const backdrop = document.querySelector('.modal-backdrop');
+            backdrop?.remove();
+            document.body.classList.remove('modal-open');
+        };
+
+        // Nút đóng góc phải
+        manageModalEl.querySelector('.btn-close')?.addEventListener('click', () => hideModal(manageModalEl));
+        // Click nền ngoài để đóng
+        manageModalEl.addEventListener('click', (e) => {
+            if (e.target === manageModalEl) hideModal(manageModalEl);
+        });
+
+        // Helpers mở/đóng modal thuần
+        const showModal = (el) => {
+            // hiển thị modal
+            el.style.display = 'block';
+            el.classList.add('show');
+            // backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop fade show';
+            document.body.appendChild(backdrop);
+            // khóa scroll body
+            document.body.classList.add('modal-open');
+        };
+
+        // Đóng modal khi bấm nút close / nút footer / click ra ngoài
+        manageModalEl.querySelector('.btn-close')?.addEventListener('click', () => hideModal(manageModalEl));
+        manageModalEl.querySelector('[data-bs-dismiss="modal"]')?.addEventListener('click', () => hideModal(manageModalEl));
+        // click ra nền tối (khoảng ngoài content)
+        manageModalEl.addEventListener('click', (e) => {
+            if (e.target === manageModalEl) hideModal(manageModalEl);
+        });
+
+        const fetchPalletById = async (pid) => {
+            const url = `/api/AstroLabel/getPallet/${encodeURIComponent(pid)}`;
+            const res = await fetch(url, { method: 'GET' });
+            if (!res.ok) {
+                const txt = await res.text().catch(() => '');
+                throw new Error(`Lỗi API (${res.status})${txt ? ' - ' + txt : ''}`);
+            }
+            // cố parse json; nếu fail log text
+            try {
+                return await res.json();
+            } catch {
+                const raw = await res.text();
+                console.error('Response không phải JSON. Raw:', raw);
+                throw new Error('API không trả về JSON hợp lệ');
+            }
+        };
+
+        const renderManageRows = (rows = []) => {
+            manageTableBody.innerHTML = '';
+
+            if (rows && !Array.isArray(rows)) {
+                if (Array.isArray(rows.items)) rows = rows.items;
+                else rows = [rows];
+            }
+
+            if (!Array.isArray(rows) || rows.length === 0) {
+                manageAlert.textContent = 'Không có dữ liệu cho Pallet này.';
+                manageAlert.classList.remove('d-none');
+                return;
+            }
+
+            manageAlert.classList.add('d-none');
+
+            rows.forEach(r => {
+                // GIỮ NGUYÊN serial (không xóa dấu phẩy cuối)
+                const serialRaw = r.serial || '';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+            <td>${r.id ?? ''}</td>
+            <td class="text-break" style="max-width: 600px;">${serialRaw}</td>
+            <td>${r.palletID ?? r.palletId ?? ''}</td>
+            <td>
+                <button type="button"
+                        class="btn btn-sm btn-danger btn-delete"
+                        data-id="${r.id ?? ''}"
+                        data-serial="${serialRaw}">
+                    Delete
+                </button>
+            </td>
+        `;
+                manageTableBody.appendChild(tr);
+            });
+        };
+
+        // Bấm “Quản lý”: fetch + render + mở modal
+        manageBtn?.addEventListener('click', async () => {
+            const pid = (document.getElementById('palletId')?.value || '').trim();
+            modalPalletIdEl.textContent = pid ? `#${pid}` : '';
+
+            // Reset trạng thái trong modal
+            manageAlert.classList.add('d-none');
+            manageTableBody.innerHTML = `<tr><td colspan="4">Đang tải dữ liệu...</td></tr>`;
+
+            // Mở modal ngay (UX tốt hơn), dữ liệu load xong sẽ thay
+            showModal(manageModalEl);
+
+            if (!pid) {
+                manageTableBody.innerHTML = '';
+                manageAlert.textContent = 'Hãy nhập Pallet ID trước.';
+                manageAlert.classList.remove('d-none');
+                return;
+            }
+
+            try {
+                const data = await fetchPalletById(pid);
+                console.log('getPallet data:', data);
+                renderManageRows(data);
+            } catch (err) {
+                console.error(err);
+                manageTableBody.innerHTML = '';
+                manageAlert.textContent = err?.message || 'Đã xảy ra lỗi khi tải dữ liệu.';
+                manageAlert.classList.remove('d-none');
+            }
+        });
+
+        manageTableBody.addEventListener('click', async (e) => {
+            const btn = e.target.closest('.btn-delete');
+            if (!btn) return;
+
+            // Lấy serial gốc từ data-serial (giữ nguyên, có thể có dấu phẩy cuối)
+            const serialRaw = btn.getAttribute('data-serial') || '';
+            if (!serialRaw) {
+                alert('Không tìm thấy serial để xóa.');
+                return;
+            }
+
+            // Lấy pallet hiện tại để reload sau khi xóa
+            const pid = (document.getElementById('palletId')?.value || '').trim();
+            if (!pid) {
+                alert('Thiếu Pallet ID để tải lại danh sách.');
+                return;
+            }
+
+            // Trạng thái loading cho nút
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Deleting...';
+
+            try {
+                const url = `/api/AstroLabel/deleteInPallet/${encodeURIComponent(serialRaw)}`;
+
+                // Nhiều backend map route này là GET (giống các API khác của bạn).
+                // Nếu backend yêu cầu DELETE/POST thì đổi method tương ứng.
+                const res = await fetch(url, { method: 'GET' });
+
+                // API nói trả về duy nhất true/false -> parse linh hoạt
+                let ok = false;
+                try {
+                    const ct = res.headers.get('content-type') || '';
+                    if (ct.includes('application/json')) {
+                        const j = await res.json();
+                        ok = j === true;
+                    } else {
+                        const t = (await res.text()).trim().toLowerCase();
+                        ok = (t === 'true');
+                    }
+                } catch {
+                    ok = false;
+                }
+
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}`);
+                }
+
+                if (ok) {
+                    // Xóa xong: load lại bảng để dữ liệu chuẩn xác
+                    manageAlert.classList.add('d-none');
+                    manageTableBody.innerHTML = `<tr><td colspan="4">Đang tải dữ liệu...</td></tr>`;
+                    const data = await fetchPalletById(pid);
+                    renderManageRows(data);
+                    await handleCheckPalletId();
+                } else {
+                    alert('Xóa không thành công (API trả về false).');
+                    btn.disabled = false;
+                    btn.textContent = originalText;
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Có lỗi khi gọi API xóa.');
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+    });
+
+
+
+
+
+</script>

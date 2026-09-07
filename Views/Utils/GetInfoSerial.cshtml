@@ -1,0 +1,411 @@
+@{
+    ViewData["Title"] = "Tra cứu Serial";
+}
+
+<style>
+    body {
+        background: #f3f4f6;
+        /* nền sáng hơn */
+        color: #111827;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .wrap {
+        max-width: 900px;
+        margin: 80px auto;
+        text-align: center;
+        background: white;
+        padding: 48px;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 32px;
+        color: #1f2937;
+    }
+
+    input {
+        width: 80%;
+        max-width: 600px;
+        padding: 18px 20px;
+        font-size: 20px;
+        border-radius: 12px;
+        border: 2px solid #3b82f6;
+        outline: none;
+        background: #f9fafb;
+        color: #111827;
+        transition: 0.2s;
+    }
+
+    input:focus {
+        border-color: #2563eb;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+    }
+
+    table {
+        margin: 40px auto 0;
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f9fafb;
+    }
+
+    th,
+    td {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e5e7eb;
+        text-align: left;
+        font-size: 18px;
+    }
+
+    th {
+        background: #e5e7eb;
+        color: #1f2937;
+        width: 30%;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    .status-ok {
+        color: #16a34a;
+        font-weight: bold;
+    }
+
+    .status-ng {
+        color: #dc2626;
+        font-weight: bold;
+    }
+
+    .error-msg {
+        color: #dc2626;
+        margin-top: 20px;
+        font-size: 18px;
+    }
+
+    /* --- Toolbar --- */
+    .toolbar {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn:active {
+        transform: scale(0.96);
+    }
+
+    /* --- Button colors --- */
+    .btn-primary {
+        background-color: #3b82f6;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background-color: #2563eb;
+    }
+
+    .btn-success {
+        background-color: #22c55e;
+        color: #fff;
+    }
+
+    .btn-success:hover {
+        background-color: #16a34a;
+    }
+
+    /* --- Modal styles --- */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 17, 21, 0.9);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: #1f2937;
+        padding: 32px;
+        border-radius: 16px;
+        width: 480px;
+        color: #f9fafb;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        animation: fadeIn 0.25s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .modal-content h3 {
+        margin-top: 0;
+        text-align: center;
+    }
+
+    .modal-content label {
+        display: block;
+        margin-top: 10px;
+        font-size: 15px;
+        color: #d1d5db;
+    }
+
+    .modal-content input,
+    .modal-content select {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #374151;
+        background: #111827;
+        color: #f9fafb;
+        margin-top: 6px;
+        font-size: 15px;
+    }
+
+    .modal-actions {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    .btn-cancel {
+        background-color: #6b7280;
+        color: #fff;
+    }
+
+    .btn-cancel:hover {
+        background-color: #4b5563;
+    }
+</style>
+
+<div class="wrap">
+    <h2>Truy xuất tình trạng sản phẩm</h2>
+    <input id="serialInput" placeholder="Quét hoặc nhập serial (13 ký tự)..." autofocus />
+
+    <div id="result"></div>
+</div>
+
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h3>Chỉnh sửa FCT / FQC</h3>
+
+        <label for="svnCode">SVN Code (bắt buộc):</label>
+        <input type="text" id="svnCode" placeholder="Nhập SVN code của bạn" />
+
+        <label for="fctStatus">FCT Status:</label>
+        <select id="fctStatus">
+            <option value="">-- Giữ nguyên --</option>
+            <option value="OK">OK</option>
+            <option value="NG">NG</option>
+        </select>
+
+        <label for="fqcStatus">FQC Status:</label>
+        <select id="fqcStatus">
+            <option value="">-- Giữ nguyên --</option>
+            <option value="OK">OK</option>
+            <option value="NG">NG</option>
+        </select>
+
+        <div class="modal-actions">
+            <button class="btn btn-cancel" id="btnCancel">Hủy</button>
+            <button class="btn btn-primary" id="btnSave">Lưu thay đổi</button>
+        </div>
+    </div>
+</div>
+
+<div class="toolbar">
+    <button class="btn btn-success" id="exportBtn">
+        <i class="bi bi-file-earmark-excel"></i> Xuất Excel
+    </button>
+    <button class="btn btn-primary" id="btnEdit">
+        <i class="bi bi-pencil-square"></i> Edit
+    </button>
+</div>
+
+<div id="msgBox" style="display:none;
+            position:fixed;
+            bottom:32px;
+            right:32px;
+            padding:20px 28px;
+            font-size:20px;
+            font-weight:600;
+            border-radius:12px;
+            color:#fff;
+            z-index:9999;
+            border:3px solid transparent;
+            animation: fadeIn 0.25s ease-out;">
+</div>
+
+<script>
+    const input = document.getElementById('serialInput');
+    const resultDiv = document.getElementById('result');
+
+    async function fetchSerialInfo(serial) {
+        try {
+            const res = await fetch(`/GetInfoSerial/${serial}`);
+            const data = await res.json();
+
+            if (!res.ok || !data.ok) {
+                resultDiv.innerHTML = `<p style="color:#f87171;">${data.message || 'Không tìm thấy.'}</p>`;
+                return;
+            }
+
+            const d = data.data;
+            const fctClass = d.fctStatus === 'OK' ? 'status-ok' : 'status-ng';
+            const fqcClass = d.fqcStatus === 'OK' ? 'status-ok' : 'status-ng';
+
+            resultDiv.innerHTML = `
+            <table>
+                <tr><th>Serial Number</th><td>${d.serialNumber}</td></tr>
+                <tr><th>Work Order</th><td>${d.workOrder || '-'}</td></tr>
+                <tr><th>FCT Status</th><td class="${fctClass}">${d.fctStatus || '-'}</td></tr>
+                <tr><th>FCT Time</th><td>${formatTime(d.fctStatusDatetime)}</td></tr>
+                <tr><th>FQC Status</th><td class="${fqcClass}">${d.fqcStatus || '-'}</td></tr>
+                <tr><th>FQC Time</th><td>${formatTime(d.fqcStatusDatetime)}</td></tr>
+            </table>`;
+        } catch (e) {
+            resultDiv.innerHTML = `<p style="color:#f87171;">${e.message}</p>`;
+        }
+    }
+
+    function formatTime(iso) {
+        if (!iso) return '-';
+        const d = new Date(iso);
+        return d.toLocaleString('vi-VN');
+    }
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const val = input.value.trim();
+            if (val.length === 13) {
+                fetchSerialInfo(val);
+                input.select();
+            } else {
+                resultDiv.innerHTML = `<p style="color:#f87171;">Serial phải 13 ký tự.</p>`;
+            }
+        }
+    });
+
+    document.getElementById("exportBtn").addEventListener("click", async () => {
+        const serial = document.getElementById("serialInput").value.trim();
+        if (serial.length !== 13) {
+            alert("Serial phải 13 ký tự.");
+            return;
+        }
+
+        const prefix = serial.substring(0, 9); // lấy 9 ký tự đầu
+        window.location.href = `/GetInfoSerial/ExportExcel/${prefix}`;
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById("editModal");
+        const btnEdit = document.getElementById("btnEdit");
+        const btnCancel = document.getElementById("btnCancel");
+        const btnSave = document.getElementById("btnSave");
+
+        // Mở modal
+        btnEdit.addEventListener("click", () => {
+            modal.style.display = "flex";
+        });
+
+        // Đóng modal
+        btnCancel.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        // Lưu cập nhật
+        btnSave.addEventListener("click", async () => {
+            const serial = document.getElementById("serialInput").value.trim();
+            const svncode = document.getElementById("svnCode").value.trim();
+            const fct = document.getElementById("fctStatus").value;
+            const fqc = document.getElementById("fqcStatus").value;
+
+            if (!svncode) return showMsg("Vui lòng nhập SVN code.", true);
+            if (!serial) return showMsg("Không có serial để sửa.", true);
+
+            const body = { serial, svncode, fct, fqc };
+
+            try {
+                const res = await fetch("/Utils/UpdateSerialStatus", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await res.json();
+                if (!data.ok) {
+                    showMsg(data.message || "Cập nhật thất bại.", true);
+                } else {
+                    showMsg(data.message, false);
+                    modal.style.display = "none";
+                }
+            } catch (err) {
+                showMsg("Lỗi kết nối server.", true);
+            }
+        });
+
+        // Ẩn modal khi click nền tối
+        modal.addEventListener("click", e => {
+            if (e.target === modal) modal.style.display = "none";
+        });
+    });
+
+    function showMsg(text, isError = false) {
+        const msg = document.getElementById("msgBox");
+        msg.textContent = text;
+        msg.style.display = "block";
+
+        if (isError) {
+            msg.style.background = "#dc2626";      // đỏ lỗi
+            msg.style.borderColor = "#f87171";
+        } else {
+            msg.style.background = "#16a34a";      // xanh thành công
+            msg.style.borderColor = "#86efac";
+        }
+
+        // hiệu ứng border nhấp nháy
+        msg.animate([
+            { borderColor: 'transparent' },
+            { borderColor: isError ? '#fca5a5' : '#bbf7d0' },
+            { borderColor: 'transparent' }
+        ], {
+            duration: 800,
+            iterations: 3
+        });
+
+        // Ẩn sau 3 giây
+        clearTimeout(window._msgTimer);
+        window._msgTimer = setTimeout(() => {
+            msg.style.display = "none";
+        }, 3000);
+    }
+</script>

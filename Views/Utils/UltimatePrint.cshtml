@@ -1,0 +1,78 @@
+﻿@using SVN_Tools.Models.Utils;
+@model List<PrinterData>;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Ultimate Print";
+}
+<form method="post">
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">ID máy in</th>
+                        <th scope="col">Tên máy in</th>
+                        <th scope="col">Địa chỉ</th>
+                        <th scope="col">Dây chuyền</th>
+                        <th scope="col">Độ phân giải (dpmm)</th>
+                        <th scope="col">Size (inch)</th>
+                        <th scope="col">Số lượng (mặc định)</th>
+                        <th scope="col">Tùy chọn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        for (int i = 0; i < Model.Count(); i++)
+                        {
+                            <tr>
+                                @{
+                                    int no = i + 1;
+                                }
+                                <th scope="row">@no</th>
+                                <td>
+                                    <span id="spanPrinterID">@Model[i].ID_Printer</span>
+                                </td>
+                                <td>
+                                    @Model[i].Name_Printer
+                                </td>
+                                <td>
+                                    @Model[i].IP_Printer : @Model[i].Port_Printer
+                                </td>
+                                <td>
+                                    @Model[i].target
+                                </td>
+                                <td>
+                                    @Model[i].Size
+                                </td>
+                                <td>
+                                    @Model[i].width x @Model[i].height
+                                </td>
+                                <td>
+                                    @Model[i].quantity
+                                </td>
+                                <td>
+                                    <a href="/Utils/@Model[i].target/@Model[i].ID_Printer">
+                                        <button type="button" data-toggle="modal" data-target="#modalEdit"
+                                            class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true"></i>
+                                            Print</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">Không có dữ liệu</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+</form>
+<script>
+
+
+</script>

@@ -1,0 +1,345 @@
+@model SVN_Tools.Models.Utils.PrinterData;
+@{
+    ViewData["Title"] = ViewBag.oper;
+}
+<style>
+    /* Fix cho Select2 CSS */
+    .select2-container--default .select2-selection--single {
+        height: 42px !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: black !important;
+        line-height: 40px !important;
+        padding-left: 12px !important;
+        padding-right: 20px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 40px !important;
+        right: 10px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        border-color: #555 transparent transparent transparent !important;
+        margin-left: -4px !important;
+        margin-top: -2px !important;
+    }
+
+    .select2-dropdown {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+    }
+
+    .select2-container--default .select2-results__option {
+        color: black !important;
+        padding: 8px 12px !important;
+    }
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+        padding: 8px !important;
+        color: black !important;
+    }
+
+    /* Fix width để match với form-control */
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<h1>@ViewBag.oper</h1>
+<div>
+    <h4>Printer Details</h4>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Name_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Name_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.IP_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.IP_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Port_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Port_Printer)
+                </div>
+                <div class="container mt-3">
+                    <div class="col-12">
+                        <hr />
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-auto">
+                                <label for="sizeLabel" class="">Size:</label> <input type="text"
+                                    class="form-control form-control-sm" id="sizeLabel" placeholder="Size" value="24"
+                                    disabled />
+                            </div>
+                            <div class="col-auto">
+                                <label for="widthLabel" class="">Width:</label>
+                                <input type="text" class="form-control form-control-sm" id="widthLabel"
+                                    placeholder="Width" value="4" disabled />
+                            </div>
+                            <div class="col-auto">
+                                <label for="heightLabel" class="">Height:</label>
+                                <input type="text" class="form-control form-control-sm" id="heightLabel"
+                                    placeholder="Height" value="6" disabled />
+                            </div>
+                            <div class="col-auto">
+                                <label for="copies" class="">Copies:</label>
+                                <input type="number" class="form-control form-control-sm" id="copies"
+                                    placeholder="Copies" value="1" required />
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group mb-3">
+                            <label for="upcNumber" class="">Chọn mã upc</label>
+                            <select class="form-control form-control-sm select2" id="upcNumber"
+                                style="height:42px; color:black">
+                                <option selected disabled>Chọn mã upc</option>
+                            </select>
+                        </div>
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-md-4">
+                                <label for="poNumber" class="">L/N:</label>
+                                <input type="text" class="form-control form-control-sm" id="lotNumber"
+                                    placeholder="Lot Number" required />
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-md-4">
+                                <label for="quantity" class="">Quantity:</label>
+                                <input type="number" class="form-control form-control-sm" id="quantity"
+                                    placeholder="Quantity" required />
+                            </div>
+                            <div class="col-md-4"> <label for="dateWhoop" class="">Date:</label>
+                                <input type="date" class="form-control form-control-sm" id="dateWhoop"
+                                    placeholder="Date" required />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <button class="btn btn-primary" style="margin-left: 12px" id="quick" type="submit">In
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <hr />
+                <hr />
+                <a asp-action="UltimatePrint">Back to List</a>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', async function () {
+                    let zplTemplate;
+                    let quickBtn = document.getElementById('quick');
+                    window.upcItem = "";
+                    window.upcColor = "";
+                    window.upcPnNumber = "";
+
+                    window.upcSize = "";
+
+                    const getCTfromUpc = async (upc_number) => {
+                        upc_number = upc_number.toString();
+                        const url = '@Url.Action("CheckWhoopLabel", "Utils")';
+                        const res = await fetch(url, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ upc_number })
+                        });
+
+                        if (res.ok) {
+                            const result = await res.json();
+                            return result;
+                        } else {
+                            return "Lỗi";
+                        }
+
+                    }
+
+                    const printer = @Html.Raw(Json.Serialize(Model));
+                    const target = printer.target;
+                    const jsonPath = "/json/whoop.json";
+                    let whoopData = [];
+                    const fetchWhoopData = async () => {
+                        try {
+                            const response = await fetch(jsonPath);
+                            const data = await response.json();
+
+                            return data;
+                        } catch (error) {
+                            console.error("Error fetching Whoop data:", error);
+                            return null;
+                        }
+                    };
+                    whoopData = await fetchWhoopData();
+                    console.log(whoopData)
+
+                    const selectElement = document.getElementById("upcNumber");
+                    if (whoopData) {
+                        whoopData.forEach((item) => {
+                            const optionElement = document.createElement("option");
+                            optionElement.value = item.UPC;
+                            optionElement.textContent = `${item.UPC} - ${item.ITEM}`;
+                            selectElement.appendChild(optionElement);
+                        });
+                    }
+
+                    $('#upcNumber').select2({
+                        placeholder: "Chọn mã upc",
+                        allowClear: true,
+                        width: '100%',
+                        language: {
+                            noResults: function () {
+                                return "Không tìm thấy kết quả";
+                            },
+                            searching: function () {
+                                return "Đang tìm kiếm...";
+                            }
+                        }
+                    });
+
+                    // Event handler cho Select2
+                    $('#upcNumber').on('select2:select', async function (e) {
+                        const selectedOption = e.params.data.id;
+                        const selectedItem = whoopData.find((item) => item.UPC.toString() === selectedOption);
+
+                        let res = await getCTfromUpc(selectedItem.UPC);
+                        console.log(res);
+
+                        if (selectedItem) {
+                            window.upcItem = selectedItem.ITEM;
+                            window.upcColor = selectedItem.Color;
+                            window.upcPnNumber = selectedItem.PN;
+                            window.upcNumber = selectedItem.UPC;
+                            if (selectedItem.Size) {
+                                window.upcSize = selectedItem.Size;
+                            } else {
+                                window.upcSize = "";
+                            }
+                        }
+                    });
+
+                    //dateCode
+                    let DateCode = "";
+                    const dateInput = document.getElementById("dateWhoop");
+                    function pad(n) {
+                        return n < 10 ? '0' + n : n;
+                    }
+                    function updateDateCode(dateStr) {
+                        const d = new Date(dateStr);
+                        const yy = String(d.getFullYear()).slice(-2);
+                        const mm = pad(d.getMonth() + 1);
+                        const dd = pad(d.getDate());
+                        DateCode = `${yy}${mm}${dd}`;
+                        console.log("DateCode =", DateCode);
+                    }
+
+                    const loadDate = () => {
+                        const today = new Date();
+
+                        const yyyy = today.getFullYear();
+                        const yy = String(yyyy).slice(-2);
+                        const mm = pad(today.getMonth() + 1);
+                        const dd = pad(today.getDate());
+
+                        // Giá trị full để set vào input date (phải là YYYY-MM-DD)
+                        const todayForInput = `${yyyy}-${mm}-${dd}`;
+                        document.getElementById("dateWhoop").value = todayForInput;
+
+                        // Biến DateCode dạng YYMMDD
+                        DateCode = `${yy}${mm}${dd}`;
+
+                        console.log("DateCode =", DateCode);
+                    };
+
+                    loadDate();
+
+                    dateInput.addEventListener("change", (e) => {
+                        updateDateCode(e.target.value);
+                    });
+
+                    const fetchImage = async (size, width, height, quantity, GTPN, VDPN, LN, DC) => {
+                        const url = '@Url.Action("CreateLabelNoPreview", "Utils")';
+
+
+                        const _ = window.location.pathname.split("/");
+                        const id = _[_.length - 1];
+
+
+                        const res = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ id, size, width, height, quantity, GTPN, VDPN, LN, DC })
+                        });
+
+                        if (res.ok) {
+                            const result = await res.json();
+                            zplTemplate = result.template;
+                            console.log(result)
+                            return zplTemplate;
+                        }
+                    }
+
+                    const quickPrint = async () => {
+                        const size = document.getElementById('sizeLabel')?.value || "";
+                        const width = document.getElementById('widthLabel')?.value || "";
+                        const height = document.getElementById('heightLabel')?.value || "";
+                        const quantity = parseInt(document.getElementById('quantity')?.value || 0);
+                        const LN = document.getElementById("lotNumber")?.value || ""
+                        const DC = DateCode;
+                        const GTPN = window.upcNumber.toString();
+                        const VDPN = window.upcPnNumber;
+                        const zplTemplate = await fetchImage(size, width, height, quantity, GTPN, VDPN, LN, DC);
+
+                        const printer = @Html.Raw(Json.Serialize(Model));
+                        const copies = document.getElementById('copies').value;
+
+                        const payload = {
+                            PrinterIpAddress: printer.iP_Printer,
+                            Port: printer.port_Printer,
+                            ZplCode: zplTemplate,
+                            Copies: copies
+                        }
+
+                        const url = '@Url.Action("printzpl", "Print")';
+
+                        const res = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(payload)
+                        });
+                    }
+
+                    quickBtn.addEventListener("click", async (event) => {
+                        event.preventDefault();
+                        await quickPrint();
+                    })
+
+                });
+            </script>

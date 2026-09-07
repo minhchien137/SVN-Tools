@@ -1,0 +1,478 @@
+[
+    {
+        "STT": 1,
+        "UPC": 810114363249,
+        "ITEM": "Wholesale CoreKnit Band Ash Grey 5.0",
+        "PN": "959-13-012-036-060",
+        "Color": "Ash Grey"
+    },
+    {
+        "STT": 2,
+        "UPC": 810114363232,
+        "ITEM": "Wholesale CoreKnit Band Jet Black 5.0",
+        "PN": "959-13-000-036-059",
+        "Color": "Jet Black"
+    },
+    {
+        "STT": 3,
+        "UPC": 810114363256,
+        "ITEM": "Wholesale CoreKnit Band Royal Blue 5.0",
+        "PN": "959-13-013-036-061",
+        "Color": "Royal Blue"
+    },
+    {
+        "STT": 4,
+        "UPC": 810114363119,
+        "ITEM": "Wholesale SuperKnit Band Glacier MG",
+        "PN": "959-11-005-013-047",
+        "Color": "Glacier"
+    },
+    {
+        "STT": 5,
+        "UPC": 810114363126,
+        "ITEM": "Wholesale SuperKnit Band Forest MG",
+        "PN": "959-11-002-013-048",
+        "Color": "Forest"
+    },
+    {
+        "STT": 6,
+        "UPC": 810114363133,
+        "ITEM": "Wholesale SuperKnit Band Graphite MG",
+        "PN": "959-11-003-013-049",
+        "Color": "Graphite"
+    },
+    {
+        "STT": 7,
+        "UPC": 810114363140,
+        "ITEM": "Wholesale SuperKnit Band Dune MG",
+        "PN": "959-11-004-013-050",
+        "Color": "Dune"
+    },
+    {
+        "STT": 8,
+        "UPC": 810114363157,
+        "ITEM": "Wholesale SuperKnit Band Midnight MG",
+        "PN": "959-11-001-013-051",
+        "Color": "Midnight"
+    },
+    {
+        "STT": 9,
+        "UPC": 810114363164,
+        "ITEM": "Wholesale SuperKnit Band Emerald MG",
+        "PN": "959-11-007-013-052",
+        "Color": "Emerald"
+    },
+    {
+        "STT": 10,
+        "UPC": 810114363171,
+        "ITEM": "Wholesale SuperKnit Band Glacier 5.0",
+        "PN": "959-11-005-036-053",
+        "Color": "Glacier"
+    },
+    {
+        "STT": 11,
+        "UPC": 810114363188,
+        "ITEM": "Wholesale SuperKnit Band Forest 5.0",
+        "PN": "959-11-002-036-054",
+        "Color": "Forest"
+    },
+    {
+        "STT": 12,
+        "UPC": 810114363195,
+        "ITEM": "Wholesale SuperKnit Band Graphite 5.0",
+        "PN": "959-11-003-036-055",
+        "Color": "Graphite"
+    },
+    {
+        "STT": 13,
+        "UPC": 810114363201,
+        "ITEM": "Wholesale SuperKnit Band Dune 5.0",
+        "PN": "959-11-004-036-056",
+        "Color": "Dune"
+    },
+    {
+        "STT": 14,
+        "UPC": 810114363218,
+        "ITEM": "Wholesale SuperKnit Band Midnight 5.0",
+        "PN": "959-11-001-036-057",
+        "Color": "Midnight"
+    },
+    {
+        "STT": 15,
+        "UPC": 810114363225,
+        "ITEM": "Wholesale SuperKnit Band Emerald 5.0",
+        "PN": "959-11-007-036-058",
+        "Color": "Emerald"
+    },
+    {
+        "STT": 16,
+        "UPC": 810114364055,
+        "ITEM": "Wholesale SuperKnit Band Rhodonite MG",
+        "PN": "959-11-006-013-072",
+        "Color": "Rhodonite"
+    },
+    {
+        "STT": 17,
+        "UPC": 810114364062,
+        "ITEM": "Wholesale SuperKnit Band Rhodonite 5.0",
+        "PN": "959-11-006-036-073",
+        "Color": "Rhodonite"
+    },
+    {
+        "STT": 18,
+        "UPC": 810114362754,
+        "ITEM": "CoreKnit Band Jet Black 5.0",
+        "PN": "955-13-000-036-030",
+        "Color": "Jet Black"
+    },
+    {
+        "STT": 19,
+        "UPC": 810114362761,
+        "ITEM": "CoreKnit Band Ash Grey 5.0",
+        "PN": "955-13-012-036-031",
+        "Color": "Ash Grey"
+    },
+    {
+        "STT": 20,
+        "UPC": 810114362778,
+        "ITEM": "CoreKnit Band Royal Blue 5.0",
+        "PN": "955-13-013-036-032",
+        "Color": "Royal Blue"
+    },
+    {
+        "STT": 21,
+        "UPC": 810114362785,
+        "ITEM": "CoreKnit Band Evergreen 5.0",
+        "PN": "955-13-014-036-033",
+        "Color": "Evergreen"
+    },
+    {
+        "STT": 22,
+        "UPC": 810114362792,
+        "ITEM": "CoreKnit Band Cardinal 5.0",
+        "PN": "955-13-015-036-034",
+        "Color": "Cardinal"
+    },
+    {
+        "STT": 23,
+        "UPC": 810114362808,
+        "ITEM": "CoreKnit Bicep Band S/M Jet Black 5.0",
+        "PN": "956-13-000-036-035",
+        "Color": "Jet Black",
+        "Size": "S/M"
+    },
+    {
+        "STT": 24,
+        "UPC": 810114362815,
+        "ITEM": "CoreKnit Bicep Band S/M Ash Grey 5.0",
+        "PN": "956-13-012-036-036",
+        "Color": "Ash Grey",
+        "Size": "S/M"
+    },
+    {
+        "STT": 25,
+        "UPC": 810114362822,
+        "ITEM": "CoreKnit Bicep Band S/M Royal Blue 5.0",
+        "PN": "956-13-013-036-037",
+        "Color": "Royal Blue",
+        "Size": "S/M"
+    },
+    {
+        "STT": 26,
+        "UPC": 810114362839,
+        "ITEM": "CoreKnit Bicep Band L/XL Jet Black 5.0",
+        "PN": "957-13-000-036-038",
+        "Color": "Jet Black",
+        "Size": "L/XL"
+
+    },
+    {
+        "STT": 27,
+        "UPC": 810114362846,
+        "ITEM": "CoreKnit Bicep Band L/XL Ash Grey 5.0",
+        "PN": "957-13-012-036-039",
+        "Color": "Ash Grey",
+        "Size": "L/XL"
+    },
+    {
+        "STT": 28,
+        "UPC": 810114362853,
+        "ITEM": "CoreKnit Bicep Band L/XL Royal Blue 5.0",
+        "PN": "957-13-013-036-040",
+        "Color": "Royal Blue",
+        "Size": "L/XL"
+    },
+    {
+        "STT": 29,
+        "UPC": 810114362457,
+        "ITEM": "SuperKnit Band Glacier MG",
+        "PN": "955-11-005-013-000",
+        "Color": "Glacier"
+    },
+    {
+        "STT": 30,
+        "UPC": 810114362464,
+        "ITEM": "SuperKnit Band Forest MG",
+        "PN": "955-11-002-013-001",
+        "Color": "Forest"
+    },
+    {
+        "STT": 31,
+        "UPC": 810114362471,
+        "ITEM": "SuperKnit Band Graphite MG",
+        "PN": "955-11-003-013-002",
+        "Color": "Graphite"
+    },
+    {
+        "STT": 32,
+        "UPC": 810114362488,
+        "ITEM": "SuperKnit Band Dune MG",
+        "PN": "955-11-004-013-003",
+        "Color": "Dune"
+    },
+    {
+        "STT": 33,
+        "UPC": 810114362495,
+        "ITEM": "SuperKnit Band Midnight MG",
+        "PN": "955-11-001-013-004",
+        "Color": "Midnight"
+    },
+    {
+        "STT": 34,
+        "UPC": 810114362501,
+        "ITEM": "SuperKnit Band Rhodonite MG",
+        "PN": "955-11-006-013-005",
+        "Color": "Rhodonite"
+    },
+    {
+        "STT": 35,
+        "UPC": 810114362518,
+        "ITEM": "SuperKnit Band Emerald MG",
+        "PN": "955-11-007-013-006",
+        "Color": "Emerald"
+    },
+    {
+        "STT": 36,
+        "UPC": 810114362525,
+        "ITEM": "SuperKnit Band Obsidian MG",
+        "PN": "955-11-000-013-007",
+        "Color": "Obsidian"
+    },
+    {
+        "STT": 37,
+        "UPC": 810114362631,
+        "ITEM": "SuperKnit Band Glacier 5.0",
+        "PN": "955-11-005-036-018",
+        "Color": "Glacier"
+    },
+    {
+        "STT": 38,
+        "UPC": 810114362648,
+        "ITEM": "SuperKnit Band Forest 5.0",
+        "PN": "955-11-002-036-019",
+        "Color": "Forest"
+    },
+    {
+        "STT": 39,
+        "UPC": 810114362655,
+        "ITEM": "SuperKnit Band Graphite 5.0",
+        "PN": "955-11-003-036-020",
+        "Color": "Graphite"
+    },
+    {
+        "STT": 40,
+        "UPC": 810114362662,
+        "ITEM": "SuperKnit Band Dune 5.0",
+        "PN": "955-11-004-036-021",
+        "Color": "Dune"
+    },
+    {
+        "STT": 41,
+        "UPC": 810114362679,
+        "ITEM": "SuperKnit Band Midnight 5.0",
+        "PN": "955-11-001-036-022",
+        "Color": "Midnight"
+    },
+    {
+        "STT": 42,
+        "UPC": 810114362686,
+        "ITEM": "SuperKnit Band Rhodonite 5.0",
+        "PN": "955-11-006-036-023",
+        "Color": "Rhodonite"
+    },
+    {
+        "STT": 43,
+        "UPC": 810114362693,
+        "ITEM": "SuperKnit Band Emerald 5.0",
+        "PN": "955-11-007-036-024",
+        "Color": "Emerald"
+    },
+    {
+        "STT": 44,
+        "UPC": 810114362709,
+        "ITEM": "SuperKnit Band Obsidian 5.0",
+        "PN": "955-11-000-036-025",
+        "Color": "Obsidian"
+    },
+    {
+        "STT": 45,
+        "UPC": 810114362532,
+        "ITEM": "SuperKnit Luxe Band Obsidian/Titanium MG",
+        "PN": "955-11-000-013-008",
+        "Color": "Obsidian/Titanium"
+    },
+    {
+        "STT": 46,
+        "UPC": 810114362549,
+        "ITEM": "SuperKnit Luxe Band Obsidian/Gold MG",
+        "PN": "955-11-000-013-009",
+        "Color": "Obsidian/Gold"
+    },
+    {
+        "STT": 47,
+        "UPC": 810114362556,
+        "ITEM": "SuperKnit Luxe Band Midnight/Titanium MG",
+        "PN": "955-11-001-013-010",
+        "Color": "Midnight/Titanium"
+    },
+    {
+        "STT": 48,
+        "UPC": 810114362563,
+        "ITEM": "SuperKnit Luxe Band Dune/Gold MG",
+        "PN": "955-11-004-013-011",
+        "Color": "Dune/Gold"
+    },
+    {
+        "STT": 49,
+        "UPC": 810114362716,
+        "ITEM": "SuperKnit Luxe Band Obsidian/Titanium 5.0",
+        "PN": "955-11-000-036-026",
+        "Color": "Obsidian/Titanium"
+    },
+    {
+        "STT": 50,
+        "UPC": 810114362723,
+        "ITEM": "SuperKnit Luxe Band Obsidian/Gold 5.0",
+        "PN": "955-11-000-036-027",
+        "Color": "Obsidian/Gold"
+    },
+    {
+        "STT": 51,
+        "UPC": 810114362730,
+        "ITEM": "SuperKnit Luxe Band Midnight/Titanium 5.0",
+        "PN": "955-11-001-036-028",
+        "Color": "Midnight/Titanium"
+    },
+    {
+        "STT": 52,
+        "UPC": 810114362747,
+        "ITEM": "SuperKnit Luxe Band Dune/Gold 5.0",
+        "PN": "955-11-004-036-029",
+        "Color": "Dune/Gold"
+    },
+    {
+        "STT": 53,
+        "UPC": 308001014737,
+        "ITEM": "Superknit with Onyx hook",
+        "PN": "750-11-000-015-02-501",
+        "Color": "Obsidian/Conductive Black"
+    },
+    {
+        "STT": 54,
+        "UPC": 308001014736,
+        "ITEM": "Superknit with Polished Titanium hook",
+        "PN": "750-11-000-015-03-500",
+        "Color": "Obsidian/Titanium"
+    },
+    {
+        "STT": 55,
+        "UPC": 308001014735,
+        "ITEM": "Coreknit with Onyx hook",
+        "PN": "750-13-000-015-02-501",
+        "Color": "Jet Black/Conductive Black"
+    },
+    {
+        "STT": 56,
+        "UPC": 810114366936,
+        "ITEM": "WYW SuperKnit Band Coffee 5.0",
+        "PN": "",
+        "Color": "Coffee"
+    },
+    {
+        "STT": 57,
+        "UPC": 810114362921,
+        "ITEM": "WYW SuperKnit Band Glacier 5.0",
+        "PN": "",
+        "Color": "Glacier"
+    },
+    {
+        "STT": 58,
+        "UPC": 810114362938,
+        "ITEM": "WYW SuperKnit Band Forest 5.0",
+        "PN": "",
+        "Color": "Forest"
+    },
+    {
+        "STT": 59,
+        "UPC": 810114362945,
+        "ITEM": "WYW SuperKnit Band Graphite 5.0",
+        "PN": "",
+        "Color": "Graphite"
+    },
+    {
+        "STT": 60,
+        "UPC": 810114362952,
+        "ITEM": "WYW SuperKnit Band Dune 5.0",
+        "PN": "",
+        "Color": "Dune"
+    },
+    {
+        "STT": 61,
+        "UPC": 810114362969,
+        "ITEM": "WYW SuperKnit Band Midnight 5.0",
+        "PN": "",
+        "Color": "Midnight"
+    },
+    {
+        "STT": 62,
+        "UPC": 810114366417,
+        "ITEM": "WYW SuperKnit Band Tide 5.0",
+        "PN": "",
+        "Color": "Tide"
+    },
+    {
+        "STT": 63,
+        "UPC": 810114363003,
+        "ITEM": "WYW SuperKnit Band Blush 5.0",
+        "PN": "",
+        "Color": "Blush"
+    },
+    {
+        "STT": 64,
+        "UPC": 810114363027,
+        "ITEM": "WYW SuperKnit Band Obsidian 5.0",
+        "PN": "",
+        "Color": "Obsidian"
+    },
+    {
+        "STT": 65,
+        "UPC": 810114365342,
+        "ITEM": "WYW SuperKnit Band Echo 5.0",
+        "PN": "",
+        "Color": "Echo"
+    },
+    {
+        "STT": 66,
+        "UPC": 810114365366,
+        "ITEM": "WYW SuperKnit Band Fresh 5.0",
+        "PN": "",
+        "Color": "Fresh"
+    },
+    {
+        "STT": 67,
+        "UPC": 810114366622,
+        "ITEM": "SuperKnit Band Blush MG",
+        "PN": "959-11-009-013-146",
+        "Color": "Blush"
+    }
+]

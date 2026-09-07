@@ -1,0 +1,2324 @@
+@model SVN_Tools.Models.Utils.PrinterData;
+
+@{
+    ViewData["Title"] = ViewBag.oper;
+}
+
+<style>
+    /* Fix cho Select2 CSS */
+    .select2-container--default .select2-selection--single {
+        height: 42px !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: black !important;
+        line-height: 40px !important;
+        padding-left: 12px !important;
+        padding-right: 20px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 40px !important;
+        right: 10px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        border-color: #555 transparent transparent transparent !important;
+        margin-left: -4px !important;
+        margin-top: -2px !important;
+    }
+
+    .select2-dropdown {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+    }
+
+    .select2-container--default .select2-results__option {
+        color: black !important;
+        padding: 8px 12px !important;
+    }
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+        padding: 8px !important;
+        color: black !important;
+    }
+
+    /* Fix width để match với form-control */
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<h1>@ViewBag.oper</h1>
+
+<div>
+    <h4>Printer Details</h4>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Name_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Name_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.IP_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.IP_Printer)
+                </div>
+                <div class="col-2">
+                    @Html.DisplayNameFor(model => model.Port_Printer)
+                </div>
+                <div class="col-10">
+                    @Html.DisplayFor(model => model.Port_Printer)
+                </div>
+                <div class="container mt-3">
+                    <div class="col-12">
+                        <hr />
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-auto" style="display:none">
+                                <label for="sizeLabel" class="">Size:</label> <input type="text"
+                                    class="form-control form-control-sm" id="sizeLabel" placeholder="Size" value="24"
+                                    disabled />
+                            </div>
+                            <div class="col-auto" style="display:none">
+                                <label for="widthLabel" class="">Width:</label>
+                                <input type="text" class="form-control form-control-sm" id="widthLabel"
+                                    placeholder="Width" value="4" disabled />
+                            </div>
+                            <div class="col-auto" style="display:none">
+                                <label for="heightLabel" class="">Height:</label>
+                                <input type="text" class="form-control form-control-sm" id="heightLabel"
+                                    placeholder="Height" value="6" disabled />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="copies" class="">Copies:</label>
+                                <input type="number" class="form-control form-control-sm" id="copies"
+                                    placeholder="Copies" value="2" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="workorder" class="">Work Order:</label>
+                                <input type="text" class="form-control form-control-sm" id="workorder"
+                                    placeholder="Work Order" required />
+                            </div>
+                            <div class="col-md-12 mt-6" id="calculate-message">
+                            </div>
+                            <div id="status" class="text-muted small mb-2"></div>
+                        </div>
+                        <hr />
+
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-md-4">
+                                <label for="poNumber" class="">PO Number:</label>
+                                <input type="text" class="form-control form-control-sm" id="poNumber"
+                                    placeholder="PO Number" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="totalCt" class="">Total C/T NO:</label>
+                                <input type="number" class="form-control form-control-sm" id="totalCt"
+                                    placeholder="C/T Total" required />
+                            </div>
+                        </div>
+
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-md-4">
+                                <label for="ctNo" class="">C/T NO:</label>
+                                <input type="number" class="form-control form-control-sm" id="ctNo" placeholder="C/T NO"
+                                    required />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="quantity" class="">Quantity:</label>
+                                <input type="number" class="form-control form-control-sm" id="quantity"
+                                    placeholder="Quantity" value="80" required />
+                            </div>
+                            <div class="col-md-4"> <label for="dateWhoop" class="">Date:</label>
+                                <input type="date" class="form-control form-control-sm" id="dateWhoop"
+                                    placeholder="Date" required />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <ul>
+                                <li>Kiểm tra lại thông tin</li>
+                                <li>Ấn numpad 1 để Preview</li>
+                                <li>Ấn numpad 2 để Save PO và date (nếu cần)</li>
+                                <li>Ấn numpad 3 để chuyển sang trang scan luôn</li>
+                                <li>Ấn numpad 4 để load date từ MES</li>
+                                <li>Ấn Enter để In tem</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="imagebox">
+                <img id="labelImage" src="@ViewBag.imageUrl" style="width:80%" alt="Ấn nút Lưu Zpl và nút Load Ảnh" />
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <hr />
+    <hr />
+    <a asp-action="UltimatePrint">Back to List</a>
+</div>
+
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', async function () {
+
+        // === setup ===
+
+        let zplTemplate;
+        let workorderInput = document.getElementById('workorder');
+
+        let upcNumber = "", upcItem = "", upcColor = "", upcPnNumber = "", upcSize = "";
+        let lastDateUpc = "";
+        const colors = [
+            "Ash Grey",
+            "Jet Black",
+            "Royal Blue",
+            "Glacier",
+            "Forest",
+            "Graphite",
+            "Dune",
+            "Midnight",
+            "Emerald",
+            "Rhodonite",
+            "Evergreen",
+            "Cardinal",
+            "Obsidian",
+            "Obsidian/Titanium",
+            "Obsidian/Gold",
+            "Midnight/Titanium",
+            "Dune/Gold"
+        ];
+        const sizes = ["L/XL", "S/M"];
+
+        // === local storage ===
+
+        @* const savePOButton = document.getElementById("savePO");
+        savePOButton.addEventListener("click", async () => {
+            const poNumber = document.getElementById('poNumber').value;
+        }) *@
+
+            @* const loadPreviousData = () => {
+            try {
+                const dateWhoop = localStorage.getItem('dateWhoop');
+                if (dateWhoop && /^\d{4}-\d{2}-\d{2}$/.test(dateWhoop)) {
+                    const el = document.getElementById('dateWhoop');
+                    if (el) el.value = dateWhoop; // input type=date cần yyyy-MM-dd
+                }
+
+                    console.log('load date');
+            } catch (e) {
+                console.error('Cannot access localStorage (khác origin / bị chặn?):', e);
+            }
+        };
+
+        loadPreviousData(); *@
+
+
+
+        // === load workorder ===
+        const processWorkorder = async (workorder, colors, sizes) => {
+            try {
+                const response = await fetch(`/api/odoo/search2?productionCode=${workorder}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+                if (!response.ok) throw new Error(await response.text());
+                const data = await response.json();
+                if (!data?.result?.records?.length) throw new Error("Dữ liệu UPC không hợp lệ.");
+
+                const rec = data.result.records[0];
+                const UPC = rec.product_id[1];
+
+                const regex = /^\[(\d+)\]\s+([\d-]+)\s+(.*)$/;
+                const match = UPC.match(regex);
+                if (!match) throw new Error("Định dạng UPC không hợp lệ.");
+
+                const upcNumber_ = match[1];
+                const upcPnNumber_ = match[2];
+                const upcItem_ = match[3];
+
+                let upcColor_ = '';
+                for (let color of colors) if (upcItem_.includes(color)) { upcColor_ = color; break; }
+
+                let upcSize_ = '';
+                for (let size of sizes) if (upcItem_.includes(size)) { upcSize_ = size; break; }
+
+                // gán biến toàn cục (nếu vẫn cần)
+                upcNumber = upcNumber_;
+                upcPnNumber = upcPnNumber_;
+                upcItem = upcItem_;
+                upcColor = upcColor_;
+                upcSize = upcSize_;
+
+                // ====== Xử lý date_deadline: cộng thêm 7 giờ ======
+                let dateUpc = rec.date_deadline; // "2025-10-09 17:00:00"
+                if (dateUpc) {
+                    const utcDate = new Date(dateUpc.replace(" ", "T") + "Z"); // ép về UTC
+                    utcDate.setHours(utcDate.getHours() + 7); // cộng 7 giờ
+                    // Format lại yyyy-mm-dd
+                    const y = utcDate.getFullYear();
+                    const m = String(utcDate.getMonth() + 1).padStart(2, '0');
+                    const d = String(utcDate.getDate()).padStart(2, '0');
+                    dateUpc = `${y}-${m}-${d}`;
+                }
+                lastDateUpc = dateUpc;
+
+                @* document.getElementById("dateWhoop").value = dateUpc; *@
+
+                const totalQtyUpc = Number(rec.product_qty) || 0;
+                const qtyProduced = Number(rec.qty_produced) || 0; // <<< LẤY SỐ ĐÃ LÀM
+
+                return { upcNumber_, upcPnNumber_, upcItem_, upcColor_, upcSize_, totalQtyUpc, dateUpc, qtyProduced };
+            } catch (error) {
+                alert("WO không hợp lệ");
+                console.error("Lỗi xử lý Workorder:", error);
+                return null;
+            }
+        };
+
+        // === lấy số lượng hộp của thùng 36/80 ===
+        // === lấy số lượng mỗi thùng (quantityPerBox) từ API và set vào #quantity ===
+        async function fetchAndSetTargetFromProxy(serial) {
+            const qtyInput = document.getElementById('quantity');
+            const statusEl = document.getElementById('status');
+            const fallback = 80;
+
+            if (!qtyInput) {
+                console.error('#quantity input not found');
+                return fallback;
+            }
+
+            if (!serial) {
+                // không có mã -> dùng mặc định
+                qtyInput.value = fallback;
+                if (statusEl) statusEl.textContent = 'Không có mã serial — dùng mặc định ' + fallback;
+                return fallback;
+            }
+
+            const apiUrl = '/api/verifyemployeedata/GetProductItemByCode?code=' + encodeURIComponent(serial);
+
+            try {
+                if (statusEl) statusEl.textContent = 'Đang lấy quantityPerBox cho: ' + serial + ' ...';
+
+                const resp = await fetch(apiUrl, { method: 'GET' });
+                const raw = await resp.text();
+
+                let data = null;
+                try { data = raw ? JSON.parse(raw) : null; } catch {
+                    // JSON không hợp lệ
+                }
+
+                // Mặc định
+                let quantityPerBox = fallback;
+
+                if (resp.ok && data && data.ok === true) {
+                    const contentStr = String(data.content ?? '').trim();
+                    const parsed = parseInt(contentStr, 10);
+
+                    if (Number.isFinite(parsed) && parsed > 0) {
+                        quantityPerBox = parsed;
+                    } else {
+                        console.warn('Giá trị content không hợp lệ:', data?.content);
+                    }
+                } else {
+                    console.warn('API trả lỗi hoặc payload không hợp lệ:', resp.status, raw);
+                }
+
+                // Gán vào input và trả về cho phần tính toán phía ngoài
+                qtyInput.value = quantityPerBox;
+                if (statusEl) statusEl.textContent = "";
+
+                return quantityPerBox;
+            } catch (err) {
+                console.error('Lỗi khi gọi API quantityPerBox:', err);
+                qtyInput.value = fallback;
+                if (statusEl) statusEl.textContent = 'Lỗi API — dùng mặc định ' + fallback;
+                return fallback;
+            }
+        }
+
+        //lấy po từ đầu
+        @* async function fetchPoNumberByProductionCode(productionCode) {
+            const url = '/api/odoo/getPoNumber?productionCode=' + encodeURIComponent(productionCode);
+            const resp = await fetch(url, { method: 'GET' });
+            if (!resp.ok) {
+                // Không chặn luồng, để fallback localStorage
+                console.error('getPoNumber failed:', resp.status, await resp.text());
+                return null;
+            }
+            const data = await resp.json().catch(() => ({}));
+            const po = data?.poNumber;
+            // Trả về null nếu rỗng/undefined
+            if (po === null || po === undefined || String(po).trim() === '') return null;
+            return String(po).trim();
+        } *@
+
+            async function fetchPoAndDeadlineByProductionCode(productionCode) {
+                const url = '/api/odoo/getPoNumber?productionCode=' + encodeURIComponent(productionCode);
+                try {
+                    const resp = await fetch(url, { method: 'GET' });
+                    if (!resp.ok) throw new Error(await resp.text());
+
+                    const data = await resp.json().catch(() => ({}));
+                    // kỳ vọng backend trả { poNumber: string|null, deadline: string|null }
+                    const rawPo = (data?.poNumber ?? "").toString().trim();
+                    const rawDeadline = data?.deadline ?? null;
+
+                    const poNumber = rawPo !== "" ? rawPo : null;
+                    const dateYmd = normalizeDeadlineToYmd(rawDeadline);
+
+                    return { poNumber, dateYmd: dateYmd || null };
+                } catch (e) {
+                    console.error('fetchPoAndDeadlineByProductionCode error:', e);
+                    return null; // để fallback localStorage
+                }
+            }
+
+        async function initPoAndDateFromParamsOrLocal() {
+            console.log("đang lấy PO + deadline từ API, nếu fail sẽ dùng localStorage");
+            const poInput = document.getElementById('poNumber');
+            const dateInput = document.getElementById('dateWhoop');
+            if (!poInput || !dateInput) return;
+
+            // Fallback từ localStorage
+            const poFromLocal = localStorage.getItem('poNumber');
+            const dateFromLocal = localStorage.getItem('dateWhoop'); // đã là yyyy-MM-dd trong app
+
+            // Lấy WO từ URL (giữ logic cũ)
+            const params = new URLSearchParams(window.location.search);
+            const fullWO =
+                params.get('wo') ||
+                params.get('workOrder') ||
+                params.get('work_order') ||
+                params.get('workorder') ||
+                params.get('work-order');
+
+            if (fullWO) {
+                const api = await fetchPoAndDeadlineByProductionCode(fullWO);
+                if (api) {
+                    // Điền từ API nếu có giá trị; nếu null thì giữ/điền từ local
+                    if (api.poNumber) {
+                        poInput.value = api.poNumber;
+                    } else if (poFromLocal) {
+                        poInput.value = poFromLocal;
+                    }
+
+                    if (api.dateYmd) {
+                        dateInput.value = api.dateYmd; // input type=date cần yyyy-MM-dd
+                    } else if (dateFromLocal && /^\d{4}-\d{2}-\d{2}$/.test(dateFromLocal)) {
+                        dateInput.value = dateFromLocal;
+                    }
+                    return; // đã xử lý
+                }
+            }
+
+            // Không có WO hoặc API fail → dùng localStorage
+            if (poFromLocal) poInput.value = poFromLocal;
+            if (dateFromLocal && /^\d{4}-\d{2}-\d{2}$/.test(dateFromLocal)) dateInput.value = dateFromLocal;
+        }
+
+        initPoAndDateFromParamsOrLocal();
+
+        // === event đọc workorder ===
+        workorderInput.addEventListener("input", async (event) => {
+            const v = event.target.value;
+            if (v.length == 11) {
+                const woData = await processWorkorder(v, colors, sizes);
+                if (woData) {
+                    const { upcNumber_, totalQtyUpc, qtyProduced } = woData; // <<< nhận thêm qtyProduced
+                    const quantityPerBox = await fetchAndSetTargetFromProxy(upcNumber_);
+                    if (quantityPerBox && quantityPerBox > 0) {
+                        document.getElementById('quantity').value = quantityPerBox;
+
+                        const fullBoxes = Math.floor(totalQtyUpc / quantityPerBox);
+                        const remainingQty = totalQtyUpc % quantityPerBox;
+                        const totalCt = remainingQty > 0 ? fullBoxes + 1 : fullBoxes;
+
+                        document.getElementById("totalCt").value = totalCt;
+                        @* document.getElementById("inMotLoat").value = fullBoxes; *@
+
+                        const msg = remainingQty > 0
+                            ? `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, và 1 thùng lẻ ${remainingQty} cái`
+                            : `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, không có thùng lẻ`;
+                        document.getElementById("calculate-message").innerHTML = msg;
+
+                        // >>> TÍNH THÙNG SẮP IN
+                        let nextCtNo = Math.floor(qtyProduced / quantityPerBox);
+                        if (nextCtNo < 1) nextCtNo = 1;
+                        if (nextCtNo > totalCt) nextCtNo = totalCt;
+                        document.getElementById('ctNo').value = nextCtNo;
+
+                        // >>> NẾU LÀ THÙNG CUỐI CÙNG -> quantity = số lẻ còn lại
+                        if (nextCtNo === totalCt && remainingQty > 0) {
+                            document.getElementById('quantity').value = remainingQty;
+                        } else {
+                            document.getElementById('quantity').value = quantityPerBox;
+                        }
+                    }
+                }
+            }
+        });
+
+        // === Auto-fill từ URL khi redirect sang ===
+        try {
+            const params = new URLSearchParams(window.location.search);
+
+            // Lấy 5 chữ số cuối của WO từ param "wo" (khuyến nghị), chấp nhận thêm vài alias
+            const fullWO =
+                params.get('wo') ||
+                params.get('workOrder') ||
+                params.get('workorder') ||
+                params.get('work_order') ||
+                params.get('work-order');
+
+            // Validate: 5 chữ số
+            if (fullWO) {
+                workorderInput.value = fullWO;
+                console.log(fullWO)
+
+                const woData = await processWorkorder(fullWO, colors, sizes);
+                if (woData) {
+                    const { upcNumber_, totalQtyUpc, qtyProduced } = woData; // <<< nhận thêm qtyProduced
+                    const quantityPerBox = await fetchAndSetTargetFromProxy(upcNumber_);
+
+                    if (quantityPerBox && quantityPerBox > 0) {
+                        document.getElementById('quantity').value = quantityPerBox;
+
+                        const fullBoxes = Math.floor(totalQtyUpc / quantityPerBox);
+                        const remainingQty = totalQtyUpc % quantityPerBox;
+                        const totalCt = remainingQty > 0 ? fullBoxes + 1 : fullBoxes;
+
+                        document.getElementById("totalCt").value = totalCt;
+                        @* document.getElementById("inMotLoat").value = fullBoxes; *@
+
+                        const msg = remainingQty > 0
+                            ? `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, và 1 thùng lẻ ${remainingQty} cái`
+                            : `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, không có thùng lẻ`;
+                        document.getElementById("calculate-message").innerHTML = msg;
+
+                        // >>> TÍNH THÙNG SẮP IN
+                        let nextCtNo = Math.floor(qtyProduced / quantityPerBox);
+                        if (nextCtNo < 1) nextCtNo = 1;
+                        if (nextCtNo > totalCt) nextCtNo = totalCt;
+                        document.getElementById('ctNo').value = nextCtNo;
+
+                        // >>> NẾU LÀ THÙNG CUỐI CÙNG -> quantity = số lẻ còn lại
+                        if (nextCtNo === totalCt && remainingQty > 0) {
+                            document.getElementById('quantity').value = remainingQty;
+                        } else {
+                            document.getElementById('quantity').value = quantityPerBox;
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            console.error('Lỗi auto-parse URL params:', e);
+        }
+
+        const fetchImage = async (size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem) => {
+            const url = '@Url.Action("CreateLabel", "Utils")';
+
+            const image = $("#labelImage")[0];
+
+            const _ = window.location.pathname.split("/");
+            const id = _[_.length - 1];
+            console.log(size, width, height, id, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem)
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ size, width, height, id, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem })
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                image.setAttribute("src", result.imagePath);
+                zplTemplate = result.template;
+                console.log(result)
+                return zplTemplate;
+            }
+        }
+
+
+        const printer = @Html.Raw(Json.Serialize(Model));
+        const target = printer.target;
+
+        const previewLabel = async () => {
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const desc = document.getElementById('desc')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            const poNumber = document.getElementById('poNumber')?.value || "";
+            const ctNo = document.getElementById('ctNo')?.value || "";
+            const totalCt = document.getElementById('totalCt')?.value || "";
+            const ctNumber = `${ctNo} of ${totalCt}`
+            const workorder = document.getElementById('workorder')?.value || "";
+            let itemSize = upcSize;
+            let dateWhoop = document.getElementById('dateWhoop')?.value || "";
+            if (dateWhoop) {
+                let temp = dateWhoop.split("-");
+                let year = temp[0]; // Năm
+                let month = parseInt(temp[1], 10); // Tháng (chuyển sang số để bỏ số 0 ở đầu nếu có)
+                let date = parseInt(temp[2], 10); // Ngày (chuyển sang số để bỏ số 0 ở đầu nếu có)
+
+                // Sắp xếp lại thứ tự để có định dạng YYYY/M/D
+                dateWhoop = `${year}/${month}/${date}`;
+                console.log(dateWhoop)
+            }
+            fetchImage(size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem);
+        }
+
+        async function logWalter(message) {
+            try {
+                const resp = await fetch('/api/astrolabel/walterlog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: message })
+                });
+
+                if (!resp.ok) {
+                    console.error('Log thất bại:', await resp.text());
+                } else {
+                    console.log('Đã log:', message);
+                }
+            } catch (err) {
+                console.error('Lỗi khi log:', err);
+            }
+        }
+
+        const handlePrinter = async () => {
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const desc = document.getElementById('desc')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            const poNumber = document.getElementById('poNumber')?.value || "";
+            const ctNo = document.getElementById('ctNo')?.value || "";
+            const totalCt = document.getElementById('totalCt')?.value || "";
+            const ctNumber = `${ctNo} of ${totalCt}`
+            const workorder = document.getElementById('workorder')?.value || "";
+            let itemSize = upcSize;
+            let dateWhoop = document.getElementById('dateWhoop')?.value || "";
+            if (dateWhoop) {
+                let temp = dateWhoop.split("-");
+                let year = temp[0]; // Năm
+                let month = parseInt(temp[1], 10); // Tháng (chuyển sang số để bỏ số 0 ở đầu nếu có)
+                let date = parseInt(temp[2], 10); // Ngày (chuyển sang số để bỏ số 0 ở đầu nếu có)
+
+                // Sắp xếp lại thứ tự để có định dạng YYYY/M/D
+                dateWhoop = `${year}/${month}/${date}`;
+                console.log(dateWhoop)
+            }
+            const zplTemplate = await fetchImage(size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem);
+
+            const printer = @Html.Raw(Json.Serialize(Model));
+            const copies = document.getElementById('copies').value;
+
+            const payload = {
+                PrinterIpAddress: printer.iP_Printer,
+                Port: printer.port_Printer,
+                ZplCode: zplTemplate,
+                Copies: copies
+            }
+
+            const url = '@Url.Action("printzpl", "Print")';
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    console.log("In thành công!");
+
+                    const message = `In tem số ${ctNo}/${totalCt} với PO: ${poNumber}, Date: ${dateWhoop}, WO: ${workorder}, Số lượng: ${quantity}, UPC: ${upcNumber}`;
+                    await logWalter(message);
+                    // Chờ 2s rồi redirect
+                    setTimeout(() => {
+                        window.location.href = "http://10.10.99.10:8102/Utils/scantocheckwithwo/whoop";
+                    }, 2000);
+                } else {
+                    console.error("Lỗi khi in:", await res.text());
+                    alert("Không thể in. Vui lòng kiểm tra máy in hoặc kết nối.");
+                }
+            } catch (error) {
+                console.error("Lỗi mạng khi in:", error);
+                alert("Lỗi kết nối khi in.");
+            }
+        }
+
+        // === PHÍM TẮT ===
+        document.addEventListener('keydown', async (e) => {
+            // Phím Numpad 1 → Preview
+            if (e.code === 'Numpad1') {
+                e.preventDefault();
+                console.log('Phím Numpad 1 → Preview');
+                await previewLabel();
+            }
+
+            // Phím Numpad 2 → Save PO
+            else if (e.code === 'Numpad2') {
+                e.preventDefault();
+                console.log('Phím Numpad 2 → Save PO');
+                const poInput = document.getElementById('poNumber');
+                const dateWhoop = document.getElementById('dateWhoop').value;
+                const poNumber = poInput?.value?.trim();
+                if (poNumber) {
+                    await localStorage.setItem('poNumber', poNumber);
+                    alert('Đã lưu PO và date vào LocalStorage!');
+                }
+                if (dateWhoop) {
+                    await localStorage.setItem('dateWhoop', dateWhoop);
+                    alert('Đã lưu ngày làm vào LocalStorage!');
+                }
+            }
+            else if (e.code === 'Numpad3') {
+                e.preventDefault();
+                console.log('Phím Numpad 3 → Redirect sang trang scan');
+                // ✅ Redirect thẳng mà không in
+                window.location.href = "http://10.10.99.10:8102/Utils/scantocheckwithwo/whoop";
+            }
+            else if (e.code === 'Numpad4') {
+                e.preventDefault();
+                console.log('Phím Numpad 4 → Load lại ngày từ biến toàn cục');
+                const dateInput = document.getElementById('dateWhoop');
+
+                if (lastDateUpc && dateInput) {
+                    dateInput.value = lastDateUpc;
+                    alert('Đã nạp lại ngày từ cache: ' + lastDateUpc);
+                } else {
+                    alert('Chưa có ngày nào trong cache. Hãy nhập WO trước!');
+                }
+            }
+
+            // Phím Enter → In tem
+            else if (e.code === 'Enter') {
+                // Tránh bị trigger trong khi gõ input
+                const tag = document.activeElement.tagName.toLowerCase();
+                if (tag === 'input' || tag === 'textarea') return;
+
+                e.preventDefault();
+                console.log('Phím Enter → In Tem');
+                if (!zplTemplate) await previewLabel(); // Nếu chưa có template thì preview trước
+
+                await handlePrinter();
+            }
+        });
+
+        const normalizeDeadlineToYmd = (s) => {
+            if (!s) return "";
+            const t = String(s).trim();
+            // "YYYY-MM-DD"
+            if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
+            // "YYYYMMDD"
+            if (/^\d{8}$/.test(t)) return `${t.slice(0, 4)}-${t.slice(4, 6)}-${t.slice(6, 8)}`;
+            return ""; // định dạng lạ -> bỏ qua
+        };
+
+
+    });
+</script>
+
+
+//printer cũ
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', async function () {
+
+        // === setup ===
+
+        let zplTemplate;
+        let workorderInput = document.getElementById('workorder');
+
+        let upcNumber = "", upcItem = "", upcColor = "", upcPnNumber = "", upcSize = "";
+        let lastDateUpc = "";
+        const colors = [
+            "Ash Grey",
+            "Jet Black",
+            "Royal Blue",
+            "Glacier",
+            "Forest",
+            "Graphite",
+            "Dune",
+            "Midnight",
+            "Emerald",
+            "Rhodonite",
+            "Evergreen",
+            "Cardinal",
+            "Obsidian",
+            "Obsidian/Titanium",
+            "Obsidian/Gold",
+            "Midnight/Titanium",
+            "Dune/Gold"
+        ];
+        const sizes = ["L/XL", "S/M"];
+
+        // === local storage ===
+
+        @* const savePOButton = document.getElementById("savePO");
+        savePOButton.addEventListener("click", async () => {
+            const poNumber = document.getElementById('poNumber').value;
+        }) *@
+
+            @* const loadPreviousData = () => {
+            try {
+                const dateWhoop = localStorage.getItem('dateWhoop');
+                if (dateWhoop && /^\d{4}-\d{2}-\d{2}$/.test(dateWhoop)) {
+                    const el = document.getElementById('dateWhoop');
+                    if (el) el.value = dateWhoop; // input type=date cần yyyy-MM-dd
+                }
+
+                    console.log('load date');
+            } catch (e) {
+                console.error('Cannot access localStorage (khác origin / bị chặn?):', e);
+            }
+        };
+
+        loadPreviousData(); *@
+
+
+
+        // === load workorder ===
+        const processWorkorder = async (workorder, colors, sizes) => {
+            try {
+                const response = await fetch(`/api/odoo/search2?productionCode=${workorder}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+                if (!response.ok) throw new Error(await response.text());
+                const data = await response.json();
+                if (!data?.result?.records?.length) throw new Error("Dữ liệu UPC không hợp lệ.");
+
+                const rec = data.result.records[0];
+                const UPC = rec.product_id[1];
+
+                const regex = /^\[(\d+)\]\s+([\d-]+)\s+(.*)$/;
+                const match = UPC.match(regex);
+                if (!match) throw new Error("Định dạng UPC không hợp lệ.");
+
+                const upcNumber_ = match[1];
+                const upcPnNumber_ = match[2];
+                const upcItem_ = match[3];
+
+                let upcColor_ = '';
+                for (let color of colors) if (upcItem_.includes(color)) { upcColor_ = color; break; }
+
+                let upcSize_ = '';
+                for (let size of sizes) if (upcItem_.includes(size)) { upcSize_ = size; break; }
+
+                // gán biến toàn cục (nếu vẫn cần)
+                upcNumber = upcNumber_;
+                upcPnNumber = upcPnNumber_;
+                upcItem = upcItem_;
+                upcColor = upcColor_;
+                upcSize = upcSize_;
+
+                // ====== Xử lý date_deadline: cộng thêm 7 giờ ======
+                let dateUpc = rec.date_deadline; // "2025-10-09 17:00:00"
+                if (dateUpc) {
+                    const utcDate = new Date(dateUpc.replace(" ", "T") + "Z"); // ép về UTC
+                    utcDate.setHours(utcDate.getHours() + 7); // cộng 7 giờ
+                    // Format lại yyyy-mm-dd
+                    const y = utcDate.getFullYear();
+                    const m = String(utcDate.getMonth() + 1).padStart(2, '0');
+                    const d = String(utcDate.getDate()).padStart(2, '0');
+                    dateUpc = `${y}-${m}-${d}`;
+                }
+                lastDateUpc = dateUpc;
+
+                @* document.getElementById("dateWhoop").value = dateUpc; *@
+
+                const totalQtyUpc = Number(rec.product_qty) || 0;
+                const qtyProduced = Number(rec.qty_produced) || 0; // <<< LẤY SỐ ĐÃ LÀM
+
+                return { upcNumber_, upcPnNumber_, upcItem_, upcColor_, upcSize_, totalQtyUpc, dateUpc, qtyProduced };
+            } catch (error) {
+                alert("WO không hợp lệ");
+                console.error("Lỗi xử lý Workorder:", error);
+                return null;
+            }
+        };
+
+        // === lấy số lượng hộp của thùng 36/80 ===
+        // === lấy số lượng mỗi thùng (quantityPerBox) từ API và set vào #quantity ===
+        async function fetchAndSetTargetFromProxy(serial) {
+            const qtyInput = document.getElementById('quantity');
+            const statusEl = document.getElementById('status');
+            const fallback = 80;
+
+            if (!qtyInput) {
+                console.error('#quantity input not found');
+                return fallback;
+            }
+
+            if (!serial) {
+                // không có mã -> dùng mặc định
+                qtyInput.value = fallback;
+                if (statusEl) statusEl.textContent = 'Không có mã serial — dùng mặc định ' + fallback;
+                return fallback;
+            }
+
+            const apiUrl = '/api/verifyemployeedata/GetProductItemByCode?code=' + encodeURIComponent(serial);
+
+            try {
+                if (statusEl) statusEl.textContent = 'Đang lấy quantityPerBox cho: ' + serial + ' ...';
+
+                const resp = await fetch(apiUrl, { method: 'GET' });
+                const raw = await resp.text();
+
+                let data = null;
+                try { data = raw ? JSON.parse(raw) : null; } catch {
+                    // JSON không hợp lệ
+                }
+
+                // Mặc định
+                let quantityPerBox = fallback;
+
+                if (resp.ok && data && data.ok === true) {
+                    const contentStr = String(data.content ?? '').trim();
+                    const parsed = parseInt(contentStr, 10);
+
+                    if (Number.isFinite(parsed) && parsed > 0) {
+                        quantityPerBox = parsed;
+                    } else {
+                        console.warn('Giá trị content không hợp lệ:', data?.content);
+                    }
+                } else {
+                    console.warn('API trả lỗi hoặc payload không hợp lệ:', resp.status, raw);
+                }
+
+                // Gán vào input và trả về cho phần tính toán phía ngoài
+                qtyInput.value = quantityPerBox;
+                if (statusEl) statusEl.textContent = "";
+
+                return quantityPerBox;
+            } catch (err) {
+                console.error('Lỗi khi gọi API quantityPerBox:', err);
+                qtyInput.value = fallback;
+                if (statusEl) statusEl.textContent = 'Lỗi API — dùng mặc định ' + fallback;
+                return fallback;
+            }
+        }
+
+
+        async function fetchPoAndDeadlineByProductionCode(productionCode) {
+            const url = '/api/odoo/getPoNumber?productionCode=' + encodeURIComponent(productionCode);
+            try {
+                const resp = await fetch(url, { method: 'GET' });
+                if (!resp.ok) throw new Error(await resp.text());
+
+                const data = await resp.json().catch(() => ({}));
+                // kỳ vọng backend trả { poNumber: string|null, deadline: string|null }
+                const rawPo = (data?.poNumber ?? "").toString().trim();
+                const rawDeadline = data?.deadline ?? null;
+
+                const poNumber = rawPo !== "" ? rawPo : null;
+                const dateYmd = normalizeDeadlineToYmd(rawDeadline);
+
+                return { poNumber, dateYmd: dateYmd || null };
+            } catch (e) {
+                console.error('fetchPoAndDeadlineByProductionCode error:', e);
+                return null; // để fallback localStorage
+            }
+        }
+
+        async function initPoAndDateFromParamsOrLocal() {
+            console.log("đang lấy PO + deadline từ API, nếu fail sẽ dùng localStorage");
+            const poInput = document.getElementById('poNumber');
+            const dateInput = document.getElementById('dateWhoop');
+            if (!poInput || !dateInput) return;
+
+            // Fallback từ localStorage
+            const poFromLocal = localStorage.getItem('poNumber');
+            const dateFromLocal = localStorage.getItem('dateWhoop'); // đã là yyyy-MM-dd trong app
+
+            // Lấy WO từ URL (giữ logic cũ)
+            const params = new URLSearchParams(window.location.search);
+            const fullWO =
+                params.get('wo') ||
+                params.get('workOrder') ||
+                params.get('work_order') ||
+                params.get('workorder') ||
+                params.get('work-order');
+
+            if (fullWO) {
+                const api = await fetchPoAndDeadlineByProductionCode(fullWO);
+                if (api) {
+                    // Điền từ API nếu có giá trị; nếu null thì giữ/điền từ local
+                    if (api.poNumber) {
+                        poInput.value = api.poNumber;
+                    } else if (poFromLocal) {
+                        poInput.value = poFromLocal;
+                    }
+
+                    if (api.dateYmd) {
+                        dateInput.value = api.dateYmd; // input type=date cần yyyy-MM-dd
+                    } else if (dateFromLocal && /^\d{4}-\d{2}-\d{2}$/.test(dateFromLocal)) {
+                        dateInput.value = dateFromLocal;
+                    }
+                    return; // đã xử lý
+                }
+            }
+
+            // Không có WO hoặc API fail → dùng localStorage
+            if (poFromLocal) poInput.value = poFromLocal;
+            if (dateFromLocal && /^\d{4}-\d{2}-\d{2}$/.test(dateFromLocal)) dateInput.value = dateFromLocal;
+        }
+
+        initPoAndDateFromParamsOrLocal();
+
+        // === event đọc workorder ===
+        workorderInput.addEventListener("input", async (event) => {
+            const v = event.target.value;
+            if (v.length == 11) {
+                const woData = await processWorkorder(v, colors, sizes);
+                if (woData) {
+                    const { upcNumber_, totalQtyUpc, qtyProduced } = woData; // <<< nhận thêm qtyProduced
+                    const quantityPerBox = await fetchAndSetTargetFromProxy(upcNumber_);
+                    if (quantityPerBox && quantityPerBox > 0) {
+                        document.getElementById('quantity').value = quantityPerBox;
+
+                        const fullBoxes = Math.floor(totalQtyUpc / quantityPerBox);
+                        const remainingQty = totalQtyUpc % quantityPerBox;
+                        const totalCt = remainingQty > 0 ? fullBoxes + 1 : fullBoxes;
+
+                        document.getElementById("totalCt").value = totalCt;
+                        @* document.getElementById("inMotLoat").value = fullBoxes; *@
+
+                        const msg = remainingQty > 0
+                            ? `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, và 1 thùng lẻ ${remainingQty} cái`
+                            : `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, không có thùng lẻ`;
+                        document.getElementById("calculate-message").innerHTML = msg;
+
+                        // >>> TÍNH THÙNG SẮP IN
+                        let nextCtNo = Math.ceil(qtyProduced / quantityPerBox);
+                        if (nextCtNo < 1) nextCtNo = 1;
+                        if (nextCtNo > totalCt) nextCtNo = totalCt;
+                        document.getElementById('ctNo').value = nextCtNo;
+
+                        // >>> NẾU LÀ THÙNG CUỐI CÙNG -> quantity = số lẻ còn lại
+                        if (nextCtNo === totalCt && remainingQty > 0) {
+                            document.getElementById('quantity').value = remainingQty;
+                        } else {
+                            document.getElementById('quantity').value = quantityPerBox;
+                        }
+                    }
+                }
+            }
+        });
+
+        // === Auto-fill từ URL khi redirect sang ===
+        try {
+            const params = new URLSearchParams(window.location.search);
+
+            // Lấy 5 chữ số cuối của WO từ param "wo" (khuyến nghị), chấp nhận thêm vài alias
+            const fullWO =
+                params.get('wo') ||
+                params.get('workOrder') ||
+                params.get('workorder') ||
+                params.get('work_order') ||
+                params.get('work-order');
+
+            // Validate: 5 chữ số
+            if (fullWO) {
+                workorderInput.value = fullWO;
+                console.log(fullWO)
+
+                const woData = await processWorkorder(fullWO, colors, sizes);
+                if (woData) {
+                    const { upcNumber_, totalQtyUpc, qtyProduced } = woData; // <<< nhận thêm qtyProduced
+                    const quantityPerBox = await fetchAndSetTargetFromProxy(upcNumber_);
+
+                    if (quantityPerBox && quantityPerBox > 0) {
+                        document.getElementById('quantity').value = quantityPerBox;
+
+                        const fullBoxes = Math.floor(totalQtyUpc / quantityPerBox);
+                        const remainingQty = totalQtyUpc % quantityPerBox;
+                        const totalCt = remainingQty > 0 ? fullBoxes + 1 : fullBoxes;
+
+                        document.getElementById("totalCt").value = totalCt;
+                        @* document.getElementById("inMotLoat").value = fullBoxes; *@
+
+                        const msg = remainingQty > 0
+                            ? `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, và 1 thùng lẻ ${remainingQty} cái`
+                            : `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, không có thùng lẻ`;
+                        document.getElementById("calculate-message").innerHTML = msg;
+
+                        // >>> TÍNH THÙNG SẮP IN
+                        let nextCtNo = Math.ceil(qtyProduced / quantityPerBox);
+                        if (nextCtNo < 1) nextCtNo = 1;
+                        if (nextCtNo > totalCt) nextCtNo = totalCt;
+                        document.getElementById('ctNo').value = nextCtNo;
+
+                        // >>> NẾU LÀ THÙNG CUỐI CÙNG -> quantity = số lẻ còn lại
+                        if (nextCtNo === totalCt && remainingQty > 0) {
+                            document.getElementById('quantity').value = remainingQty;
+                        } else {
+                            document.getElementById('quantity').value = quantityPerBox;
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            console.error('Lỗi auto-parse URL params:', e);
+        }
+
+        const fetchImage = async (size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem) => {
+            const url = '@Url.Action("CreateLabel", "Utils")';
+
+            const image = $("#labelImage")[0];
+
+            const _ = window.location.pathname.split("/");
+            const id = _[_.length - 1];
+            console.log(size, width, height, id, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem)
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ size, width, height, id, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem })
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                image.setAttribute("src", result.imagePath);
+                zplTemplate = result.template;
+                console.log(result)
+                return zplTemplate;
+            }
+        }
+
+
+        const printer = @Html.Raw(Json.Serialize(Model));
+        const target = printer.target;
+
+        const previewLabel = async () => {
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const desc = document.getElementById('desc')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            const poNumber = document.getElementById('poNumber')?.value || "";
+            const ctNo = document.getElementById('ctNo')?.value || "";
+            const totalCt = document.getElementById('totalCt')?.value || "";
+            const ctNumber = `${ctNo} of ${totalCt}`
+            const workorder = document.getElementById('workorder')?.value || "";
+            let itemSize = upcSize;
+            let dateWhoop = document.getElementById('dateWhoop')?.value || "";
+            if (dateWhoop) {
+                let temp = dateWhoop.split("-");
+                let year = temp[0]; // Năm
+                let month = parseInt(temp[1], 10); // Tháng (chuyển sang số để bỏ số 0 ở đầu nếu có)
+                let date = parseInt(temp[2], 10); // Ngày (chuyển sang số để bỏ số 0 ở đầu nếu có)
+
+                // Sắp xếp lại thứ tự để có định dạng YYYY/M/D
+                dateWhoop = `${year}/${month}/${date}`;
+                console.log(dateWhoop)
+            }
+            fetchImage(size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem);
+        }
+
+        async function logWalter(message) {
+            try {
+                const resp = await fetch('/api/astrolabel/walterlog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: message })
+                });
+
+                if (!resp.ok) {
+                    console.error('Log thất bại:', await resp.text());
+                } else {
+                    console.log('Đã log:', message);
+                }
+            } catch (err) {
+                console.error('Lỗi khi log:', err);
+            }
+        }
+
+        const handlePrinter = async () => {
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const desc = document.getElementById('desc')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            const poNumber = document.getElementById('poNumber')?.value || "";
+            const ctNo = document.getElementById('ctNo')?.value || "";
+            const totalCt = document.getElementById('totalCt')?.value || "";
+            const ctNumber = `${ctNo} of ${totalCt}`
+            const workorder = document.getElementById('workorder')?.value || "";
+            let itemSize = upcSize;
+            let dateWhoop = document.getElementById('dateWhoop')?.value || "";
+            if (dateWhoop) {
+                let temp = dateWhoop.split("-");
+                let year = temp[0]; // Năm
+                let month = parseInt(temp[1], 10); // Tháng (chuyển sang số để bỏ số 0 ở đầu nếu có)
+                let date = parseInt(temp[2], 10); // Ngày (chuyển sang số để bỏ số 0 ở đầu nếu có)
+
+                // Sắp xếp lại thứ tự để có định dạng YYYY/M/D
+                dateWhoop = `${year}/${month}/${date}`;
+                console.log(dateWhoop)
+            }
+            const zplTemplate = await fetchImage(size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem);
+
+            const printer = @Html.Raw(Json.Serialize(Model));
+            const copies = document.getElementById('copies').value;
+
+            const payload = {
+                PrinterIpAddress: printer.iP_Printer,
+                Port: printer.port_Printer,
+                ZplCode: zplTemplate,
+                Copies: copies
+            }
+
+            const url = '@Url.Action("printzpl", "Print")';
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    console.log("In thành công!");
+
+                    const message = `In tem số ${ctNo}/${totalCt} với PO: ${poNumber}, Date: ${dateWhoop}, WO: ${workorder}, Số lượng: ${quantity}, UPC: ${upcNumber}`;
+                    await logWalter(message);
+                    // Chờ 2s rồi redirect
+                    setTimeout(() => {
+                        window.location.href = "http://10.10.99.10:8102/Utils/scantocheckwithwo/whoop";
+                    }, 2000);
+                } else {
+                    console.error("Lỗi khi in:", await res.text());
+                    alert("Không thể in. Vui lòng kiểm tra máy in hoặc kết nối.");
+                }
+            } catch (error) {
+                console.error("Lỗi mạng khi in:", error);
+                alert("Lỗi kết nối khi in.");
+            }
+        }
+
+        // === PHÍM TẮT ===
+        document.addEventListener('keydown', async (e) => {
+            // Phím Numpad 1 → Preview
+            if (e.code === 'Numpad1') {
+                e.preventDefault();
+                console.log('Phím Numpad 1 → Preview');
+                await previewLabel();
+            }
+
+            // Phím Numpad 2 → Save PO
+            else if (e.code === 'Numpad2') {
+                e.preventDefault();
+                console.log('Phím Numpad 2 → Save PO');
+                const poInput = document.getElementById('poNumber');
+                const dateWhoop = document.getElementById('dateWhoop').value;
+                const poNumber = poInput?.value?.trim();
+                if (poNumber) {
+                    await localStorage.setItem('poNumber', poNumber);
+                    alert('Đã lưu PO và date vào LocalStorage!');
+                }
+                if (dateWhoop) {
+                    await localStorage.setItem('dateWhoop', dateWhoop);
+                    alert('Đã lưu ngày làm vào LocalStorage!');
+                }
+            }
+            else if (e.code === 'Numpad3') {
+                e.preventDefault();
+                console.log('Phím Numpad 3 → Redirect sang trang scan');
+                // ✅ Redirect thẳng mà không in
+                window.location.href = "http://10.10.99.10:8102/Utils/scantocheckwithwo/whoop";
+            }
+            else if (e.code === 'Numpad4') {
+                e.preventDefault();
+                console.log('Phím Numpad 4 → Load lại ngày từ biến toàn cục');
+                const dateInput = document.getElementById('dateWhoop');
+
+                if (lastDateUpc && dateInput) {
+                    dateInput.value = lastDateUpc;
+                    alert('Đã nạp lại ngày từ cache: ' + lastDateUpc);
+                } else {
+                    alert('Chưa có ngày nào trong cache. Hãy nhập WO trước!');
+                }
+            }
+
+            // Phím Enter → In tem
+            else if (e.code === 'Enter') {
+                // Tránh bị trigger trong khi gõ input
+                const tag = document.activeElement.tagName.toLowerCase();
+                if (tag === 'input' || tag === 'textarea') return;
+
+                e.preventDefault();
+                console.log('Phím Enter → In Tem');
+                if (!zplTemplate) await previewLabel(); // Nếu chưa có template thì preview trước
+
+                await handlePrinter();
+            }
+        });
+
+        const normalizeDeadlineToYmd = (s) => {
+            if (!s) return "";
+            const t = String(s).trim();
+            // "YYYY-MM-DD"
+            if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
+            // "YYYYMMDD"
+            if (/^\d{8}$/.test(t)) return `${t.slice(0, 4)}-${t.slice(4, 6)}-${t.slice(6, 8)}`;
+            return ""; // định dạng lạ -> bỏ qua
+        };
+
+
+    });
+</script>
+
+
+//code cu new walter printer
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', async function () {
+
+        // === setup ===
+
+        let zplTemplate;
+        let workorderInput = document.getElementById('workorder');
+
+        let upcNumber = "", upcItem = "", upcColor = "", upcPnNumber = "", upcSize = "";
+        let lastDateUpc = "";
+        const colors = [
+            "Ash Grey",
+            "Jet Black",
+            "Royal Blue",
+            "Glacier",
+            "Forest",
+            "Graphite",
+            "Dune",
+            "Midnight",
+            "Emerald",
+            "Rhodonite",
+            "Evergreen",
+            "Cardinal",
+            "Obsidian",
+            "Obsidian/Titanium",
+            "Obsidian/Gold",
+            "Midnight/Titanium",
+            "Dune/Gold"
+        ];
+        const sizes = ["L/XL", "S/M"];
+
+        // === local storage ===
+
+        @* const savePOButton = document.getElementById("savePO");
+        savePOButton.addEventListener("click", async () => {
+            const poNumber = document.getElementById('poNumber').value;
+        }) *@
+
+            @* const loadPreviousData = () => {
+            try {
+                const dateWhoop = localStorage.getItem('dateWhoop');
+                if (dateWhoop && /^\d{4}-\d{2}-\d{2}$/.test(dateWhoop)) {
+                    const el = document.getElementById('dateWhoop');
+                    if (el) el.value = dateWhoop; // input type=date cần yyyy-MM-dd
+                }
+
+                    console.log('load date');
+            } catch (e) {
+                console.error('Cannot access localStorage (khác origin / bị chặn?):', e);
+            }
+        };
+
+        loadPreviousData(); *@
+
+
+
+        // === load workorder ===
+        const processWorkorder = async (workorder, colors, sizes) => {
+            try {
+                const response = await fetch(`/api/odoo/search2?productionCode=${workorder}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+                if (!response.ok) throw new Error(await response.text());
+                const data = await response.json();
+                if (!data?.result?.records?.length) throw new Error("Dữ liệu UPC không hợp lệ.");
+
+                const rec = data.result.records[0];
+                const UPC = rec.product_id[1];
+
+                const regex = /^\[(\d+)\]\s+([\d-]+)\s+(.*)$/;
+                const match = UPC.match(regex);
+                if (!match) throw new Error("Định dạng UPC không hợp lệ.");
+
+                const upcNumber_ = match[1];
+                const upcPnNumber_ = match[2];
+                const upcItem_ = match[3];
+
+                let upcColor_ = '';
+                for (let color of colors) if (upcItem_.includes(color)) { upcColor_ = color; break; }
+
+                let upcSize_ = '';
+                for (let size of sizes) if (upcItem_.includes(size)) { upcSize_ = size; break; }
+
+                // gán biến toàn cục (nếu vẫn cần)
+                upcNumber = upcNumber_;
+                upcPnNumber = upcPnNumber_;
+                upcItem = upcItem_;
+                upcColor = upcColor_;
+                upcSize = upcSize_;
+
+                // ====== Xử lý date_deadline: cộng thêm 7 giờ ======
+                let dateUpc = rec.date_deadline; // "2025-10-09 17:00:00"
+                if (dateUpc) {
+                    const utcDate = new Date(dateUpc.replace(" ", "T") + "Z"); // ép về UTC
+                    utcDate.setHours(utcDate.getHours() + 7); // cộng 7 giờ
+                    // Format lại yyyy-mm-dd
+                    const y = utcDate.getFullYear();
+                    const m = String(utcDate.getMonth() + 1).padStart(2, '0');
+                    const d = String(utcDate.getDate()).padStart(2, '0');
+                    dateUpc = `${y}-${m}-${d}`;
+                }
+                lastDateUpc = dateUpc;
+
+                @* document.getElementById("dateWhoop").value = dateUpc; *@
+
+                const totalQtyUpc = Number(rec.product_qty) || 0;
+                const qtyProduced = Number(rec.qty_produced) || 0; // <<< LẤY SỐ ĐÃ LÀM
+
+                return { upcNumber_, upcPnNumber_, upcItem_, upcColor_, upcSize_, totalQtyUpc, dateUpc, qtyProduced };
+            } catch (error) {
+                alert("WO không hợp lệ");
+                console.error("Lỗi xử lý Workorder:", error);
+                return null;
+            }
+        };
+
+        // === lấy số lượng hộp của thùng 36/80 ===
+        // === lấy số lượng mỗi thùng (quantityPerBox) từ API và set vào #quantity ===
+        async function fetchAndSetTargetFromProxy(serial) {
+            const qtyInput = document.getElementById('quantity');
+            const statusEl = document.getElementById('status');
+            const fallback = 80;
+
+            if (!qtyInput) {
+                console.error('#quantity input not found');
+                return fallback;
+            }
+
+            if (!serial) {
+                // không có mã -> dùng mặc định
+                qtyInput.value = fallback;
+                if (statusEl) statusEl.textContent = 'Không có mã serial — dùng mặc định ' + fallback;
+                return fallback;
+            }
+
+            const apiUrl = '/api/verifyemployeedata/GetProductItemByCode?code=' + encodeURIComponent(serial);
+
+            try {
+                if (statusEl) statusEl.textContent = 'Đang lấy quantityPerBox cho: ' + serial + ' ...';
+
+                const resp = await fetch(apiUrl, { method: 'GET' });
+                const raw = await resp.text();
+
+                let data = null;
+                try { data = raw ? JSON.parse(raw) : null; } catch {
+                    // JSON không hợp lệ
+                }
+
+                // Mặc định
+                let quantityPerBox = fallback;
+
+                if (resp.ok && data && data.ok === true) {
+                    const contentStr = String(data.content ?? '').trim();
+                    const parsed = parseInt(contentStr, 10);
+
+                    if (Number.isFinite(parsed) && parsed > 0) {
+                        quantityPerBox = parsed;
+                    } else {
+                        console.warn('Giá trị content không hợp lệ:', data?.content);
+                    }
+                } else {
+                    console.warn('API trả lỗi hoặc payload không hợp lệ:', resp.status, raw);
+                }
+
+                // Gán vào input và trả về cho phần tính toán phía ngoài
+                qtyInput.value = quantityPerBox;
+                if (statusEl) statusEl.textContent = "";
+
+                return quantityPerBox;
+            } catch (err) {
+                console.error('Lỗi khi gọi API quantityPerBox:', err);
+                qtyInput.value = fallback;
+                if (statusEl) statusEl.textContent = 'Lỗi API — dùng mặc định ' + fallback;
+                return fallback;
+            }
+        }
+
+        //lấy po từ đầu
+        @* async function fetchPoNumberByProductionCode(productionCode) {
+            const url = '/api/odoo/getPoNumber?productionCode=' + encodeURIComponent(productionCode);
+            const resp = await fetch(url, { method: 'GET' });
+            if (!resp.ok) {
+                // Không chặn luồng, để fallback localStorage
+                console.error('getPoNumber failed:', resp.status, await resp.text());
+                return null;
+            }
+            const data = await resp.json().catch(() => ({}));
+            const po = data?.poNumber;
+            // Trả về null nếu rỗng/undefined
+            if (po === null || po === undefined || String(po).trim() === '') return null;
+            return String(po).trim();
+        } *@
+
+            async function fetchPoAndDeadlineByProductionCode(productionCode) {
+                const url = '/api/odoo/getPoNumber?productionCode=' + encodeURIComponent(productionCode);
+                try {
+                    const resp = await fetch(url, { method: 'GET' });
+                    if (!resp.ok) throw new Error(await resp.text());
+
+                    const data = await resp.json().catch(() => ({}));
+                    // kỳ vọng backend trả { poNumber: string|null, deadline: string|null }
+                    const rawPo = (data?.poNumber ?? "").toString().trim();
+                    const rawDeadline = data?.deadline ?? null;
+
+                    const poNumber = rawPo !== "" ? rawPo : null;
+                    const dateYmd = normalizeDeadlineToYmd(rawDeadline);
+
+                    return { poNumber, dateYmd: dateYmd || null };
+                } catch (e) {
+                    console.error('fetchPoAndDeadlineByProductionCode error:', e);
+                    return null; // để fallback localStorage
+                }
+            }
+
+        async function initPoAndDateFromParamsOrLocal() {
+            console.log("đang lấy PO + deadline từ API, nếu fail sẽ dùng localStorage");
+            const poInput = document.getElementById('poNumber');
+            const dateInput = document.getElementById('dateWhoop');
+            if (!poInput || !dateInput) return;
+
+            // Fallback từ localStorage
+            const poFromLocal = localStorage.getItem('poNumber');
+            const dateFromLocal = localStorage.getItem('dateWhoop'); // đã là yyyy-MM-dd trong app
+
+            // Lấy WO từ URL (giữ logic cũ)
+            const params = new URLSearchParams(window.location.search);
+            const fullWO =
+                params.get('wo') ||
+                params.get('workOrder') ||
+                params.get('work_order') ||
+                params.get('workorder') ||
+                params.get('work-order');
+
+            if (fullWO) {
+                const api = await fetchPoAndDeadlineByProductionCode(fullWO);
+                if (api) {
+                    // Điền từ API nếu có giá trị; nếu null thì giữ/điền từ local
+                    if (api.poNumber) {
+                        poInput.value = api.poNumber;
+                    } else if (poFromLocal) {
+                        poInput.value = poFromLocal;
+                    }
+
+                    if (api.dateYmd) {
+                        dateInput.value = api.dateYmd; // input type=date cần yyyy-MM-dd
+                    } else if (dateFromLocal && /^\d{4}-\d{2}-\d{2}$/.test(dateFromLocal)) {
+                        dateInput.value = dateFromLocal;
+                    }
+                    return; // đã xử lý
+                }
+            }
+
+            // Không có WO hoặc API fail → dùng localStorage
+            if (poFromLocal) poInput.value = poFromLocal;
+            if (dateFromLocal && /^\d{4}-\d{2}-\d{2}$/.test(dateFromLocal)) dateInput.value = dateFromLocal;
+        }
+
+        initPoAndDateFromParamsOrLocal();
+
+        // === event đọc workorder ===
+        workorderInput.addEventListener("input", async (event) => {
+            const v = event.target.value;
+            if (v.length == 11) {
+                const woData = await processWorkorder(v, colors, sizes);
+                if (woData) {
+                    const { upcNumber_, totalQtyUpc, qtyProduced } = woData; // <<< nhận thêm qtyProduced
+                    const quantityPerBox = await fetchAndSetTargetFromProxy(upcNumber_);
+                    if (quantityPerBox && quantityPerBox > 0) {
+                        document.getElementById('quantity').value = quantityPerBox;
+
+                        const fullBoxes = Math.floor(totalQtyUpc / quantityPerBox);
+                        const remainingQty = totalQtyUpc % quantityPerBox;
+                        const totalCt = remainingQty > 0 ? fullBoxes + 1 : fullBoxes;
+
+                        document.getElementById("totalCt").value = totalCt;
+                        @* document.getElementById("inMotLoat").value = fullBoxes; *@
+
+                        const msg = remainingQty > 0
+                            ? `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, và 1 thùng lẻ ${remainingQty} cái`
+                            : `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, không có thùng lẻ`;
+                        document.getElementById("calculate-message").innerHTML = msg;
+
+                        // >>> TÍNH THÙNG SẮP IN
+                        let nextCtNo = Math.ceil(qtyProduced / quantityPerBox);
+                        if (nextCtNo < 1) nextCtNo = 1;
+                        if (nextCtNo > totalCt) nextCtNo = totalCt;
+                        document.getElementById('ctNo').value = nextCtNo;
+
+                        // >>> NẾU LÀ THÙNG CUỐI CÙNG -> quantity = số lẻ còn lại
+                        if (nextCtNo === totalCt && remainingQty > 0) {
+                            document.getElementById('quantity').value = remainingQty;
+                        } else {
+                            document.getElementById('quantity').value = quantityPerBox;
+                        }
+                    }
+                }
+            }
+        });
+
+        // === Auto-fill từ URL khi redirect sang ===
+        try {
+            const params = new URLSearchParams(window.location.search);
+
+            // Lấy 5 chữ số cuối của WO từ param "wo" (khuyến nghị), chấp nhận thêm vài alias
+            const fullWO =
+                params.get('wo') ||
+                params.get('workOrder') ||
+                params.get('workorder') ||
+                params.get('work_order') ||
+                params.get('work-order');
+
+            // Validate: 5 chữ số
+            if (fullWO) {
+                workorderInput.value = fullWO;
+                console.log(fullWO)
+
+                const woData = await processWorkorder(fullWO, colors, sizes);
+                if (woData) {
+                    const { upcNumber_, totalQtyUpc, qtyProduced } = woData; // <<< nhận thêm qtyProduced
+                    const quantityPerBox = await fetchAndSetTargetFromProxy(upcNumber_);
+
+                    if (quantityPerBox && quantityPerBox > 0) {
+                        document.getElementById('quantity').value = quantityPerBox;
+
+                        const fullBoxes = Math.floor(totalQtyUpc / quantityPerBox);
+                        const remainingQty = totalQtyUpc % quantityPerBox;
+                        const totalCt = remainingQty > 0 ? fullBoxes + 1 : fullBoxes;
+
+                        document.getElementById("totalCt").value = totalCt;
+                        @* document.getElementById("inMotLoat").value = fullBoxes; *@
+
+                        const msg = remainingQty > 0
+                            ? `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, và 1 thùng lẻ ${remainingQty} cái`
+                            : `Tổng số có ${fullBoxes} thùng - ${quantityPerBox} cái, không có thùng lẻ`;
+                        document.getElementById("calculate-message").innerHTML = msg;
+
+                        // >>> TÍNH THÙNG SẮP IN
+                        let nextCtNo = Math.ceil(qtyProduced / quantityPerBox);
+                        if (nextCtNo < 1) nextCtNo = 1;
+                        if (nextCtNo > totalCt) nextCtNo = totalCt;
+                        document.getElementById('ctNo').value = nextCtNo;
+
+                        // >>> NẾU LÀ THÙNG CUỐI CÙNG -> quantity = số lẻ còn lại
+                        if (nextCtNo === totalCt && remainingQty > 0) {
+                            document.getElementById('quantity').value = remainingQty;
+                        } else {
+                            document.getElementById('quantity').value = quantityPerBox;
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            console.error('Lỗi auto-parse URL params:', e);
+        }
+
+        const fetchImage = async (size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem) => {
+            const url = '@Url.Action("CreateLabel", "Utils")';
+
+            const image = $("#labelImage")[0];
+
+            const _ = window.location.pathname.split("/");
+            const id = _[_.length - 1];
+            console.log(size, width, height, id, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem)
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ size, width, height, id, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem })
+            });
+
+            if (res.ok) {
+                const result = await res.json();
+                image.setAttribute("src", result.imagePath);
+                zplTemplate = result.template;
+                console.log(result)
+                return zplTemplate;
+            }
+        }
+
+
+        const printer = @Html.Raw(Json.Serialize(Model));
+        const target = printer.target;
+
+        const previewLabel = async () => {
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const desc = document.getElementById('desc')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            const poNumber = document.getElementById('poNumber')?.value || "";
+            const ctNo = document.getElementById('ctNo')?.value || "";
+            const totalCt = document.getElementById('totalCt')?.value || "";
+            const ctNumber = `${ctNo} of ${totalCt}`
+            const workorder = document.getElementById('workorder')?.value || "";
+            let itemSize = upcSize;
+            let dateWhoop = document.getElementById('dateWhoop')?.value || "";
+            if (dateWhoop) {
+                let temp = dateWhoop.split("-");
+                let year = temp[0]; // Năm
+                let month = parseInt(temp[1], 10); // Tháng (chuyển sang số để bỏ số 0 ở đầu nếu có)
+                let date = parseInt(temp[2], 10); // Ngày (chuyển sang số để bỏ số 0 ở đầu nếu có)
+
+                // Sắp xếp lại thứ tự để có định dạng YYYY/M/D
+                dateWhoop = `${year}/${month}/${date}`;
+                console.log(dateWhoop)
+            }
+            fetchImage(size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem);
+        }
+
+        async function logWalter(message) {
+            try {
+                const resp = await fetch('/api/astrolabel/walterlog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: message })
+                });
+
+                if (!resp.ok) {
+                    console.error('Log thất bại:', await resp.text());
+                } else {
+                    console.log('Đã log:', message);
+                }
+            } catch (err) {
+                console.error('Lỗi khi log:', err);
+            }
+        }
+
+        const handlePrinter = async () => {
+            const size = document.getElementById('sizeLabel')?.value || "";
+            const width = document.getElementById('widthLabel')?.value || "";
+            const height = document.getElementById('heightLabel')?.value || "";
+            const desc = document.getElementById('desc')?.value || "";
+            const quantity = document.getElementById('quantity')?.value || "";
+            const poNumber = document.getElementById('poNumber')?.value || "";
+            const ctNo = document.getElementById('ctNo')?.value || "";
+            const totalCt = document.getElementById('totalCt')?.value || "";
+            const ctNumber = `${ctNo} of ${totalCt}`
+            const workorder = document.getElementById('workorder')?.value || "";
+            let itemSize = upcSize;
+            let dateWhoop = document.getElementById('dateWhoop')?.value || "";
+            if (dateWhoop) {
+                let temp = dateWhoop.split("-");
+                let year = temp[0]; // Năm
+                let month = parseInt(temp[1], 10); // Tháng (chuyển sang số để bỏ số 0 ở đầu nếu có)
+                let date = parseInt(temp[2], 10); // Ngày (chuyển sang số để bỏ số 0 ở đầu nếu có)
+
+                // Sắp xếp lại thứ tự để có định dạng YYYY/M/D
+                dateWhoop = `${year}/${month}/${date}`;
+                console.log(dateWhoop)
+            }
+            const zplTemplate = await fetchImage(size, width, height, desc, quantity, upcNumber, poNumber, ctNumber, itemSize, dateWhoop, upcPnNumber, upcColor, upcItem);
+
+            const printer = @Html.Raw(Json.Serialize(Model));
+            const copies = document.getElementById('copies').value;
+
+            const payload = {
+                PrinterIpAddress: printer.iP_Printer,
+                Port: printer.port_Printer,
+                ZplCode: zplTemplate,
+                Copies: copies
+            }
+
+            const url = '@Url.Action("printzpl", "Print")';
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    console.log("In thành công!");
+
+                    const message = `In tem số ${ctNo}/${totalCt} với PO: ${poNumber}, Date: ${dateWhoop}, WO: ${workorder}, Số lượng: ${quantity}, UPC: ${upcNumber}`;
+                    await logWalter(message);
+                    // Chờ 2s rồi redirect
+                    setTimeout(() => {
+                        window.location.href = "http://10.10.99.10:8102/Utils/scantocheckwithwo/whoop";
+                    }, 2000);
+                } else {
+                    console.error("Lỗi khi in:", await res.text());
+                    alert("Không thể in. Vui lòng kiểm tra máy in hoặc kết nối.");
+                }
+            } catch (error) {
+                console.error("Lỗi mạng khi in:", error);
+                alert("Lỗi kết nối khi in.");
+            }
+        }
+
+        // === PHÍM TẮT ===
+        document.addEventListener('keydown', async (e) => {
+            // Phím Numpad 1 → Preview
+            if (e.code === 'Numpad1') {
+                e.preventDefault();
+                console.log('Phím Numpad 1 → Preview');
+                await previewLabel();
+            }
+
+            // Phím Numpad 2 → Save PO
+            else if (e.code === 'Numpad2') {
+                e.preventDefault();
+                console.log('Phím Numpad 2 → Save PO');
+                const poInput = document.getElementById('poNumber');
+                const dateWhoop = document.getElementById('dateWhoop').value;
+                const poNumber = poInput?.value?.trim();
+                if (poNumber) {
+                    await localStorage.setItem('poNumber', poNumber);
+                    alert('Đã lưu PO và date vào LocalStorage!');
+                }
+                if (dateWhoop) {
+                    await localStorage.setItem('dateWhoop', dateWhoop);
+                    alert('Đã lưu ngày làm vào LocalStorage!');
+                }
+            }
+            else if (e.code === 'Numpad3') {
+                e.preventDefault();
+                console.log('Phím Numpad 3 → Redirect sang trang scan');
+                // ✅ Redirect thẳng mà không in
+                window.location.href = "http://10.10.99.10:8102/Utils/scantocheckwithwo/whoop";
+            }
+            else if (e.code === 'Numpad4') {
+                e.preventDefault();
+                console.log('Phím Numpad 4 → Load lại ngày từ biến toàn cục');
+                const dateInput = document.getElementById('dateWhoop');
+
+                if (lastDateUpc && dateInput) {
+                    dateInput.value = lastDateUpc;
+                    alert('Đã nạp lại ngày từ cache: ' + lastDateUpc);
+                } else {
+                    alert('Chưa có ngày nào trong cache. Hãy nhập WO trước!');
+                }
+            }
+
+            // Phím Enter → In tem
+            else if (e.code === 'Enter') {
+                // Tránh bị trigger trong khi gõ input
+                const tag = document.activeElement.tagName.toLowerCase();
+                if (tag === 'input' || tag === 'textarea') return;
+
+                e.preventDefault();
+                console.log('Phím Enter → In Tem');
+                if (!zplTemplate) await previewLabel(); // Nếu chưa có template thì preview trước
+
+                await handlePrinter();
+            }
+        });
+
+        const normalizeDeadlineToYmd = (s) => {
+            if (!s) return "";
+            const t = String(s).trim();
+            // "YYYY-MM-DD"
+            if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
+            // "YYYYMMDD"
+            if (/^\d{8}$/.test(t)) return `${t.slice(0, 4)}-${t.slice(4, 6)}-${t.slice(6, 8)}`;
+            return ""; // định dạng lạ -> bỏ qua
+        };
+
+
+    });
+</script>
+
+
+// scantocheckwithwo
+<script>
+        (function () {
+            const bin = document.getElementById('bin');
+            const box = document.getElementById('box');
+            const indicator = document.getElementById('indicator');
+            const status = document.getElementById('status');
+            const counterEl = document.getElementById('counter');
+            const targetDisplay = document.getElementById('targetDisplay');
+            let currentWorkorder = "";   // nếu bạn đã khai báo trước đó thì bỏ dòng này
+            let currentUpcNumber = "";   // nếu đã có thì bỏ dòng này   
+            let uiLocked = false;
+            let isLightWork = false;
+            const LS_WO_KEY = 'wo_last'; // lưu Work Order lần cuối
+
+            //Overlay
+            const overlay = document.getElementById('overlay');
+            const cd = document.getElementById('cd');
+            const overlayMsg = document.getElementById('overlayMsg');
+
+            function lockUIAndRedirect(seconds, redirectUrl) {
+                uiLocked = true;
+                // chặn mọi tương tác
+                bin.disabled = true;
+                box.disabled = true;
+
+                // hiển thị overlay + đếm ngược
+                overlay.classList.add('show');
+                let remaining = seconds;
+                cd.textContent = String(remaining);
+
+                const iv = setInterval(() => {
+                    remaining -= 1;
+                    cd.textContent = String(remaining);
+                    if (remaining <= 0) {
+                        clearInterval(iv);
+                        window.location.href = redirectUrl;
+                    }
+                }, 1000);
+            }
+
+            // Mốc mặc định (dùng khi server lỗi / trả content không hợp lệ)
+            let targetCount = 80;
+            function updateTargetChip() {
+                targetDisplay.innerHTML = `Mốc: <strong>${targetCount}</strong> chiếc`;
+            }
+            updateTargetChip();
+
+            let count = 0;
+
+            [bin, box].forEach(el => el.addEventListener('focus', () => el.select()));
+            window.addEventListener('load', async () => {
+                const lastWO = localStorage.getItem(LS_WO_KEY);
+
+                if (lastWO) {
+                    // Tự fill, tự gọi API, và focus xuống ô hộp
+                    bin.value = lastWO;
+                    await applyWorkorder(lastWO);
+                } else {
+                    bin.focus();
+                }
+            });
+
+            const processWorkorder = async (workorder) => {
+                // Lấy dữ liệu UPC + số còn lại từ API search2 (qua proxy relative path)
+                const response = await fetch(`/api/odoo/search2?productionCode=${encodeURIComponent(workorder)}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! Status: ${response.status}, Details: ${errorText}`);
+                }
+
+                const data = await response.json();
+
+                // Kiểm tra dữ liệu trả về và gán UPC
+                if (!data || !data.result || !data.result.records || data.result.records.length === 0) {
+                    throw new Error("Dữ liệu search2 không hợp lệ.");
+                }
+
+                const rec = data.result.records[0];
+                const UPC = rec.product_id?.[1]; // ví dụ: "[810114362556] 955-... SuperKnit ..."
+                if (!UPC) throw new Error("Không tìm thấy UPC trong search2.");
+
+                // Phân tích chuỗi UPC bằng regex
+                const regex = /^\[(\d+)\]\s+([\d-]+)\s+(.*)$/;
+                const match = String(UPC).match(regex);
+                if (!match) throw new Error("Định dạng UPC không hợp lệ.");
+                const upcNumber_ = match[1];
+
+                // Tính số còn lại: product_qty - qty_produced (làm tròn & không âm)
+                const product_qty = Number(rec.product_qty);
+                const qty_produced = Number(rec.qty_produced);
+                window.lastProductQty = product_qty;
+                window.lastQtyProduced = qty_produced;
+                let remainingQty_ = null;
+                if (Number.isFinite(product_qty) && Number.isFinite(qty_produced)) {
+                    remainingQty_ = Math.max(0, Math.round(product_qty - qty_produced));
+                }
+
+                return { upcNumber: upcNumber_, remainingQty: remainingQty_ };
+            };
+
+            // =========================
+            // BIN: debounce + gọi proxy
+            // =========================
+            let binDebounce;
+
+            async function applyWorkorder(serial) {
+                const workorder = normalize(serial);
+                if (!workorder) return;
+
+                bin.disabled = true;
+                status.textContent = 'Đang lấy thông tin thùng: ' + workorder + ' ...';
+
+                try {
+                    const { upcNumber, remainingQty } = await processWorkorder(workorder);
+                    currentWorkorder = workorder;
+                    currentUpcNumber = normalize(upcNumber);
+                    console.log('UPC:', currentUpcNumber, ' — Remaining:', remainingQty);
+
+                    await fetchAndSetTargetMin(upcNumber, remainingQty);
+                    resetCounter();
+
+                    status.innerHTML = `Đang quét hộp cho Work Order: <strong>${workorder}</strong><br>
+                Mã sản phẩm (UPC): <strong>${currentUpcNumber}</strong>`;
+
+                    // ✅ Lưu vào localStorage sau khi đã lấy thông tin thành công
+                    localStorage.setItem(LS_WO_KEY, workorder);
+
+                    box.value = '';
+                    box.focus();
+                } catch (err) {
+                    console.error('Lỗi lấy thông tin thùng:', err);
+                    flash('bad');
+                    status.textContent = 'Không lấy được thông tin thùng. Vui lòng kiểm tra Work Order.';
+
+                    // ❌ Không lưu WO lỗi (và xoá nếu đang tồn tại)
+                    localStorage.removeItem(LS_WO_KEY);
+
+                    bin.focus();
+                } finally {
+                    bin.disabled = false;
+                }
+            }
+
+            bin.addEventListener('keydown', async (e) => {
+                if (e.key !== 'Enter' || e.repeat) return;
+                e.preventDefault();
+
+                const raw = bin.value;
+                const serial = normalize(raw);
+                if (!serial) return;
+
+                await applyWorkorder(serial);
+            });
+
+            // Lấy quantity từ verifyemployeedata và chọn MIN với remainingQty (nếu có)
+            async function fetchAndSetTargetMin(upcCode, remainingQty) {
+                if (!upcCode) return;
+
+                const verifyUrl = '/api/verifyemployeedata/GetProductItemByCode?code=' + encodeURIComponent(upcCode);
+                status.textContent = 'Đang lấy mốc server & so sánh với số còn lại...';
+
+                try {
+                    const resp = await fetch(verifyUrl, { method: 'GET' });
+
+                    // Proxy có thể trả text hoặc JSON
+                    let data = null;
+                    const text = await resp.text();
+                    try { data = text ? JSON.parse(text) : null; } catch { /* giữ data = null nếu parse lỗi */ }
+
+                    // Lấy serverQty (fallback = targetCount hiện tại nếu lỗi)
+                    let serverQty = targetCount;
+                    if (resp.ok && data && data.content != null) {
+                        const parsed = parseInt(String(data.content).trim(), 10);
+                        if (!Number.isNaN(parsed) && parsed > 0) serverQty = parsed;
+                    }
+
+                    // Quyết định mốc
+                    if (remainingQty != null && Number.isFinite(remainingQty)) {
+                        targetCount = Math.min(serverQty, remainingQty);
+                    } else {
+                        targetCount = serverQty;
+                    }
+
+                    updateTargetChip();
+                    status.textContent = `Mốc chọn: ${targetCount}` + (remainingQty != null
+                        ? ` (min giữa còn lại=${remainingQty} & server=${serverQty})`
+                        : ` (theo server)`);
+
+                    // Nếu hiện tại đã >= mốc (ví dụ mốc=0 hoặc đã đủ) thì chuyển trang luôn
+                    if (count >= targetCount) {
+                        flash('warn');
+                        status.textContent = `🎯 ĐÃ ĐỦ SỐ LƯỢNG ${targetCount} — chuẩn bị chuyển trang...`;
+                        const redirectUrl = `http://10.10.99.10:8100/Tools/WorkOrderInfoV1?workOrder=${encodeURIComponent(currentWorkorder)}&operation=Walter`;
+                        overlayMsg.innerHTML = `Đã đủ số lượng của thùng này, sẽ chuyển sang trang nhập kết quả sản xuất trong <span id="cd" class="countdown">3</span> giây.`;
+                        const newCd = document.getElementById('cd'); if (newCd) newCd.textContent = '3';
+                        // lockUIAndRedirect(3, redirectUrl);
+                    }
+                } catch (err) {
+                    console.error('Lỗi lấy mốc:', err);
+                    status.textContent = 'Lỗi khi lấy mốc — dùng mốc hiện tại ' + targetCount;
+                }
+            }
+
+            // =========================
+            // BOX: giữ nguyên logic so khớp
+            // =========================
+
+
+            // ---- thêm biến khóa ở phạm vi IIFE
+            let isProcessing = false;
+
+            box.addEventListener('keydown', (e) => {
+                // chặn auto-repeat và chỉ xử lý khi focus đúng vào box
+                if (uiLocked) return;
+                if (e.key === 'Enter' && !e.repeat && document.activeElement === box) {
+                    e.preventDefault();
+                    processBox();
+                }
+            });
+
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            const processBox = async () => {
+                if (uiLocked) return;
+                if (isProcessing) return;
+                isProcessing = true;
+
+                try {
+                    const boxVal = normalize(box.value);
+                    if (!boxVal) { isProcessing = false; return; }
+
+                    if (!currentUpcNumber) {
+                        flash('bad');
+                        status.innerHTML = '⚠ Chưa có Work Order hợp lệ. Vui lòng quét thùng trước.';
+                        bin.focus();
+                        return;
+                    }
+
+                    const ok = boxVal === currentUpcNumber;
+
+                    flash(ok ? 'ok' : 'bad');
+
+                    if (ok) {
+                        status.innerHTML = '✔ Hợp lệ: <strong>' + boxVal + '</strong> với WO: ' + currentWorkorder + " có serial: " + currentUpcNumber;
+                        await incrementCounter();
+                    } else {
+                        status.innerHTML = `✖ KHÔNG khớp! Hộp: <strong>${boxVal}</strong> ≠ UPC: <strong>${currentUpcNumber}</strong>`;
+                        await triggerWhoopLight(currentWorkorder, boxVal);
+                    }
+
+                    box.value = '';
+                    box.focus();
+                } finally {
+                    isProcessing = false;
+                }
+            };
+
+            // Giữ nguyên hàm này, NHƯNG nhớ gửi payload đúng (server cần 2 field)
+            async function triggerWhoopLight(binValue, boxValue) {
+                try {
+                    if (isLightWork) {
+                        await fetch('/utils/check-whoop-light', { method: 'GET' });
+                        await delay(1000);
+                        await fetch('/utils/blink-light', { method: 'GET' });
+                    }
+
+                    // 🔴 NHÁY MÀN HÌNH 1 GIÂY TRƯỚC
+                    const redOverlay = document.getElementById('redOverlay');
+                    redOverlay.style.display = 'block';
+                    // ép reflow để đảm bảo animation chạy ngay cả khi bật/tắt nhanh
+                    void redOverlay.offsetHeight;
+                    await delay(1000);
+                    redOverlay.style.display = 'none';
+
+                    // ➡️ SAU ĐÓ MỚI HIỆN PROMPT
+                    await requireSupervisorPassSimple();
+
+                    if (isLightWork) {
+                        await fetch('/utils/turn-off-light', { method: 'GET' });
+                    }
+                    await delay(1000);
+                } catch (err) {
+                    console.error("Error calling light API:", err);
+                }
+            }
+
+            // === Thêm helper gọi API kiểm tra pass ===
+            async function checkPass(password) {
+                try {
+                    const resp = await fetch(`/utils/scan_pass_check_whoop/${encodeURIComponent(password)}`, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    // API của bạn trả true/false "trần". Ta parse an toàn:
+                    const text = await resp.text(); // ví dụ: "true"
+                    if (!resp.ok) {
+                        console.error('Check pass failed status:', resp.status, text);
+                        return false;
+                    }
+
+                    // cố gắng parse JSON trước
+                    try {
+                        const j = JSON.parse(text);
+                        return j === true;
+                    } catch {
+                        // nếu không phải JSON hợp lệ, so sánh chuỗi
+                        return text.trim().toLowerCase() === 'true';
+                    }
+                } catch (e) {
+                    console.error('Error calling scan_pass_check_whoop:', e);
+                    return false;
+                }
+            }
+
+            // === Hiển thị prompt lặp cho tới khi pass đúng ===
+
+            async function requireSupervisorPassSimple() {
+                while (true) {
+                    const input = prompt(
+                        "⚠️ Hộp này không chính xác!\n\nVui lòng nhập mật khẩu giám sát để tiếp tục:",
+                        ""
+                    );
+                    if (input === null) continue;
+
+                    const ok = await checkPass((input || '').trim());
+                    if (ok) return true;
+
+                    alert("❌ Mật khẩu không đúng. Vui lòng thử lại.");
+                }
+            }
+
+            @* box.addEventListener('input', () => {
+                clearTimeout(boxDebounce);
+                if (box.value.trim().length === 0) return;
+                boxDebounce = setTimeout(processBox, 300);
+            }); *@
+
+                // =========================
+                // Hotkeys (đã bỏ Numpad5)
+                // =========================
+                window.addEventListener('keydown', (e) => {
+                    if (uiLocked) { e.preventDefault(); return; }
+                    if (e.code === 'Numpad1') {
+                        e.preventDefault();
+                        resetAll();
+                    } else if (e.code === 'Numpad2') {
+                        e.preventDefault();
+                        resetCounter();
+                    } else if (e.code === 'Numpad3') {
+                        e.preventDefault();
+                        window.location.href = 'http://10.10.99.10:8100/tools/workorderinfo';
+                    } else if (e.code === 'Numpad4') {
+                        e.preventDefault();
+                        window.location.href = 'http://10.10.99.10:8102/Utils/Whoop/WHOOP';
+                    } else if (e.code === 'Numpad5') {
+                        e.preventDefault();
+                        isLightWork = !isLightWork;
+                        console.log('Chế độ đèn: ' + (isLightWork ? 'BẬT' : 'TẮT'));
+                    }
+
+                }, { capture: true });
+
+            // =========================
+            // Counter / helpers / UX
+            // =========================
+            function resetAll() {
+                bin.value = '';
+                box.value = '';
+
+                // ❌ Xoá workorder đã lưu
+                localStorage.removeItem(LS_WO_KEY);
+
+                resetCounter();
+                status.textContent = 'Đã reset. Quét serial thùng mới.';
+                indicator.classList.remove('flash-ok', 'flash-bad', 'flash-warn');
+                bin.focus();
+            }
+
+            function resetCounter() {
+                count = 0;
+                counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+            }
+
+
+            async function incrementCounter() {
+                // nếu lần quét này sẽ đạt đúng mốc
+                if (count + 1 === targetCount) {
+                    count = targetCount;
+                    counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+                    flash('warn');
+                    status.textContent = `🎯 ĐÃ ĐỦ SỐ LƯỢNG ${targetCount} — chuẩn bị chuyển trang...`;
+
+                    const producedAfter = (Number(window.lastQtyProduced) || 0) + (Number(targetCount) || 0);
+                    const totalPlanned = (Number(window.lastProductQty) || Number(targetCount) || 0);
+                    await logWalter(`Đã scan ${targetCount} cái, được ${producedAfter}/${totalPlanned} (WO: ${currentWorkorder})`);
+
+                    // thông điệp + chuyển trang sau 3 giây
+                    const redirectUrl = `http://10.10.99.10:8100/Tools/WorkOrderInfoV1?workOrder=${encodeURIComponent(currentWorkorder)}&operation=Walter`;
+                    overlayMsg.innerHTML = `Đã đủ số lượng của thùng này, sẽ chuyển sang trang nhập kết quả sản xuất trong <span id="cd" class="countdown">3</span> giây.`;
+                    // cd vừa bị thay trong innerHTML, lấy lại tham chiếu
+                    const newCd = document.getElementById('cd');
+                    if (newCd) { newCd.textContent = '3'; }
+                    lockUIAndRedirect(3, redirectUrl);
+                    return;
+                }
+
+                // nếu vượt mốc (trường hợp hiếm vì đã khoá UI), reset cho an toàn
+                if (count + 1 > targetCount) {
+                    flash('bad');
+                    alert(`⚠ ĐÃ VƯỢT MỐC ${targetCount}!`);
+                    resetCounter();
+                    return;
+                }
+
+                // tăng bình thường
+                count += 1;
+                counterEl.textContent = `${String(count)}/${String(targetCount)}`;
+            }
+
+            async function logWalter(content) {
+                try {
+                    await fetch('/api/astrolabel/walterlog', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ content })
+                    });
+                    console.log('✅ Logged:', content);
+                } catch (err) {
+                    console.error('❌ Log error:', err);
+                }
+            }
+
+            function normalize(s) {
+                return (s || '').trim().replace(/\s+/g, '').toUpperCase();
+            }
+
+            let flashTimer;
+            function flash(type) {
+                clearTimeout(flashTimer);
+                indicator.classList.remove('flash-ok', 'flash-bad', 'flash-warn');
+                indicator.classList.add(type === 'ok' ? 'flash-ok' : (type === 'warn' ? 'flash-warn' : 'flash-bad'));
+                flashTimer = setTimeout(() => {
+                    indicator.classList.remove('flash-ok', 'flash-bad', 'flash-warn');
+                }, 500);
+            }
+
+            document.addEventListener('mousedown', (e) => { e.preventDefault(); }, { capture: true });
+            document.addEventListener('contextmenu', (e) => { e.preventDefault(); });
+        })();
+    </script>

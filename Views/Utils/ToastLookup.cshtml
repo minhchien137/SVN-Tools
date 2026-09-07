@@ -1,0 +1,449 @@
+@{
+    ViewData["Title"] = "Lookup Info Toast";
+}
+
+<style>
+    body { font-family: 'Segoe UI', sans-serif; background: #0f1115; color: #f9fafb; margin: 0; padding: 32px 20px; }
+
+    .page-title { font-size: 24px; font-weight: 700; margin: 0 0 24px; }
+
+    .search-bar {
+        display: flex; gap: 10px; max-width: 620px; margin: 0 auto 36px;
+    }
+    .search-bar input {
+        flex: 1; background: #1f2937; border: 1px solid #374151; border-radius: 10px;
+        color: #f9fafb; padding: 14px 18px; font-size: 17px; outline: none; letter-spacing: .5px;
+    }
+    .search-bar input:focus { border-color: #3b82f6; }
+    .search-bar button {
+        background: #2563eb; color: #fff; border: none; border-radius: 10px;
+        padding: 0 26px; font-size: 15px; font-weight: 600; cursor: pointer;
+    }
+    .search-bar button:hover { background: #1d4ed8; }
+
+    #result-area { max-width: 960px; margin: 0 auto; }
+
+    .not-found {
+        text-align: center; color: #6b7280; padding: 60px 0; font-size: 17px;
+    }
+
+    /* Journey timeline */
+    .journey {
+        display: flex; align-items: flex-start; gap: 0; margin-bottom: 28px;
+        overflow-x: auto; padding-bottom: 4px;
+    }
+    .journey-step {
+        flex: 1; min-width: 140px;
+    }
+    .journey-connector {
+        width: 40px; flex-shrink: 0; display: flex; align-items: center;
+        justify-content: center; padding-top: 22px;
+    }
+    .journey-connector svg { color: #374151; }
+    .step-icon {
+        width: 44px; height: 44px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; margin: 0 auto 8px; border: 2px solid #374151;
+        background: #1f2937;
+    }
+    .step-icon.done   { background: #14532d; border-color: #16a34a; }
+    .step-icon.fail   { background: #7f1d1d; border-color: #dc2626; }
+    .step-icon.skip   { background: #1f2937; border-color: #374151; opacity:.5; }
+    .step-label { text-align: center; font-size: 11px; color: #9ca3af; font-weight: 600; letter-spacing:.5px; text-transform: uppercase; }
+    .step-status { text-align: center; font-size: 13px; font-weight: 700; margin-top: 4px; }
+    .step-time  { text-align: center; font-size: 11px; color: #6b7280; margin-top: 2px; }
+
+    /* Cards grid */
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    @@media (max-width: 680px) { .cards { grid-template-columns: 1fr; } }
+
+    .card {
+        background: #1f2937; border: 1px solid #374151; border-radius: 14px; padding: 20px;
+    }
+    .card-title {
+        font-size: 13px; font-weight: 700; color: #9ca3af; text-transform: uppercase;
+        letter-spacing: .6px; margin: 0 0 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .card-title span { font-size: 16px; }
+
+    .info-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid #2d3748; gap: 12px; }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { font-size: 12px; color: #6b7280; white-space: nowrap; flex-shrink: 0; }
+    .info-val { font-size: 13px; font-weight: 600; text-align: right; word-break: break-all; }
+
+    .badge { padding: 3px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; display: inline-block; }
+    .badge-ok   { background: #14532d; color: #86efac; }
+    .badge-ng   { background: #7f1d1d; color: #fca5a5; }
+    .badge-none { background: #1f2937; color: #6b7280; border: 1px solid #374151; }
+
+    .pallet-serials {
+        display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;
+    }
+    .serial-chip {
+        background: #111827; border: 1px solid #374151; border-radius: 6px;
+        padding: 4px 10px; font-size: 12px; font-family: monospace; color: #d1d5db;
+        cursor: pointer;
+    }
+    .serial-chip.current { border-color: #3b82f6; color: #93c5fd; background: #1e3a5f; }
+    .serial-chip:hover { border-color: #60a5fa; }
+
+    .comp-list { display: flex; flex-direction: column; gap: 5px; margin-top: 8px; }
+    .comp-item { font-size: 12px; color: #9ca3af; font-family: monospace; background: #111827; padding: 5px 10px; border-radius: 6px; }
+
+    .full-card { grid-column: 1 / -1; }
+
+    #loading { text-align: center; color: #6b7280; padding: 40px; display: none; font-size: 15px; }
+</style>
+
+<div style="max-width:960px;margin:0 auto;">
+    <div class="page-title">Lookup Info Toast</div>
+
+    <div class="search-bar">
+        <input type="text" id="inp-q" placeholder="Scan hoặc nhập serial / pallet ID..." autofocus />
+        <button onclick="doSearch()">Tìm</button>
+    </div>
+
+    <div id="loading">Đang tải...</div>
+    <div id="result-area"></div>
+</div>
+
+<script>
+    document.getElementById('inp-q').addEventListener('keydown', e => {
+        if (e.key === 'Enter') doSearch();
+    });
+
+    function fmtDate(str) {
+        if (!str) return '—';
+        const d = new Date(str);
+        return d.toLocaleString('vi-VN', { hour12: false });
+    }
+
+    function badgeHtml(status) {
+        if (!status) return '<span class="badge badge-none">Chưa có</span>';
+        const s = status.toUpperCase();
+        if (s === 'OK') return '<span class="badge badge-ok">OK</span>';
+        if (s === 'NG') return '<span class="badge badge-ng">NG</span>';
+        return `<span class="badge badge-none">${status}</span>`;
+    }
+
+    function stepIcon(status, emoji) {
+        if (!status) return `<div class="step-icon skip">${emoji}</div>`;
+        return status.toUpperCase() === 'OK'
+            ? `<div class="step-icon done">${emoji}</div>`
+            : `<div class="step-icon fail">${emoji}</div>`;
+    }
+
+    function parseComponents(json) {
+        try {
+            const list = JSON.parse(json || '[]');
+            return list.map(c => `<div class="comp-item">product_id: ${c.product_id} &nbsp;|&nbsp; lot: ${c.lotNumber}</div>`).join('');
+        } catch { return ''; }
+    }
+
+    function connector() {
+        return `<div class="journey-connector">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+        </div>`;
+    }
+
+    function buildJourney(d) {
+        const fct = d.fctFqc;
+        const fq  = d.fctFqc;
+        const wip = d.wip;
+        const fg  = d.fg;
+        const pal = d.pallet;
+
+        const steps = [
+            {
+                label: 'Trạm FCT',
+                emoji: '🔌',
+                status: fct?.fctStatus,
+                time: fmtDate(fct?.fctDatetime)
+            },
+            {
+                label: 'Trạm FQC',
+                emoji: '🔍',
+                status: fct?.fqcStatus,
+                time: fmtDate(fct?.fqcDatetime)
+            },
+            {
+                label: 'Trạm WIP',
+                emoji: '🔧',
+                status: wip ? 'OK' : null,
+                time: wip ? fmtDate(wip.dateFinished) : '—'
+            },
+            {
+                label: 'Trạm FG',
+                emoji: '📦',
+                status: fg ? 'OK' : null,
+                time: fg ? fmtDate(fg.dateFinished) : '—'
+            },
+            {
+                label: 'Trạm Pallet',
+                emoji: '🏷️',
+                status: pal ? 'OK' : null,
+                time: pal ? pal.scanDate : '—'
+            }
+        ];
+
+        let html = '<div class="journey">';
+        steps.forEach((s, i) => {
+            html += `<div class="journey-step">
+                ${stepIcon(s.status, s.emoji)}
+                <div class="step-label">${s.label}</div>
+                <div class="step-status" style="color:${s.status ? (s.status.toUpperCase()==='OK'?'#86efac':'#fca5a5') : '#4b5563'}">
+                    ${s.status ? (s.status.toUpperCase()==='OK'?'Đạt':'Lỗi') : 'Chưa có'}
+                </div>
+                <div class="step-time">${s.time}</div>
+            </div>`;
+            if (i < steps.length - 1) html += connector();
+        });
+        html += '</div>';
+        return html;
+    }
+
+    function buildCards(d) {
+        let html = '<div class="cards">';
+
+        // FCT / FQC
+        const f = d.fctFqc;
+        html += `<div class="card">
+            <div class="card-title"><span>🔌</span> FCT / FQC</div>`;
+        if (!f) {
+            html += `<div style="color:#6b7280;font-size:13px;">Chưa có dữ liệu FCT/FQC</div>`;
+        } else {
+            html += `
+            <div class="info-row"><span class="info-label">Work Order</span><span class="info-val">${f.workOrder||'—'}</span></div>
+            <div class="info-row"><span class="info-label">FCT Status</span><span class="info-val">${badgeHtml(f.fctStatus)}</span></div>
+            <div class="info-row"><span class="info-label">FCT Thời gian</span><span class="info-val" style="color:#9ca3af">${fmtDate(f.fctDatetime)}</span></div>
+            <div class="info-row"><span class="info-label">FQC Status</span><span class="info-val">${badgeHtml(f.fqcStatus)}</span></div>
+            <div class="info-row"><span class="info-label">FQC Thời gian</span><span class="info-val" style="color:#9ca3af">${fmtDate(f.fqcDatetime)}</span></div>
+            <div class="info-row"><span class="info-label">Cập nhật bởi</span><span class="info-val">${f.updateBySVNCode||'—'}</span></div>`;
+        }
+        html += `</div>`;
+
+        // Pallet
+        const p = d.pallet;
+        html += `<div class="card">
+            <div class="card-title"><span>🏷️</span> Thông tin Pallet</div>`;
+        if (!p) {
+            html += `<div style="color:#6b7280;font-size:13px;">Chưa đóng pallet</div>`;
+        } else {
+            html += `
+            <div class="info-row"><span class="info-label">Pallet ID</span><span class="info-val" style="color:#60a5fa;font-size:15px;">${p.palletID}</span></div>
+            <div class="info-row"><span class="info-label">Ngày đóng</span><span class="info-val">${p.date}</span></div>
+            <div class="info-row"><span class="info-label">Thời gian scan</span><span class="info-val" style="color:#9ca3af">${p.scanDate}</span></div>
+            <div class="info-row"><span class="info-label">Nhân viên</span><span class="info-val">${p.employeeID}</span></div>
+            <div class="info-row"><span class="info-label">Tổng serial</span><span class="info-val">${p.countSerial}</span></div>
+            <div style="margin-top:10px;font-size:12px;color:#6b7280;margin-bottom:6px;">Các serial trong pallet:</div>
+            <div class="pallet-serials">
+                ${(p.serials||[]).map(s => `<span class="serial-chip ${s.trim()===d.serial?'current':''}" onclick="searchSerial('${s.trim()}')">${s.trim()}</span>`).join('')}
+            </div>`;
+        }
+        html += `</div>`;
+
+        // WIP
+        const w = d.wip;
+        html += `<div class="card">
+            <div class="card-title"><span>🔧</span> Trạm WIP</div>`;
+        if (!w) {
+            html += `<div style="color:#6b7280;font-size:13px;">Chưa có log WIP</div>`;
+        } else {
+            html += `
+            <div class="info-row"><span class="info-label">WO Code</span><span class="info-val" style="color:#a78bfa">${w.woCode}</span></div>
+            <div class="info-row"><span class="info-label">Master WO</span><span class="info-val">${w.masterWoCode}</span></div>
+            <div class="info-row"><span class="info-label">Thời gian</span><span class="info-val" style="color:#9ca3af">${fmtDate(w.dateFinished)}</span></div>
+            <div class="info-row"><span class="info-label">Sync status</span><span class="info-val"><span class="badge ${w.status==='synch success'?'badge-ok':'badge-ng'}">${w.status}</span></span></div>
+            <div class="info-row"><span class="info-label">FG WO (tiêu thụ)</span><span class="info-val" style="color:#f59e0b;font-size:12px;">${w.consumedWoCode||'—'}</span></div>
+            <div style="margin-top:10px;font-size:12px;color:#6b7280;margin-bottom:4px;">Components:</div>
+            <div class="comp-list">${parseComponents(w.componentList)}</div>`;
+        }
+        html += `</div>`;
+
+        // FG
+        const g = d.fg;
+        html += `<div class="card">
+            <div class="card-title"><span>📦</span> Trạm FG</div>`;
+        if (!g) {
+            html += `<div style="color:#6b7280;font-size:13px;">Chưa có log FG</div>`;
+        } else {
+            html += `
+            <div class="info-row"><span class="info-label">WO Code</span><span class="info-val" style="color:#a78bfa">${g.woCode}</span></div>
+            <div class="info-row"><span class="info-label">Master WO</span><span class="info-val">${g.masterWoCode}</span></div>
+            <div class="info-row"><span class="info-label">Thời gian</span><span class="info-val" style="color:#9ca3af">${fmtDate(g.dateFinished)}</span></div>
+            <div class="info-row"><span class="info-label">Sync status</span><span class="info-val"><span class="badge ${g.status==='synch success'?'badge-ok':'badge-ng'}">${g.status}</span></span></div>
+            <div style="margin-top:10px;font-size:12px;color:#6b7280;margin-bottom:4px;">Components:</div>
+            <div class="comp-list">${parseComponents(g.componentList)}</div>`;
+        }
+        html += `</div>`;
+
+        html += '</div>';
+        return html;
+    }
+
+    async function doSearch() {
+        const q = document.getElementById('inp-q').value.trim();
+        if (!q) return;
+
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('result-area').innerHTML = '';
+
+        try {
+            const res = await fetch(`/api/ToastLookup?q=${encodeURIComponent(q)}`);
+            const data = await res.json();
+            document.getElementById('loading').style.display = 'none';
+
+            if (!data.found) {
+                document.getElementById('result-area').innerHTML =
+                    `<div class="not-found">Không tìm thấy dữ liệu cho <strong>${q}</strong></div>`;
+                return;
+            }
+
+            if (data.mode === 'list') {
+                renderList(data.serials, q);
+            } else {
+                renderDetail(data);
+            }
+        } catch(e) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('result-area').innerHTML =
+                `<div class="not-found" style="color:#fca5a5;">Lỗi kết nối: ${e.message}</div>`;
+        }
+    }
+
+    const PAGE_SIZE = 10;
+    let _listData = [];
+    let _currentPage = 1;
+    let _filterText = '';
+
+    function renderList(serials, q) {
+        _listData = serials;
+        _currentPage = 1;
+        _filterText = '';
+
+        const header = `<div style="font-size:13px;color:#6b7280;margin-bottom:16px;">
+            Tìm thấy <span style="color:#f9fafb;font-weight:700;" id="list-count">${serials.length}</span> kết quả cho <strong>${q}</strong>
+        </div>
+        <div class="card" style="max-width:100%;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+                <div class="card-title" style="margin:0;"><span>🔎</span> Danh sách kết quả</div>
+                <input id="list-filter" type="text" placeholder="Lọc nhanh serial / WO / pallet..."
+                    oninput="applyFilter(this.value)"
+                    style="background:#111827;border:1px solid #374151;border-radius:8px;color:#f9fafb;
+                           padding:8px 14px;font-size:13px;outline:none;width:280px;" />
+            </div>
+            <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr>
+                        <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;">#</th>
+                        <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;">Serial</th>
+                        <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;">FCT</th>
+                        <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;">FQC</th>
+                        <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;">Work Order</th>
+                        <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;">Pallet</th>
+                        <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;"></th>
+                    </tr>
+                </thead>
+                <tbody id="list-tbody"></tbody>
+            </table>
+            <div id="list-pagination" style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:8px;"></div>
+        </div>`;
+
+        document.getElementById('result-area').innerHTML = header;
+        renderListPage();
+    }
+
+    function applyFilter(val) {
+        _filterText = val.toLowerCase();
+        _currentPage = 1;
+        renderListPage();
+    }
+
+    function renderListPage() {
+        const filtered = _listData.filter(r =>
+            !_filterText ||
+            (r.serial_number || '').toLowerCase().includes(_filterText) ||
+            (r.work_order    || '').toLowerCase().includes(_filterText) ||
+            (r.PalletID      || '').toLowerCase().includes(_filterText) ||
+            (r.FCT_status    || '').toLowerCase().includes(_filterText) ||
+            (r.FQC_status    || '').toLowerCase().includes(_filterText)
+        );
+
+        const countEl = document.getElementById('list-count');
+        if (countEl) countEl.textContent = filtered.length;
+
+        const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+        if (_currentPage > totalPages) _currentPage = totalPages;
+
+        const start = (_currentPage - 1) * PAGE_SIZE;
+        const pageRows = filtered.slice(start, start + PAGE_SIZE);
+
+        const tbody = document.getElementById('list-tbody');
+        if (!pageRows.length) {
+            tbody.innerHTML = `<tr><td colspan="7" style="padding:20px;text-align:center;color:#6b7280;">Không có kết quả</td></tr>`;
+        } else {
+            tbody.innerHTML = pageRows.map((r, i) => `
+                <tr style="border-bottom:1px solid #1f2937;">
+                    <td style="padding:10px 12px;font-size:12px;color:#4b5563;">${start + i + 1}</td>
+                    <td style="padding:10px 12px;font-family:monospace;font-size:13px;color:#93c5fd;">${r.serial_number || '—'}</td>
+                    <td style="padding:10px 12px;">${badgeHtml(r.FCT_status)}</td>
+                    <td style="padding:10px 12px;">${badgeHtml(r.FQC_status)}</td>
+                    <td style="padding:10px 12px;font-size:12px;color:#9ca3af;">${r.work_order || '—'}</td>
+                    <td style="padding:10px 12px;font-size:12px;color:#9ca3af;">${r.PalletID || '—'}</td>
+                    <td style="padding:10px 12px;">
+                        <button class="btn btn-blue" style="font-size:12px;padding:5px 14px;"
+                            onclick="loadDetail('${r.serial_number}')">Chi tiết</button>
+                    </td>
+                </tr>`).join('');
+        }
+
+        // Pagination
+        const pag = document.getElementById('list-pagination');
+        const info = `<span style="font-size:12px;color:#6b7280;">Trang ${_currentPage}/${totalPages} &nbsp;·&nbsp; ${filtered.length} dòng</span>`;
+        let btns = `<div style="display:flex;gap:6px;">`;
+        btns += `<button class="btn btn-gray" style="font-size:12px;padding:5px 12px;" onclick="goPage(1)" ${_currentPage===1?'disabled':''}>«</button>`;
+        btns += `<button class="btn btn-gray" style="font-size:12px;padding:5px 12px;" onclick="goPage(${_currentPage-1})" ${_currentPage===1?'disabled':''}>‹</button>`;
+        btns += `<button class="btn btn-gray" style="font-size:12px;padding:5px 12px;" onclick="goPage(${_currentPage+1})" ${_currentPage===totalPages?'disabled':''}>›</button>`;
+        btns += `<button class="btn btn-gray" style="font-size:12px;padding:5px 12px;" onclick="goPage(${totalPages})" ${_currentPage===totalPages?'disabled':''}>»</button>`;
+        btns += `</div>`;
+        pag.innerHTML = info + btns;
+    }
+
+    function goPage(p) {
+        _currentPage = p;
+        renderListPage();
+    }
+
+    async function loadDetail(serial) {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('result-area').innerHTML = '';
+
+        const res = await fetch(`/api/ToastLookup/detail?serial=${encodeURIComponent(serial)}`);
+        const data = await res.json();
+        document.getElementById('loading').style.display = 'none';
+        renderDetail(data);
+    }
+
+    function renderDetail(data) {
+        let html = `<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <div style="font-size:13px;color:#6b7280;">
+                Serial: <span style="color:#f9fafb;font-weight:700;font-family:monospace;font-size:15px;">${data.serial}</span>
+            </div>
+            <button class="btn btn-blue" style="font-size:12px;padding:5px 14px;" onclick="backToSearch()">← Quay lại</button>
+        </div>`;
+        html += buildJourney(data);
+        html += buildCards(data);
+        document.getElementById('result-area').innerHTML = html;
+    }
+
+    function backToSearch() {
+        document.getElementById('result-area').innerHTML = '';
+    }
+
+    function searchSerial(s) {
+        document.getElementById('inp-q').value = s;
+        doSearch();
+    }
+</script>

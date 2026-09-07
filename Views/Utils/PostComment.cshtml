@@ -1,0 +1,162 @@
+@{
+    ViewData["Title"] = "Post Comment Range";
+}
+
+<h2>Post Comment to Multiple Work Orders</h2>
+
+<form id="commentForm">
+    <div style="margin-bottom: 10px;">
+        <label>WO Start:</label><br />
+        <input type="text" id="woStart" style="width: 320px; padding: 6px;" placeholder="VD: NM/MO/01649-001" />
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label>WO End:</label><br />
+        <input type="text" id="woEnd" style="width: 320px; padding: 6px;" placeholder="VD: NM/MO/01649-012" />
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label>Comment:</label><br />
+        <textarea id="comment" style="width: 320px; height: 120px; padding: 6px;"
+            placeholder="Nhập comment..."></textarea>
+    </div>
+
+    <button type="button" onclick="startPost()" style="padding: 8px 16px;">Gửi Comment</button>
+    <button type="button" onclick="exportExcel()" style="padding: 8px 16px; margin-left:10px;">Xuất Excel</button>
+</form>
+
+<div id="loading" style="margin-top:20px; display:none; font-weight:bold; font-size:16px;"></div>
+
+<table id="resultTable" border="1" cellpadding="6" style="margin-top:20px; border-collapse: collapse; display:none;">
+    <thead>
+        <tr style="background:#eee;">
+            <th>WO</th>
+            <th>Kết quả</th>
+            <th>Thời gian</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+    function extractNumber(wo) {
+        return parseInt(wo.split("-").pop());
+    }
+
+    function buildWO(base, num) {
+        let prefix = base.substring(0, base.lastIndexOf("-") + 1);
+        return prefix + num.toString().padStart(3, '0');
+    }
+
+    function randomDelay() {
+        return new Promise(resolve => setTimeout(resolve, 200 + Math.random() * 300));
+    }
+
+    async function postOne(wo, comment) {
+        let ts = new Date().toLocaleString(); // giờ phút giây ngày tháng năm
+        const payload = { WOcode: wo, body: `[${ts}] ${comment}` };
+        let timestamp = new Date().toLocaleString();
+        let status = "";
+
+        try {
+            const res = await fetch("/api/odoo/postcommenttowo", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            status = res.ok ? "OK" : "Lỗi";
+
+        } catch (err) {
+            status = "Lỗi kết nối";
+        }
+
+        return { wo, status, timestamp };
+    }
+
+    async function startPost() {
+        const woStart = document.getElementById("woStart").value.trim();
+        const woEnd = document.getElementById("woEnd").value.trim();
+        const comment = document.getElementById("comment").value.trim();
+        const resultTable = document.getElementById("resultTable");
+        const tbody = resultTable.querySelector("tbody");
+        const loading = document.getElementById("loading");
+
+        if (!woStart || !woEnd || !comment) {
+            alert("Vui lòng nhập đầy đủ Start, End và Comment.");
+            return;
+        }
+
+        const startNum = extractNumber(woStart);
+        const endNum = extractNumber(woEnd);
+
+        if (isNaN(startNum) || isNaN(endNum) || startNum > endNum) {
+            alert("Khoảng WO không hợp lệ.");
+            return;
+        }
+
+        // Generate WO list
+        let list = [];
+        for (let i = startNum; i <= endNum; i++) {
+            list.push(buildWO(woStart, i));
+        }
+
+        tbody.innerHTML = "";
+        resultTable.style.display = "none";
+        loading.style.display = "block";
+
+        const concurrency = 3;
+        let index = 0;
+
+        let results = [];
+
+        async function worker() {
+            while (index < list.length) {
+                let current = index++;
+                let wo = list[current];
+
+                loading.innerText = `⏳ Đang gửi ${current + 1}/${list.length}…`;
+
+                let result = await postOne(wo, comment);
+                results.push(result);
+
+                // Append to table
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${result.wo}</td>
+                        <td style="color:${result.status === "OK" ? "green" : "red"};">${result.status}</td>
+                        <td>${result.timestamp}</td>
+                    </tr>
+                `;
+
+                await randomDelay();
+            }
+        }
+
+        let workers = [];
+        for (let i = 0; i < concurrency; i++) {
+            workers.push(worker());
+        }
+
+        await Promise.all(workers);
+
+        loading.style.display = "none";
+        resultTable.style.display = "table";
+
+        window._lastResults = results;
+    }
+
+    function exportExcel() {
+        if (!window._lastResults || window._lastResults.length === 0) {
+            alert("Chưa có dữ liệu để xuất Excel.");
+            return;
+        }
+
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(window._lastResults);
+        XLSX.utils.book_append_sheet(wb, ws, "Results");
+        XLSX.writeFile(wb, `WO_Comment_Result_${Date.now()}.xlsx`);
+    }
+</script>
