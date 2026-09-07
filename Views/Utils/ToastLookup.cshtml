@@ -1,11 +1,16 @@
 @{
-    ViewData["Title"] = "Lookup Info Toast";
+    ViewData["Title"] = "Tra cứu thông tin Toast";
 }
 
 <style>
     body { font-family: 'Segoe UI', sans-serif; background: #0f1115; color: #f9fafb; margin: 0; padding: 32px 20px; }
 
-    .page-title { font-size: 24px; font-weight: 700; margin: 0 0 24px; }
+    .page-title {
+        font-size: 34px; font-weight: 800; margin: 0 0 28px; letter-spacing: -.5px;
+        text-align: center;
+        background: linear-gradient(90deg, #60a5fa, #93c5fd);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
 
     .search-bar {
         display: flex; gap: 10px; max-width: 620px; margin: 0 auto 36px;
@@ -49,7 +54,7 @@
     .step-icon.done   { background: #14532d; border-color: #16a34a; }
     .step-icon.fail   { background: #7f1d1d; border-color: #dc2626; }
     .step-icon.skip   { background: #1f2937; border-color: #374151; opacity:.5; }
-    .step-label { text-align: center; font-size: 11px; color: #9ca3af; font-weight: 600; letter-spacing:.5px; text-transform: uppercase; }
+    .step-label { text-align: center; font-size: 15px; color: #e5e7eb; font-weight: 700; letter-spacing:.5px; text-transform: uppercase; }
     .step-status { text-align: center; font-size: 13px; font-weight: 700; margin-top: 4px; }
     .step-time  { text-align: center; font-size: 11px; color: #6b7280; margin-top: 2px; }
 
@@ -68,7 +73,7 @@
 
     .info-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid #2d3748; gap: 12px; }
     .info-row:last-child { border-bottom: none; }
-    .info-label { font-size: 12px; color: #6b7280; white-space: nowrap; flex-shrink: 0; }
+    .info-label { font-size: 12px; color: #cbd5e1; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
     .info-val { font-size: 13px; font-weight: 600; text-align: right; word-break: break-all; }
 
     .badge { padding: 3px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; display: inline-block; }
@@ -80,27 +85,53 @@
         display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;
     }
     .serial-chip {
-        background: #111827; border: 1px solid #374151; border-radius: 6px;
-        padding: 4px 10px; font-size: 12px; font-family: monospace; color: #d1d5db;
+        background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.4); border-radius: 6px;
+        padding: 4px 10px; font-size: 12px; font-family: monospace; font-weight: 700; color: #86efac;
         cursor: pointer;
     }
     .serial-chip.current { border-color: #3b82f6; color: #93c5fd; background: #1e3a5f; }
-    .serial-chip:hover { border-color: #60a5fa; }
+    .serial-chip:hover { border-color: #4ade80; background: rgba(34,197,94,.2); }
+    .serial-chip.current:hover { border-color: #60a5fa; background: #1e3a5f; }
 
-    .comp-list { display: flex; flex-direction: column; gap: 5px; margin-top: 8px; }
+    .comp-box {
+        margin-top: 12px; padding: 12px; border-radius: 10px;
+        background: rgba(59,130,246,.08); border: 1px solid rgba(59,130,246,.35);
+    }
+    .comp-box-title { font-size: 12px; color: #93c5fd; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+    .comp-list { display: flex; flex-direction: column; gap: 5px; }
     .comp-item { font-size: 12px; color: #9ca3af; font-family: monospace; background: #111827; padding: 5px 10px; border-radius: 6px; }
+    .comp-code { color: #93c5fd; font-weight: 700; }
+    .comp-name { color: #f9fafb; font-weight: 600; }
+    .comp-lot  { color: #fbbf24; font-weight: 700; }
+    .comp-sep  { color: #4b5563; }
+
+    .mt-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; margin: 1px 3px 1px 0; white-space: nowrap; }
 
     .full-card { grid-column: 1 / -1; }
 
     #loading { text-align: center; color: #6b7280; padding: 40px; display: none; font-size: 15px; }
+
+    .btn-blue {
+        background: #2563eb; color: #fff; border: none; border-radius: 8px;
+        font-weight: 600; cursor: pointer;
+    }
+    .btn-blue:hover { background: #1d4ed8; }
+
+    .btn-gray {
+        background: #1f2937; color: #e5e7eb; border: 1px solid #4b5563;
+        border-radius: 8px; font-weight: 600; cursor: pointer;
+    }
+    .btn-gray:hover:not(:disabled) { background: #2563eb; border-color: #2563eb; color: #fff; }
+    .btn-gray:active:not(:disabled) { background: #1d4ed8; border-color: #1d4ed8; color: #fff; }
+    .btn-gray:disabled { opacity: .35; cursor: not-allowed; }
 </style>
 
 <div style="max-width:960px;margin:0 auto;">
-    <div class="page-title">Lookup Info Toast</div>
+    <div class="page-title">Tra cứu thông tin Toast</div>
 
     <div class="search-bar">
         <input type="text" id="inp-q" placeholder="Scan hoặc nhập serial / pallet ID..." autofocus />
-        <button onclick="doSearch()">Tìm</button>
+        <button onclick="doSearch()">Tìm kiếm</button>
     </div>
 
     <div id="loading">Đang tải...</div>
@@ -126,18 +157,21 @@
         return `<span class="badge badge-none">${status}</span>`;
     }
 
-    function stepIcon(status, emoji) {
-        if (!status) return `<div class="step-icon skip">${emoji}</div>`;
+    function stepIcon(status) {
+        if (!status) return `<div class="step-icon skip">–</div>`;
         return status.toUpperCase() === 'OK'
-            ? `<div class="step-icon done">${emoji}</div>`
-            : `<div class="step-icon fail">${emoji}</div>`;
+            ? `<div class="step-icon done">✓</div>`
+            : `<div class="step-icon fail">✕</div>`;
     }
 
-    function parseComponents(json) {
-        try {
-            const list = JSON.parse(json || '[]');
-            return list.map(c => `<div class="comp-item">product_id: ${c.product_id} &nbsp;|&nbsp; lot: ${c.lotNumber}</div>`).join('');
-        } catch { return ''; }
+    function parseComponents(list) {
+        if (!list || !list.length) return '';
+        return list.map(c => {
+            const label = c.productCode
+                ? `<span class="comp-code">[${c.productCode}]</span> <span class="comp-name">${c.productName || ''}</span>`
+                : `<span class="comp-name">product_id: ${c.productId}</span>`;
+            return `<div class="comp-item">${label} <span class="comp-sep">|</span> lot: <span class="comp-lot">${c.lotNumber}</span></div>`;
+        }).join('');
     }
 
     function connector() {
@@ -157,32 +191,27 @@
 
         const steps = [
             {
+                label: 'Trạm WIP',
+                status: wip ? 'OK' : null,
+                time: wip ? fmtDate(wip.dateFinished) : '—'
+            },
+            {
                 label: 'Trạm FCT',
-                emoji: '🔌',
                 status: fct?.fctStatus,
                 time: fmtDate(fct?.fctDatetime)
             },
             {
                 label: 'Trạm FQC',
-                emoji: '🔍',
                 status: fct?.fqcStatus,
                 time: fmtDate(fct?.fqcDatetime)
             },
             {
-                label: 'Trạm WIP',
-                emoji: '🔧',
-                status: wip ? 'OK' : null,
-                time: wip ? fmtDate(wip.dateFinished) : '—'
-            },
-            {
                 label: 'Trạm FG',
-                emoji: '📦',
                 status: fg ? 'OK' : null,
                 time: fg ? fmtDate(fg.dateFinished) : '—'
             },
             {
-                label: 'Trạm Pallet',
-                emoji: '🏷️',
+                label: 'Trạm Đóng gói',
                 status: pal ? 'OK' : null,
                 time: pal ? pal.scanDate : '—'
             }
@@ -191,7 +220,7 @@
         let html = '<div class="journey">';
         steps.forEach((s, i) => {
             html += `<div class="journey-step">
-                ${stepIcon(s.status, s.emoji)}
+                ${stepIcon(s.status)}
                 <div class="step-label">${s.label}</div>
                 <div class="step-status" style="color:${s.status ? (s.status.toUpperCase()==='OK'?'#86efac':'#fca5a5') : '#4b5563'}">
                     ${s.status ? (s.status.toUpperCase()==='OK'?'Đạt':'Lỗi') : 'Chưa có'}
@@ -210,7 +239,7 @@
         // FCT / FQC
         const f = d.fctFqc;
         html += `<div class="card">
-            <div class="card-title"><span>🔌</span> FCT / FQC</div>`;
+            <div class="card-title">FCT / FQC</div>`;
         if (!f) {
             html += `<div style="color:#6b7280;font-size:13px;">Chưa có dữ liệu FCT/FQC</div>`;
         } else {
@@ -219,24 +248,21 @@
             <div class="info-row"><span class="info-label">FCT Status</span><span class="info-val">${badgeHtml(f.fctStatus)}</span></div>
             <div class="info-row"><span class="info-label">FCT Thời gian</span><span class="info-val" style="color:#9ca3af">${fmtDate(f.fctDatetime)}</span></div>
             <div class="info-row"><span class="info-label">FQC Status</span><span class="info-val">${badgeHtml(f.fqcStatus)}</span></div>
-            <div class="info-row"><span class="info-label">FQC Thời gian</span><span class="info-val" style="color:#9ca3af">${fmtDate(f.fqcDatetime)}</span></div>
-            <div class="info-row"><span class="info-label">Cập nhật bởi</span><span class="info-val">${f.updateBySVNCode||'—'}</span></div>`;
+            <div class="info-row"><span class="info-label">FQC Thời gian</span><span class="info-val" style="color:#9ca3af">${fmtDate(f.fqcDatetime)}</span></div>`;
         }
         html += `</div>`;
 
         // Pallet
         const p = d.pallet;
         html += `<div class="card">
-            <div class="card-title"><span>🏷️</span> Thông tin Pallet</div>`;
+            <div class="card-title">Thông tin Đóng gói</div>`;
         if (!p) {
             html += `<div style="color:#6b7280;font-size:13px;">Chưa đóng pallet</div>`;
         } else {
             html += `
             <div class="info-row"><span class="info-label">Pallet ID</span><span class="info-val" style="color:#60a5fa;font-size:15px;">${p.palletID}</span></div>
             <div class="info-row"><span class="info-label">Ngày đóng</span><span class="info-val">${p.date}</span></div>
-            <div class="info-row"><span class="info-label">Thời gian scan</span><span class="info-val" style="color:#9ca3af">${p.scanDate}</span></div>
-            <div class="info-row"><span class="info-label">Nhân viên</span><span class="info-val">${p.employeeID}</span></div>
-            <div class="info-row"><span class="info-label">Tổng serial</span><span class="info-val">${p.countSerial}</span></div>
+            <div class="info-row"><span class="info-label">Thời gian scan</span><span class="info-val" style="color:#9ca3af">${p.scanDate}</span></div>            <div class="info-row"><span class="info-label">Tổng serial</span><span class="info-val">${p.countSerial}</span></div>
             <div style="margin-top:10px;font-size:12px;color:#6b7280;margin-bottom:6px;">Các serial trong pallet:</div>
             <div class="pallet-serials">
                 ${(p.serials||[]).map(s => `<span class="serial-chip ${s.trim()===d.serial?'current':''}" onclick="searchSerial('${s.trim()}')">${s.trim()}</span>`).join('')}
@@ -247,35 +273,39 @@
         // WIP
         const w = d.wip;
         html += `<div class="card">
-            <div class="card-title"><span>🔧</span> Trạm WIP</div>`;
+            <div class="card-title">Trạm WIP</div>`;
         if (!w) {
             html += `<div style="color:#6b7280;font-size:13px;">Chưa có log WIP</div>`;
         } else {
             html += `
             <div class="info-row"><span class="info-label">WO Code</span><span class="info-val" style="color:#a78bfa">${w.woCode}</span></div>
-            <div class="info-row"><span class="info-label">Master WO</span><span class="info-val">${w.masterWoCode}</span></div>
+            <div class="info-row"><span class="info-label">WO cha</span><span class="info-val">${w.masterWoCode}</span></div>
             <div class="info-row"><span class="info-label">Thời gian</span><span class="info-val" style="color:#9ca3af">${fmtDate(w.dateFinished)}</span></div>
-            <div class="info-row"><span class="info-label">Sync status</span><span class="info-val"><span class="badge ${w.status==='synch success'?'badge-ok':'badge-ng'}">${w.status}</span></span></div>
+            <div class="info-row"><span class="info-label">Trạng thái đồng bộ</span><span class="info-val"><span class="badge ${w.status==='synch success'?'badge-ok':'badge-ng'}">${w.status==='synch success'?'Thành công':'Thất bại'}</span></span></div>
             <div class="info-row"><span class="info-label">FG WO (tiêu thụ)</span><span class="info-val" style="color:#f59e0b;font-size:12px;">${w.consumedWoCode||'—'}</span></div>
-            <div style="margin-top:10px;font-size:12px;color:#6b7280;margin-bottom:4px;">Components:</div>
-            <div class="comp-list">${parseComponents(w.componentList)}</div>`;
+            <div class="comp-box">
+                <div class="comp-box-title">Linh kiện</div>
+                <div class="comp-list">${parseComponents(w.componentList)}</div>
+            </div>`;
         }
         html += `</div>`;
 
         // FG
         const g = d.fg;
         html += `<div class="card">
-            <div class="card-title"><span>📦</span> Trạm FG</div>`;
+            <div class="card-title">Trạm FG</div>`;
         if (!g) {
             html += `<div style="color:#6b7280;font-size:13px;">Chưa có log FG</div>`;
         } else {
             html += `
             <div class="info-row"><span class="info-label">WO Code</span><span class="info-val" style="color:#a78bfa">${g.woCode}</span></div>
-            <div class="info-row"><span class="info-label">Master WO</span><span class="info-val">${g.masterWoCode}</span></div>
+            <div class="info-row"><span class="info-label">WO cha</span><span class="info-val">${g.masterWoCode}</span></div>
             <div class="info-row"><span class="info-label">Thời gian</span><span class="info-val" style="color:#9ca3af">${fmtDate(g.dateFinished)}</span></div>
-            <div class="info-row"><span class="info-label">Sync status</span><span class="info-val"><span class="badge ${g.status==='synch success'?'badge-ok':'badge-ng'}">${g.status}</span></span></div>
-            <div style="margin-top:10px;font-size:12px;color:#6b7280;margin-bottom:4px;">Components:</div>
-            <div class="comp-list">${parseComponents(g.componentList)}</div>`;
+            <div class="info-row"><span class="info-label">Trạng thái đồng bộ</span><span class="info-val"><span class="badge ${g.status==='synch success'?'badge-ok':'badge-ng'}">${g.status==='synch success'?'Thành công':'Thất bại'}</span></span></div>
+            <div class="comp-box">
+                <div class="comp-box-title">Linh kiện</div>
+                <div class="comp-list">${parseComponents(g.componentList)}</div>
+            </div>`;
         }
         html += `</div>`;
 
@@ -329,7 +359,7 @@
         <div class="card" style="max-width:100%;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
                 <div class="card-title" style="margin:0;"><span>🔎</span> Danh sách kết quả</div>
-                <input id="list-filter" type="text" placeholder="Lọc nhanh serial / WO / pallet..."
+                <input id="list-filter" type="text" placeholder="Lọc nhanh serial / WO / pallet / lot..."
                     oninput="applyFilter(this.value)"
                     style="background:#111827;border:1px solid #374151;border-radius:8px;color:#f9fafb;
                            padding:8px 14px;font-size:13px;outline:none;width:280px;" />
@@ -343,6 +373,8 @@
                         <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;">FQC</th>
                         <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;">Work Order</th>
                         <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;">Pallet</th>
+                        <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;">Lot</th>
+                        <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;">Khớp theo</th>
                         <th style="padding:10px 12px;text-align:left;color:#6b7280;font-size:12px;border-bottom:1px solid #374151;"></th>
                     </tr>
                 </thead>
@@ -361,6 +393,33 @@
         renderListPage();
     }
 
+    const MATCH_TYPE_COLORS = [
+        { prefix: 'Serial',      bg: 'rgba(59,130,246,.15)',  fg: '#93c5fd' },
+        { prefix: 'Work Order',  bg: 'rgba(167,139,250,.15)', fg: '#a78bfa' },
+        { prefix: 'Pallet',      bg: 'rgba(34,197,94,.15)',   fg: '#86efac' },
+        { prefix: 'Lot',         bg: 'rgba(251,191,36,.15)',  fg: '#fbbf24' },
+        { prefix: 'Trạng thái',  bg: 'rgba(248,113,113,.15)', fg: '#fca5a5' },
+        { prefix: 'Nhân viên',   bg: 'rgba(156,163,175,.15)', fg: '#d1d5db' }
+    ];
+    function matchTypeBadges(matchTypes) {
+        if (!matchTypes) return '—';
+        return matchTypes.split(',').map(t => t.trim()).filter(Boolean).map(t => {
+            const c = MATCH_TYPE_COLORS.find(x => t.indexOf(x.prefix) === 0) || { bg: 'rgba(156,163,175,.15)', fg: '#d1d5db' };
+            return `<span class="mt-badge" style="background:${c.bg};color:${c.fg};">${t}</span>`;
+        }).join('');
+    }
+
+    function extractLots(rawText) {
+        if (!rawText) return [];
+        const lots = new Set();
+        const re = /"lotNumber"\s*:\s*"([^"]*)"/g;
+        let m;
+        while ((m = re.exec(rawText)) !== null) {
+            if (m[1]) lots.add(m[1]);
+        }
+        return [...lots];
+    }
+
     function renderListPage() {
         const filtered = _listData.filter(r =>
             !_filterText ||
@@ -368,7 +427,8 @@
             (r.work_order    || '').toLowerCase().includes(_filterText) ||
             (r.PalletID      || '').toLowerCase().includes(_filterText) ||
             (r.FCT_status    || '').toLowerCase().includes(_filterText) ||
-            (r.FQC_status    || '').toLowerCase().includes(_filterText)
+            (r.FQC_status    || '').toLowerCase().includes(_filterText) ||
+            (r.lots_raw      || '').toLowerCase().includes(_filterText)
         );
 
         const countEl = document.getElementById('list-count');
@@ -382,9 +442,15 @@
 
         const tbody = document.getElementById('list-tbody');
         if (!pageRows.length) {
-            tbody.innerHTML = `<tr><td colspan="7" style="padding:20px;text-align:center;color:#6b7280;">Không có kết quả</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="9" style="padding:20px;text-align:center;color:#6b7280;">Không có kết quả</td></tr>`;
         } else {
-            tbody.innerHTML = pageRows.map((r, i) => `
+            tbody.innerHTML = pageRows.map((r, i) => {
+                const lots = extractLots(r.lots_raw);
+                const lotsHtml = lots.length
+                    ? lots.filter(l => !_filterText || l.toLowerCase().includes(_filterText))
+                          .map(l => `<span class="comp-lot" style="font-family:monospace;font-size:11px;">${l}</span>`).join('<br>')
+                    : '—';
+                return `
                 <tr style="border-bottom:1px solid #1f2937;">
                     <td style="padding:10px 12px;font-size:12px;color:#4b5563;">${start + i + 1}</td>
                     <td style="padding:10px 12px;font-family:monospace;font-size:13px;color:#93c5fd;">${r.serial_number || '—'}</td>
@@ -392,11 +458,14 @@
                     <td style="padding:10px 12px;">${badgeHtml(r.FQC_status)}</td>
                     <td style="padding:10px 12px;font-size:12px;color:#9ca3af;">${r.work_order || '—'}</td>
                     <td style="padding:10px 12px;font-size:12px;color:#9ca3af;">${r.PalletID || '—'}</td>
+                    <td style="padding:10px 12px;">${lotsHtml}</td>
+                    <td style="padding:10px 12px;">${matchTypeBadges(r.match_types)}</td>
                     <td style="padding:10px 12px;">
                         <button class="btn btn-blue" style="font-size:12px;padding:5px 14px;"
                             onclick="loadDetail('${r.serial_number}')">Chi tiết</button>
                     </td>
-                </tr>`).join('');
+                </tr>`;
+            }).join('');
         }
 
         // Pagination
@@ -433,6 +502,22 @@
             </div>
             <button class="btn btn-blue" style="font-size:12px;padding:5px 14px;" onclick="backToSearch()">← Quay lại</button>
         </div>`;
+        if (data.matchInfo) {
+            const mi = data.matchInfo;
+            let noteBody;
+            if (mi.components && mi.components.length) {
+                noteBody = mi.components.map(c => {
+                    const who = c.productCode ? `<strong>[${c.productCode}]</strong> ${c.productName || ''}` : 'linh kiện';
+                    return `Tìm thấy vì khớp <strong>Lot (${c.station})</strong> của ${who} với từ khóa "<strong>${mi.query}</strong>"`;
+                }).join('<br>');
+            } else {
+                noteBody = `Tìm thấy vì khớp <strong>${mi.types}</strong> với từ khóa "<strong>${mi.query}</strong>", không phải khớp trực tiếp Serial.`;
+            }
+            html += `<div style="font-size:12px;color:#fbbf24;background:rgba(251,191,36,.1);
+                        border:1px solid rgba(251,191,36,.35);border-radius:8px;padding:8px 14px;margin-bottom:16px;">
+                ${noteBody}
+            </div>`;
+        }
         html += buildJourney(data);
         html += buildCards(data);
         document.getElementById('result-area').innerHTML = html;

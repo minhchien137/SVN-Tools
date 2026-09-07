@@ -1015,7 +1015,11 @@ namespace SVN_Tools.Controllers
             }
 
             // Đúng 1 kết quả → SP_Toast_GetSerialDetail
-            return await GetToastSerialDetail((string)summaries[0].serial_number, conn);
+            var only = summaries[0];
+            bool isDirectSerialMatch = string.Equals((string)only.serial_number, q, StringComparison.OrdinalIgnoreCase);
+            return await GetToastSerialDetail((string)only.serial_number, conn,
+                isDirectSerialMatch ? null : (string?)only.match_types,
+                isDirectSerialMatch ? null : q);
         }
 
         [HttpGet("api/ToastLookup/detail")]
@@ -1028,7 +1032,59 @@ namespace SVN_Tools.Controllers
             return await GetToastSerialDetail(serial.Trim().ToUpper(), conn);
         }
 
-        private async Task<IActionResult> GetToastSerialDetail(string serial, System.Data.SqlClient.SqlConnection conn)
+        private static List<int> ExtractComponentProductIds(string? componentListJson)
+        {
+            var ids = new List<int>();
+            if (string.IsNullOrWhiteSpace(componentListJson)) return ids;
+            try
+            {
+                using var doc = JsonDocument.Parse(componentListJson);
+                foreach (var el in doc.RootElement.EnumerateArray())
+                {
+                    if (el.TryGetProperty("product_id", out var pidEl) && pidEl.TryGetInt32(out var pid))
+                        ids.Add(pid);
+                }
+            }
+            catch { }
+            return ids;
+        }
+
+        private sealed class ComponentInfo
+        {
+            public int ProductId { get; set; }
+            public string? ProductCode { get; set; }
+            public string? ProductName { get; set; }
+            public string LotNumber { get; set; } = "";
+        }
+
+        private static List<ComponentInfo> EnrichComponentList(string? componentListJson, Dictionary<int, (string? Code, string? Name)> productMap)
+        {
+            var result = new List<ComponentInfo>();
+            if (string.IsNullOrWhiteSpace(componentListJson)) return result;
+            try
+            {
+                using var doc = JsonDocument.Parse(componentListJson);
+                foreach (var el in doc.RootElement.EnumerateArray())
+                {
+                    int productId = el.TryGetProperty("product_id", out var pidEl) && pidEl.TryGetInt32(out var pid) ? pid : 0;
+                    string lotNumber = el.TryGetProperty("lotNumber", out var lotEl) ? (lotEl.GetString() ?? "") : "";
+                    productMap.TryGetValue(productId, out var info);
+
+                    result.Add(new ComponentInfo
+                    {
+                        ProductId = productId,
+                        ProductCode = info.Code,
+                        ProductName = info.Name,
+                        LotNumber = lotNumber
+                    });
+                }
+            }
+            catch { }
+            return result;
+        }
+
+        private async Task<IActionResult> GetToastSerialDetail(string serial, System.Data.SqlClient.SqlConnection conn,
+            string? matchTypes = null, string? matchQuery = null)
         {
             using var multi = await Dapper.SqlMapper.QueryMultipleAsync(conn,
                 "SP_Toast_GetSerialDetail", new { serial },
@@ -1041,12 +1097,67 @@ namespace SVN_Tools.Controllers
             var wip = prodRows.FirstOrDefault(x => x.state == "Consumed");
             var fg  = prodRows.FirstOrDefault(x => x.state == "Used");
 
+            var productIds = ExtractComponentProductIds(wip == null ? null : (string?)wip.component_list)
+                .Concat(ExtractComponentProductIds(fg == null ? null : (string?)fg.component_list))
+                .Distinct()
+                .ToList();
+
+            var productMap = new Dictionary<int, (string? Code, string? Name)>();
+            if (productIds.Count > 0)
+            {
+                var productRows = await Dapper.SqlMapper.QueryAsync(conn,
+                    "SELECT pp.id, pp.default_code, pt.name AS product_name FROM SVN_product_product pp " +
+                    "LEFT JOIN SVN_product_template_1 pt ON pp.product_tmpl_id = pt.id WHERE pp.id IN @ids",
+                    new { ids = productIds });
+                foreach (var r in productRows)
+                    productMap[(int)r.id] = ((string?)r.default_code, (string?)r.product_name);
+            }
+
+            var wipComponents = EnrichComponentList(wip == null ? null : (string?)wip.component_list, productMap);
+            var fgComponents  = EnrichComponentList(fg == null ? null : (string?)fg.component_list, productMap);
+
+            object? matchInfo = null;
+            if (!string.IsNullOrWhiteSpace(matchTypes))
+            {
+                var matchedComponents = new List<object>();
+                if (matchTypes.Contains("Lot") && !string.IsNullOrWhiteSpace(matchQuery))
+                {
+                    void CollectLotMatches(List<ComponentInfo> list, string station)
+                    {
+                        foreach (var c in list)
+                        {
+                            if (!string.IsNullOrEmpty(c.LotNumber) &&
+                                c.LotNumber.Contains(matchQuery, StringComparison.OrdinalIgnoreCase))
+                            {
+                                matchedComponents.Add(new
+                                {
+                                    station,
+                                    productCode = c.ProductCode,
+                                    productName = c.ProductName,
+                                    lotNumber = c.LotNumber
+                                });
+                            }
+                        }
+                    }
+                    CollectLotMatches(wipComponents, "Trạm WIP");
+                    CollectLotMatches(fgComponents, "Trạm FG");
+                }
+
+                matchInfo = new
+                {
+                    types = matchTypes,
+                    query = matchQuery,
+                    components = matchedComponents.Count > 0 ? matchedComponents : null
+                };
+            }
+
             return Ok(new
             {
                 ok     = true,
                 found  = true,
                 mode   = "detail",
                 serial,
+                matchInfo,
                 fctFqc = fctFqcRow == null ? null : new
                 {
                     workOrder   = (string?)fctFqcRow.work_order,
@@ -1072,7 +1183,7 @@ namespace SVN_Tools.Controllers
                     masterWoCode   = (string?)wip.master_wo_code,
                     dateFinished   = (DateTime?)wip.date_finished,
                     status         = (string?)wip.status,
-                    componentList  = (string?)wip.component_list,
+                    componentList  = wipComponents,
                     consumedWoCode = (string?)wip.consumed_wo_code
                 },
                 fg = fg == null ? null : new
@@ -1081,7 +1192,7 @@ namespace SVN_Tools.Controllers
                     masterWoCode  = (string?)fg.master_wo_code,
                     dateFinished  = (DateTime?)fg.date_finished,
                     status        = (string?)fg.status,
-                    componentList = (string?)fg.component_list
+                    componentList = fgComponents
                 }
             });
         }
