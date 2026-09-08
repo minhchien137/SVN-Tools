@@ -281,7 +281,7 @@
             <div class="info-row"><span class="info-label">WO Code</span><span class="info-val" style="color:#a78bfa">${w.woCode}</span></div>
             <div class="info-row"><span class="info-label">WO cha</span><span class="info-val">${w.masterWoCode}</span></div>
             <div class="info-row"><span class="info-label">Thời gian</span><span class="info-val" style="color:#9ca3af">${fmtDate(w.dateFinished)}</span></div>
-            <div class="info-row"><span class="info-label">Trạng thái đồng bộ</span><span class="info-val"><span class="badge ${w.status==='synch success'?'badge-ok':'badge-ng'}">${w.status==='synch success'?'Thành công':'Thất bại'}</span></span></div>
+            <div class="info-row"><span class="info-label">Trạng thái đồng bộ</span><span class="info-val"><span class="badge ${w.status==='synch success'?'badge-ok':'badge-ng'}">${w.status==='synch success'?'Thành công':'Chưa đồng bộ'}</span></span></div>
             <div class="info-row"><span class="info-label">FG WO (tiêu thụ)</span><span class="info-val" style="color:#f59e0b;font-size:12px;">${w.consumedWoCode||'—'}</span></div>
             <div class="comp-box">
                 <div class="comp-box-title">Linh kiện</div>
@@ -301,7 +301,7 @@
             <div class="info-row"><span class="info-label">WO Code</span><span class="info-val" style="color:#a78bfa">${g.woCode}</span></div>
             <div class="info-row"><span class="info-label">WO cha</span><span class="info-val">${g.masterWoCode}</span></div>
             <div class="info-row"><span class="info-label">Thời gian</span><span class="info-val" style="color:#9ca3af">${fmtDate(g.dateFinished)}</span></div>
-            <div class="info-row"><span class="info-label">Trạng thái đồng bộ</span><span class="info-val"><span class="badge ${g.status==='synch success'?'badge-ok':'badge-ng'}">${g.status==='synch success'?'Thành công':'Thất bại'}</span></span></div>
+            <div class="info-row"><span class="info-label">Trạng thái đồng bộ</span><span class="info-val"><span class="badge ${g.status==='synch success'?'badge-ok':'badge-ng'}">${g.status==='synch success'?'Thành công':'Chưa đồng bộ'}</span></span></div>
             <div class="comp-box">
                 <div class="comp-box-title">Linh kiện</div>
                 <div class="comp-list">${parseComponents(g.componentList)}</div>

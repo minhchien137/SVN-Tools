@@ -1096,8 +1096,10 @@ namespace SVN_Tools.Controllers
             var palletRow = (await multi.ReadAsync()).FirstOrDefault();
             var prodRows  = (await multi.ReadAsync()).Cast<dynamic>().ToList();
 
-            var wip = prodRows.FirstOrDefault(x => x.state == "Consumed");
-            var fg  = prodRows.FirstOrDefault(x => x.state == "Used");
+            // FG: serial nằm trong component_list (bị tiêu thụ làm linh kiện)
+            // WIP: serial là sản phẩm đầu ra, không nằm trong component_list
+            var wip = prodRows.FirstOrDefault(x => !((string?)x.component_list ?? "").Contains(serial));
+            var fg  = prodRows.FirstOrDefault(x =>  ((string?)x.component_list ?? "").Contains(serial));
 
             var productIds = ExtractComponentProductIds(wip == null ? null : (string?)wip.component_list)
                 .Concat(ExtractComponentProductIds(fg == null ? null : (string?)fg.component_list))

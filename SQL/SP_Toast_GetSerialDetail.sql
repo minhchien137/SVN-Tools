@@ -17,7 +17,7 @@ BEGIN
       AND Serial LIKE '%' + @serial + '%'
     ORDER BY Id DESC;
 
-    -- 3. Log san xuat: state = 'Consumed' la tram WIP, state = 'Used' la tram FG
+    -- 3. Log san xuat: phan biet WIP/FG bang component_list (neu serial nam trong component_list -> FG, nguoc lai -> WIP)
     SELECT id, state, wo_code, master_wo_code, date_finished,
            status, component_list, consumed_wo_code
     FROM SVN_ProductionInputLogs
