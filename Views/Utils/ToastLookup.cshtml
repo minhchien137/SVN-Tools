@@ -552,4 +552,14 @@
         document.getElementById('inp-q').value = s;
         doSearch();
     }
+
+    // Auto-search nếu URL có ?q=
+    (function () {
+        const params = new URLSearchParams(window.location.search);
+        const q = params.get('q');
+        if (q) {
+            document.getElementById('inp-q').value = q;
+            doSearch();
+        }
+    })();
 </script>

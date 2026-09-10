@@ -1361,20 +1361,16 @@ namespace SVN_Tools.Controllers
             if (oldSerial == newSerial)
                 return BadRequest(new { ok = false, message = "SN mới phải khác SN cũ." });
 
-            var newInfo = await _context.SVNToastSerialInfos.FirstOrDefaultAsync(x => x.SerialNumber == newSerial);
-            if (newInfo == null)
-                return BadRequest(new { ok = false, message = $"SN mới {newSerial} chưa tồn tại trong hệ thống." });
-            if (!string.Equals(newInfo.FCTStatus, "OK", StringComparison.OrdinalIgnoreCase) ||
-                !string.Equals(newInfo.FQCStatus, "OK", StringComparison.OrdinalIgnoreCase))
-                return BadRequest(new { ok = false, message = $"SN mới {newSerial} chưa qua đủ FCT/FQC (OK)." });
-
             using var conn = new System.Data.SqlClient.SqlConnection(connectionString);
             await conn.OpenAsync();
 
-            int existingLogs = await conn.ExecuteScalarAsync<int>(
-                "SELECT COUNT(*) FROM SVN_ProductionInputLogs WHERE serial_code = @newSerial", new { newSerial });
-            if (existingLogs > 0)
-                return BadRequest(new { ok = false, message = $"SN mới {newSerial} đã có dữ liệu WIP/FG riêng, không thể gộp." });
+            int wipLogs = await conn.ExecuteScalarAsync<int>(
+                @"SELECT COUNT(*) FROM SVN_ProductionInputLogs
+                  WHERE serial_code = @newSerial
+                    AND (component_list IS NULL OR component_list NOT LIKE '%' + @newSerial + '%')",
+                new { newSerial });
+            if (wipLogs == 0)
+                return BadRequest(new { ok = false, message = $"SN mới {newSerial} chưa qua trạm WIP." });
 
             var oldPalletRows = (await conn.QueryAsync(
                 "SELECT Id, Serial FROM SVN_Astro_Label_Data WHERE isDeleted = 0 AND EmployeeID = 'toast' AND Serial LIKE '%' + @newSerial + '%'",
