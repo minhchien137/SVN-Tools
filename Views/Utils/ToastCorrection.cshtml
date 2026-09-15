@@ -132,17 +132,17 @@
                     <input type="text" id="edit-station" readonly />
                 </div>
                 <div class="field">
-                    <label>Lot cũ</label>
+                    <label id="edit-old-lot-label">Lot cũ</label>
                     <input type="text" id="edit-old-lot" readonly />
                 </div>
             </div>
             <div class="field-row">
-                <div class="field">
+                <div class="field" id="edit-code-field">
                     <label>Mã sản phẩm</label>
                     <input type="text" id="edit-new-code" readonly />
                 </div>
                 <div class="field">
-                    <label>Lot mới</label>
+                    <label id="edit-new-lot-label">Lot mới</label>
                     <input type="text" id="edit-new-lot" placeholder="Nhập lot number mới..." />
                 </div>
             </div>
@@ -275,9 +275,19 @@
         stations.forEach(st => {
             const rec = data[st.key];
             const list = rec && rec.componentList ? rec.componentList : [];
-            if (!list.length) return;
+            const isWip = st.code === 'WIP';
+            const isFg  = st.code === 'FG';
+            if (!list.length && !isWip && !isFg) return;
+            if (!list.length && isWip && !data.wip) return;
+            if (!list.length && isFg  && !data.fg)  return;
             any = true;
             html += `<div class="comp-station">${st.label}</div>`;
+            if ((isWip && data.wip) || (isFg && data.fg)) {
+                html += `<div class="comp-row" style="border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.05);">
+                    <div class="comp-row-text">🏷 <b style="color:#fbbf24;">Serial sản phẩm</b> &nbsp;|&nbsp; serial_code: <span class="lot">${data.serial}</span></div>
+                    <button class="btn-gray" onclick='startEditSerial(${JSON.stringify(data.serial)})'>Sửa</button>
+                </div>`;
+            }
             list.forEach(c => {
                 const label = c.productCode ? `<b>[${c.productCode}]</b> ${c.productName || ''}` : `product_id: ${c.productId}`;
                 html += `<div class="comp-row">
@@ -291,15 +301,42 @@
     }
 
     const _editOld = { station: '', lot: '', code: '', name: '' };
+    let _isEditSerial = false;
+
+    function startEditSerial(serial) {
+        _isEditSerial = true;
+        _editOld.station = 'WIP';
+        _editOld.lot = serial;
+        _editOld.code = '';
+        _editOld.name = 'Serial sản phẩm';
+        document.getElementById('edit-station').value = 'WIP — Serial sản phẩm';
+        document.getElementById('edit-old-lot').value = serial;
+        document.getElementById('edit-old-lot-label').textContent = 'Serial cũ';
+        document.getElementById('edit-new-lot-label').textContent = 'Serial mới';
+        document.getElementById('edit-new-lot').placeholder = 'Nhập Serial Number mới...';
+        document.getElementById('edit-new-code').value = '';
+        document.getElementById('edit-code-field').style.display = 'none';
+        document.getElementById('edit-new-lot').value = '';
+        document.getElementById('edit-reason').value = '';
+        clearMsg('edit-msg');
+        document.getElementById('comp-edit-card').style.display = 'block';
+        document.getElementById('comp-edit-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        renderComponentDiff();
+    }
 
     function startEditComponent(station, oldLot, productCode, productName) {
+        _isEditSerial = false;
         _editOld.station = station;
         _editOld.lot = oldLot;
         _editOld.code = productCode || '';
         _editOld.name = productName || '';
         document.getElementById('edit-station').value = station;
         document.getElementById('edit-old-lot').value = oldLot;
+        document.getElementById('edit-old-lot-label').textContent = 'Lot cũ';
+        document.getElementById('edit-new-lot-label').textContent = 'Lot mới';
+        document.getElementById('edit-new-lot').placeholder = 'Nhập lot number mới...';
         document.getElementById('edit-new-code').value = productCode ? `[${productCode}] ${productName || ''}` : '';
+        document.getElementById('edit-code-field').style.display = '';
         document.getElementById('edit-new-lot').value = '';
         document.getElementById('edit-reason').value = '';
         clearMsg('edit-msg');
@@ -345,14 +382,35 @@
     document.getElementById('edit-new-lot').addEventListener('input', renderComponentDiff);
 
     function submitReplaceComponent() {
+        const newVal  = document.getElementById('edit-new-lot').value.trim();
+        const reason  = document.getElementById('edit-reason').value.trim();
+        const svnCode = document.getElementById('edit-svncode').value.trim();
+
+        if (_isEditSerial) {
+            if (!newVal || !reason || !svnCode) {
+                showMsg('edit-msg', 'Vui lòng nhập đủ Serial mới, lý do và mã nhân viên.', false);
+                return;
+            }
+            const body = { oldSerial: _currentSerial, newSerial: newVal, reason, svnCode };
+            openConfirmModal(`
+                Bạn sắp <b>đổi Serial Number</b> của sản phẩm:<br><br>
+                <b>${_currentSerial}</b> → <b>${newVal}</b><br><br>
+                Toàn bộ dữ liệu WIP/FG/Pallet sẽ chuyển sang serial mới.<br>
+                Lý do: ${reason}<br>
+                Người thực hiện: ${svnCode}<br><br>
+                Thao tác này ảnh hưởng đến dữ liệu truy xuất nguồn gốc, chỉ tiếp tục nếu chắc chắn.
+            `, () => doSubmitRenameSerialFromEdit(body));
+            return;
+        }
+
         const body = {
             serial: _currentSerial,
             station: document.getElementById('edit-station').value,
             oldLotNumber: document.getElementById('edit-old-lot').value,
             newProductCode: _editOld.code,
-            newLotNumber: document.getElementById('edit-new-lot').value.trim(),
-            reason: document.getElementById('edit-reason').value.trim(),
-            svnCode: document.getElementById('edit-svncode').value.trim()
+            newLotNumber: newVal,
+            reason,
+            svnCode
         };
         if (!body.newProductCode || !body.newLotNumber || !body.reason || !body.svnCode) {
             showMsg('edit-msg', 'Vui lòng nhập đủ mã sản phẩm mới, lot mới, lý do và mã nhân viên.', false);
@@ -365,6 +423,30 @@
             Người thực hiện: ${body.svnCode}<br><br>
             Thao tác này ghi đè dữ liệu sản xuất, chỉ tiếp tục nếu chắc chắn.
         `, () => doSubmitReplaceComponent(body));
+    }
+
+    async function doSubmitRenameSerialFromEdit(body) {
+        const btn = document.getElementById('edit-submit-btn');
+        btn.disabled = true;
+        try {
+            const res = await fetch('/api/ToastCorrection/rename-serial', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            btn.disabled = false;
+            if (!res.ok || !data.ok) { showMsg('edit-msg', data.message || 'Có lỗi xảy ra.', false); return; }
+            showMsg('edit-msg', data.message, true);
+            setTimeout(() => {
+                document.getElementById('comp-serial').value = body.newSerial;
+                document.getElementById('comp-edit-card').style.display = 'none';
+                loadComponents();
+            }, 900);
+        } catch (e) {
+            btn.disabled = false;
+            showMsg('edit-msg', 'Lỗi kết nối: ' + e.message, false);
+        }
     }
 
     async function doSubmitReplaceComponent(body) {

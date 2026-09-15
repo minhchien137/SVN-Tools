@@ -1295,10 +1295,15 @@ namespace SVN_Tools.Controllers
             var palletRow = (await multi.ReadAsync()).FirstOrDefault();
             var prodRows  = (await multi.ReadAsync()).Cast<dynamic>().ToList();
 
-            // FG: serial nằm trong component_list (bị tiêu thụ làm linh kiện)
-            // WIP: serial là sản phẩm đầu ra, không nằm trong component_list
-            var wip = prodRows.FirstOrDefault(x => !((string?)x.component_list ?? "").Contains(serial));
+            // Ưu tiên component_list: FG = serial xuất hiện làm lotNumber trong component_list
             var fg  = prodRows.FirstOrDefault(x =>  ((string?)x.component_list ?? "").Contains(serial));
+            var wip = prodRows.FirstOrDefault(x => !((string?)x.component_list ?? "").Contains(serial));
+            // Fallback: nếu không phân biệt được qua component_list thì dùng state
+            if (fg == null && wip != null && string.Equals((string?)wip.state, "Used", StringComparison.OrdinalIgnoreCase))
+            {
+                fg  = wip;
+                wip = null;
+            }
 
             var productIds = ExtractComponentProductIds(wip == null ? null : (string?)wip.component_list)
                 .Concat(ExtractComponentProductIds(fg == null ? null : (string?)fg.component_list))
@@ -1524,13 +1529,66 @@ namespace SVN_Tools.Controllers
             if (target == null)
                 return NotFound(new { ok = false, message = $"Không tìm thấy linh kiện với lot {req.OldLotNumber} trong trạm {station}." });
 
+            var oldLot = req.OldLotNumber.Trim().ToUpper();
+            var newLot = req.NewLotNumber.Trim().ToUpper();
+
             target["product_id"] = newProductId;
-            target["lotNumber"] = req.NewLotNumber.Trim();
+            target["lotNumber"]  = newLot;
             string newJson = node!.ToJsonString();
 
-            await conn.ExecuteAsync(
-                "UPDATE SVN_ProductionInputLogs SET component_list = @newJson WHERE id = @id",
-                new { newJson, id = (int)log.id });
+            using var tran = conn.BeginTransaction();
+            try
+            {
+                // Cập nhật component_list và request_body của record đang sửa
+                await conn.ExecuteAsync(
+                    @"UPDATE SVN_ProductionInputLogs
+                      SET component_list = @newJson,
+                          request_body   = REPLACE(request_body, @oldLot, @newLot)
+                      WHERE id = @id",
+                    new { newJson, oldLot, newLot, id = (int)log.id }, tran);
+
+                // Nếu lot linh kiện đang sửa chính là serial sản phẩm → rename toàn bộ
+                if (string.Equals(oldLot, serial, StringComparison.OrdinalIgnoreCase))
+                {
+                    await conn.ExecuteAsync(
+                        "UPDATE SVN_ProductionInputLogs SET serial_code = @newLot WHERE serial_code = @oldLot",
+                        new { newLot, oldLot }, tran);
+
+                    await conn.ExecuteAsync(
+                        @"UPDATE SVN_ProductionInputLogs
+                          SET component_list = REPLACE(component_list, @oldLot, @newLot),
+                              request_body   = REPLACE(request_body,   @oldLot, @newLot)
+                          WHERE id <> @id
+                            AND (component_list LIKE '%' + @oldLot + '%' OR request_body LIKE '%' + @oldLot + '%')",
+                        new { newLot, oldLot, id = (int)log.id }, tran);
+
+                    var palletRows = (await conn.QueryAsync(
+                        "SELECT Id, Serial FROM SVN_Astro_Label_Data WHERE isDeleted = 0 AND EmployeeID = 'toast' AND Serial LIKE '%' + @oldLot + '%'",
+                        new { oldLot }, tran)).ToList();
+                    foreach (var row in palletRows)
+                    {
+                        var parts = ((string)row.Serial).Split(',', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(s => s.Trim()).ToList();
+                        bool changed = false;
+                        for (int i = 0; i < parts.Count; i++)
+                        {
+                            if (string.Equals(parts[i], oldLot, StringComparison.OrdinalIgnoreCase))
+                            { parts[i] = newLot; changed = true; }
+                        }
+                        if (changed)
+                            await conn.ExecuteAsync(
+                                "UPDATE SVN_Astro_Label_Data SET Serial = @serial WHERE Id = @rowId",
+                                new { serial = string.Join(",", parts), rowId = (int)row.Id }, tran);
+                    }
+                }
+
+                tran.Commit();
+            }
+            catch
+            {
+                tran.Rollback();
+                throw;
+            }
 
             _context.SVNToastEditLogs.Add(new SVNToastEditLog
             {
@@ -1563,14 +1621,6 @@ namespace SVN_Tools.Controllers
             using var conn = new System.Data.SqlClient.SqlConnection(connectionString);
             await conn.OpenAsync();
 
-            int wipLogs = await conn.ExecuteScalarAsync<int>(
-                @"SELECT COUNT(*) FROM SVN_ProductionInputLogs
-                  WHERE serial_code = @newSerial
-                    AND (component_list IS NULL OR component_list NOT LIKE '%' + @newSerial + '%')",
-                new { newSerial });
-            if (wipLogs == 0)
-                return BadRequest(new { ok = false, message = $"SN mới {newSerial} chưa qua trạm WIP." });
-
             var oldPalletRows = (await conn.QueryAsync(
                 "SELECT Id, Serial FROM SVN_Astro_Label_Data WHERE isDeleted = 0 AND EmployeeID = 'toast' AND Serial LIKE '%' + @newSerial + '%'",
                 new { newSerial })).ToList();
@@ -1585,6 +1635,14 @@ namespace SVN_Tools.Controllers
             {
                 await conn.ExecuteAsync(
                     "UPDATE SVN_ProductionInputLogs SET serial_code = @newSerial WHERE serial_code = @oldSerial",
+                    new { newSerial, oldSerial }, tran);
+
+                await conn.ExecuteAsync(
+                    @"UPDATE SVN_ProductionInputLogs
+                      SET component_list = REPLACE(component_list, @oldSerial, @newSerial),
+                          request_body   = REPLACE(request_body,   @oldSerial, @newSerial)
+                      WHERE component_list LIKE '%' + @oldSerial + '%'
+                         OR request_body   LIKE '%' + @oldSerial + '%'",
                     new { newSerial, oldSerial }, tran);
 
                 var palletRows = (await conn.QueryAsync(
