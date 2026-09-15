@@ -380,13 +380,12 @@
                         <th style="width:36px;">#</th>
                         <th>Serial Number</th>
                         <th>Work Order</th>
-                        <th>FCT</th>
-                        <th>Thời gian FCT</th>
+                        <th>Trạng thái</th>
                         <th style="width:80px;"></th>
                     </tr>
                 </thead>
                 <tbody id="fg-pending-tbody">
-                    <tr><td colspan="6" class="empty-state">Đang tải...</td></tr>
+                    <tr><td colspan="5" class="empty-state">Đang tải...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -620,8 +619,8 @@
         const tbody = document.getElementById('fg-pending-tbody');
         if (!rows.length) {
             tbody.innerHTML = _fgFilterText
-                ? `<tr><td colspan="6" class="empty-state" style="color:#475569;">Không tìm thấy serial khớp từ khóa.</td></tr>`
-                : `<tr><td colspan="6" class="empty-state empty-good"><span>🎉</span>Tất cả serial FG đều đã đóng pallet!</td></tr>`;
+                ? `<tr><td colspan="5" class="empty-state" style="color:#475569;">Không tìm thấy serial khớp từ khóa.</td></tr>`
+                : `<tr><td colspan="5" class="empty-state empty-good"><span>🎉</span>Tất cả serial FG đều đã đóng pallet!</td></tr>`;
             return;
         }
         tbody.innerHTML = rows.map((r, i) => {
@@ -630,8 +629,7 @@
                 <td style="color:#334155;font-size:12px;">${i + 1}</td>
                 <td><span class="serial-mono">${r.serialNumber}</span></td>
                 <td style="font-size:12px;color:#64748b;">${r.workOrder || '—'}</td>
-                <td>${badgeHtml(r.fctStatus)}</td>
-                <td style="font-size:11px;color:#475569;white-space:nowrap;">${fmtDate(r.fctDatetime)}</td>
+                <td><span class="badge badge-ok">✓ OK</span></td>
                 <td>
                     <button class="btn-detail" style="border-color:#4c1d95;color:#a78bfa;"
                         onclick="event.stopPropagation();openDetail('${serial}')">Chi tiết →</button>
