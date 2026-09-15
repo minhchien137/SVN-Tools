@@ -51,6 +51,7 @@ namespace SVN_Tools.Models.Label
     {
         public const string ReplaceComponent = "ReplaceComponent";
         public const string RenameSerial = "RenameSerial";
+        public const string AssignSerial = "AssignSerial";
     }
 
     public class ReplaceComponentRequest
@@ -68,6 +69,14 @@ namespace SVN_Tools.Models.Label
     {
         public string OldSerial { get; set; } = "";
         public string NewSerial { get; set; } = "";
+        public string Reason { get; set; } = "";
+        public string SVNCode { get; set; } = "";
+    }
+
+    public class AssignSerialToWipRequest
+    {
+        public int WipId { get; set; }
+        public string Serial { get; set; } = "";
         public string Reason { get; set; } = "";
         public string SVNCode { get; set; } = "";
     }

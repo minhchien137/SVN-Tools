@@ -101,19 +101,24 @@
                         <li class="nav-label"></li>
                         <li>
                             <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-cogs"></i><span
-                                    class="hide-menu">Tools <span
-                                        class="label label-rouded label-primary pull-right">7</span></span></a>
+                                    class="hide-menu">Tools</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a asp-controller="Home" asp-action="PrinterManager">Quản lý máy in</a></li>
                                 <li><a asp-controller="Home" asp-action="PrintTem">In tem</a></li>
-                                <li><a asp-controller="Home" asp-action="PrintShippingLabelBySeriNumber">In Shipping
-                                        Label</a></li>
+                                <li><a asp-controller="Home" asp-action="PrintShippingLabelBySeriNumber">In Shipping Label</a></li>
                                 <li><a asp-controller="Home" asp-action="PrintAstroLabel">Print Astro Label</a></li>
                                 <li><a asp-controller="Home" asp-action="PrintToastLabel">Print Toast Label</a></li>
                                 <li><a asp-controller="Home" asp-action="ProductionUpdateQty">Update số lượng</a></li>
                                 <li><a asp-controller="Home" asp-action="ProductInfo">Product Info</a></li>
                                 <li><a asp-controller="Utils" asp-action="UltimatePrint">Ultimate Print</a></li>
-                                <li><a asp-controller="Utils" asp-action="ToastLookup">Toast Lookup</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="fa fa-list-alt"></i><span
+                                    class="hide-menu">Toast</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a asp-controller="Utils" asp-action="ToastDashboard">Dashboard</a></li>
+                                <li><a asp-controller="Utils" asp-action="ToastLookup">Lookup</a></li>
                                 <li><a asp-controller="Utils" asp-action="ToastCorrection">Modify Toast Data</a></li>
                             </ul>
                         </li>

@@ -982,6 +982,178 @@ namespace SVN_Tools.Controllers
             return View("PostComment");
         }
 
+        // Toast Dashboard
+
+        [HttpGet("utils/toast-dashboard")]
+        public IActionResult ToastDashboard() => View("ToastDashboard");
+
+        [HttpGet("api/ToastDashboard")]
+        public async Task<IActionResult> GetToastDashboard([FromQuery] string? fromDate, [FromQuery] string? toDate)
+        {
+            var now = GetVietnamNow().Date;
+            DateTime from = now, to = now;
+            if (!string.IsNullOrWhiteSpace(fromDate) && DateTime.TryParse(fromDate, out var fd)) from = fd.Date;
+            if (!string.IsNullOrWhiteSpace(toDate)   && DateTime.TryParse(toDate,   out var td)) to   = td.Date;
+            if (to < from) to = from;
+
+            try
+            {
+                using var conn = new System.Data.SqlClient.SqlConnection(connectionString);
+
+                // Query 1: lấy danh sách serial trong khoảng ngày
+                var serials = (await conn.QueryAsync(@"
+                    SELECT serial_number AS SerialNumber, work_order AS WorkOrder,
+                           FCT_status AS FctStatus, FCT_status_datetime AS FctDatetime,
+                           FQC_status AS FqcStatus, FQC_status_datetime AS FqcDatetime
+                    FROM SVN_Toast_Serial_Info
+                    WHERE CAST(FCT_status_datetime AS DATE) BETWEEN @from AND @to
+                    ORDER BY FCT_status_datetime DESC",
+                    new { from, to },
+                    commandTimeout: 30
+                )).Cast<dynamic>().ToList();
+
+                if (!serials.Any())
+                    return Ok(new {
+                        ok = true,
+                        summary = new { total = 0, complete = 0, missingWip = 0, anyViol = 0 },
+                        alerts = new List<object>()
+                    });
+
+                var serialList = serials.Select(s => (string)s.SerialNumber).ToList();
+                var dateFrom   = from.AddDays(-60);
+                var dateTo     = to.AddDays(7);
+
+                // Query 2: WIP — lấy thêm wo_code để fill WorkOrder khi SVN_Toast_Serial_Info null
+                var wipRows = (await conn.QueryAsync(@"
+                    SELECT DISTINCT serial_code AS SerialCode, MAX(wo_code) AS WoCode
+                    FROM SVN_ProductionInputLogs
+                    WHERE serial_code IN @serialList
+                      AND date_finished >= @dateFrom
+                      AND (component_list IS NULL
+                           OR component_list NOT LIKE '%' + serial_code + '%')
+                    GROUP BY serial_code",
+                    new { serialList, dateFrom },
+                    commandTimeout: 30
+                )).Cast<dynamic>().ToList();
+
+                var wipSet   = new HashSet<string>(wipRows.Select(w => (string)w.SerialCode), StringComparer.OrdinalIgnoreCase);
+                var wipWoMap = wipRows.ToDictionary(w => (string)w.SerialCode, w => (string?)w.WoCode, StringComparer.OrdinalIgnoreCase);
+
+                // Query 3: FG — lấy tất cả component_list trong khoảng ngày rồi khớp trong C#
+                // Tránh correlated LIKE '%SN%' per-row trên toàn bảng
+                var componentLists = (await conn.QueryAsync<string>(@"
+                    SELECT component_list
+                    FROM SVN_ProductionInputLogs
+                    WHERE date_finished BETWEEN @dateFrom AND @dateTo
+                      AND component_list IS NOT NULL
+                      AND LEN(component_list) > 2",
+                    new { dateFrom, dateTo },
+                    commandTimeout: 60
+                )).ToList();
+
+                var fgSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var sn in serialList)
+                {
+                    if (componentLists.Any(cl => cl.Contains(sn, StringComparison.OrdinalIgnoreCase)))
+                        fgSet.Add(sn);
+                }
+
+                // Query 4: Pallet — lấy tất cả Serial trong SVN_Astro_Label_Data (toast), khớp trong C#
+                var palletSerials = (await conn.QueryAsync<string>(@"
+                    SELECT Serial FROM SVN_Astro_Label_Data
+                    WHERE isDeleted = 0 AND EmployeeID = 'toast'
+                      AND Serial IS NOT NULL",
+                    commandTimeout: 30
+                )).ToList();
+
+                var palletSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var sn in serialList)
+                {
+                    if (palletSerials.Any(ps => ps.Contains(sn, StringComparison.OrdinalIgnoreCase)))
+                        palletSet.Add(sn);
+                }
+
+                // Tổng hợp và phát hiện vi phạm thứ tự
+                var alerts = serials
+                    .Select(r => {
+                        var sn      = (string)r.SerialNumber;
+                        bool hasWip = wipSet.Contains(sn);
+                        bool hasFct = !string.IsNullOrEmpty((string?)r.FctStatus);
+                        bool hasFqc = !string.IsNullOrEmpty((string?)r.FqcStatus);
+                        bool hasFg  = fgSet.Contains(sn);
+                        bool hasPal = palletSet.Contains(sn);
+
+                        var viols = new List<string>();
+                        if (!hasWip && hasFct)               viols.Add("WIP");
+                        if (!hasFqc && (hasFg || hasPal))    viols.Add("FQC");
+                        if (!hasFg  && hasPal)               viols.Add("FG");
+
+                        return new {
+                            serialNumber = sn,
+                            workOrder    = (string?)r.WorkOrder,
+                            fctStatus    = (string?)r.FctStatus,
+                            fctDatetime  = (DateTime?)r.FctDatetime,
+                            fqcStatus    = (string?)r.FqcStatus,
+                            hasWip, hasFqc, hasFg,
+                            hasPallet    = hasPal,
+                            violations   = viols
+                        };
+                    })
+                    .Where(r => r.violations.Count > 0)
+                    .ToList<object>();
+
+                var fgPending = serials
+                    .Where(r => {
+                        var sn = (string)r.SerialNumber;
+                        return wipSet.Contains(sn) &&
+                               !string.IsNullOrEmpty((string?)r.FctStatus) &&
+                               !string.IsNullOrEmpty((string?)r.FqcStatus) &&
+                               fgSet.Contains(sn) &&
+                               !palletSet.Contains(sn);
+                    })
+                    .Select(r => {
+                        var sn = (string)r.SerialNumber;
+                        var wo = (string?)r.WorkOrder;
+                        if (string.IsNullOrEmpty(wo)) wipWoMap.TryGetValue(sn, out wo);
+                        return new {
+                            serialNumber = sn,
+                            workOrder    = wo,
+                            fctStatus    = (string?)r.FctStatus,
+                            fctDatetime  = (DateTime?)r.FctDatetime
+                        };
+                    })
+                    .ToList<object>();
+
+                int total       = serials.Count;
+                int missingWip  = serials.Count(r => !wipSet.Contains((string)r.SerialNumber));
+                int missingFg   = serials.Count(r => {
+                    var sn = (string)r.SerialNumber;
+                    return !fgSet.Contains(sn) && palletSet.Contains(sn);
+                });
+                int anyViol     = alerts.Count;
+                int fgNotPacked = fgPending.Count;
+                int complete    = serials.Count(r => {
+                    var sn = (string)r.SerialNumber;
+                    return wipSet.Contains(sn) &&
+                           !string.IsNullOrEmpty((string?)r.FctStatus) &&
+                           !string.IsNullOrEmpty((string?)r.FqcStatus) &&
+                           fgSet.Contains(sn) &&
+                           palletSet.Contains(sn);
+                });
+
+                return Ok(new {
+                    ok   = true,
+                    summary = new { total, complete, missingWip, missingFg, anyViol, fgNotPacked },
+                    alerts,
+                    fgPending
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ok = false, message = ex.Message });
+            }
+        }
+
         // Toast Lookup
 
         [HttpGet("utils/toast-lookup")]
@@ -1002,26 +1174,53 @@ namespace SVN_Tools.Controllers
                 "SP_Toast_SearchSummary", new { q },
                 commandType: System.Data.CommandType.StoredProcedure)).ToList();
 
-            if (!summaries.Any())
+            // Exact serial match → hiện detail luôn, bỏ qua list và no-SN records
+            var exact = summaries.FirstOrDefault(s =>
+                string.Equals((string)s.serial_number, q, StringComparison.OrdinalIgnoreCase));
+            if (exact != null)
+                return await GetToastSerialDetail((string)exact.serial_number, conn);
+
+            // Tìm thêm bản ghi WIP không có SN nhưng component_list chứa query (cùng LOT)
+            var noSnWip = (await conn.QueryAsync(
+                @"SELECT id, wo_code, master_wo_code, date_finished, component_list
+                  FROM SVN_ProductionInputLogs
+                  WHERE ISNULL(component_list,'') LIKE '%' + @q + '%'
+                    AND (serial_code IS NULL OR LTRIM(RTRIM(serial_code)) = '')",
+                new { q })).Cast<dynamic>().ToList();
+
+            if (!summaries.Any() && !noSnWip.Any())
                 return Ok(new { ok = true, found = false });
 
-            if (summaries.Count > 1)
+            // Đúng 1 kết quả và không có no-SN records → hiện detail
+            if (summaries.Count == 1 && !noSnWip.Any())
             {
-                // Nếu query khớp chính xác 1 serial → hiện detail luôn, bỏ qua list
-                var exact = summaries.FirstOrDefault(s =>
-                    string.Equals((string)s.serial_number, q, StringComparison.OrdinalIgnoreCase));
-                if (exact != null)
-                    return await GetToastSerialDetail((string)exact.serial_number, conn);
-
-                return Ok(new { ok = true, found = true, mode = "list", serials = summaries });
+                var only = summaries[0];
+                bool isDirect = string.Equals((string)only.serial_number, q, StringComparison.OrdinalIgnoreCase);
+                return await GetToastSerialDetail((string)only.serial_number, conn,
+                    isDirect ? null : (string?)only.match_types,
+                    isDirect ? null : q);
             }
 
-            // Đúng 1 kết quả → SP_Toast_GetSerialDetail
-            var only = summaries[0];
-            bool isDirectSerialMatch = string.Equals((string)only.serial_number, q, StringComparison.OrdinalIgnoreCase);
-            return await GetToastSerialDetail((string)only.serial_number, conn,
-                isDirectSerialMatch ? null : (string?)only.match_types,
-                isDirectSerialMatch ? null : q);
+            // Nhiều kết quả hoặc có no-SN records → list mode
+            var noSnRows = noSnWip.Select(r => (object)new
+            {
+                serial_number = (string?)null,
+                FCT_status    = (string?)null,
+                FQC_status    = (string?)null,
+                work_order    = (string?)r.wo_code,
+                PalletID      = (string?)null,
+                lots_raw      = (string?)r.component_list,
+                match_types   = "Lot (Trạm WIP - không có SN)",
+                renamed_to    = (string?)null,
+                no_sn         = true,
+                wip_id        = (int)r.id
+            }).ToList();
+
+            var allRows = new List<object>();
+            allRows.AddRange(summaries.Cast<object>());
+            allRows.AddRange(noSnRows);
+
+            return Ok(new { ok = true, found = true, mode = "list", serials = allRows });
         }
 
         [HttpGet("api/ToastLookup/detail")]
@@ -1435,6 +1634,44 @@ namespace SVN_Tools.Controllers
             }
 
             return Ok(new { ok = true, message = $"Đã chuyển dữ liệu sản xuất từ {oldSerial} sang {newSerial}." });
+        }
+
+        [HttpPost("api/ToastCorrection/assign-serial-to-wip")]
+        public async Task<IActionResult> AssignSerialToWip([FromBody] AssignSerialToWipRequest req)
+        {
+            if (req.WipId <= 0 || string.IsNullOrWhiteSpace(req.Serial) ||
+                string.IsNullOrWhiteSpace(req.SVNCode) || string.IsNullOrWhiteSpace(req.Reason))
+                return BadRequest(new { ok = false, message = "Thiếu dữ liệu đầu vào." });
+
+            var serial = req.Serial.Trim().ToUpper();
+
+            using var conn = new System.Data.SqlClient.SqlConnection(connectionString);
+            await conn.OpenAsync();
+
+            var row = await conn.QueryFirstOrDefaultAsync(
+                "SELECT id, wo_code FROM SVN_ProductionInputLogs WHERE id = @id AND (serial_code IS NULL OR LTRIM(RTRIM(serial_code)) = '')",
+                new { id = req.WipId });
+            if (row == null)
+                return BadRequest(new { ok = false, message = "Bản ghi WIP không tồn tại hoặc đã có SN rồi." });
+
+            await conn.ExecuteAsync(
+                "UPDATE SVN_ProductionInputLogs SET serial_code = @serial WHERE id = @id",
+                new { serial, id = req.WipId });
+
+            await conn.ExecuteAsync(
+                @"INSERT INTO SVN_Toast_Edit_Log (ActionType, SerialCode, RelatedSerial, Reason, EditedBy, EditedAt)
+                  VALUES (@ActionType, @SerialCode, @RelatedSerial, @Reason, @EditedBy, @EditedAt)",
+                new
+                {
+                    ActionType    = ToastEditActionType.AssignSerial,
+                    SerialCode    = serial,
+                    RelatedSerial = (string?)row.wo_code,
+                    Reason        = req.Reason.Trim(),
+                    EditedBy      = req.SVNCode.Trim(),
+                    EditedAt      = DateTime.UtcNow.AddHours(7)
+                });
+
+            return Ok(new { ok = true, message = $"Đã gắn SN {serial} vào bản ghi WIP (WO: {row.wo_code})." });
         }
 
         // Toast Scan Rules

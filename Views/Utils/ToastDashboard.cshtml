@@ -1,0 +1,765 @@
+@{
+    ViewData["Title"] = "Dashboard Toast";
+}
+
+<style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0d12; color: #f1f5f9; margin: 0; padding: 0; }
+
+    /* ─── Top bar ─── */
+    .dash-header {
+        background: linear-gradient(135deg, #0f172a 0%, #111827 100%);
+        border-bottom: 1px solid #1e293b;
+        padding: 20px 32px;
+        display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+    }
+    .dash-title {
+        font-size: 22px; font-weight: 800; letter-spacing: -.3px;
+        background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .dash-subtitle { font-size: 12px; color: #475569; margin-top: 2px; }
+
+    .toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .toolbar label { font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
+    .inp-date {
+        background: #1e293b; border: 1px solid #334155; border-radius: 8px;
+        color: #f1f5f9; padding: 8px 14px; font-size: 14px; outline: none;
+        transition: border-color .2s;
+    }
+    .inp-date:focus { border-color: #3b82f6; }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; border: none;
+        border-radius: 8px; padding: 9px 20px; font-size: 13px; font-weight: 700;
+        cursor: pointer; transition: opacity .15s; display: flex; align-items: center; gap: 6px;
+    }
+    .btn-primary:hover { opacity: .88; }
+    .btn-refresh {
+        background: #1e293b; color: #94a3b8; border: 1px solid #334155;
+        border-radius: 8px; padding: 9px 16px; font-size: 13px; font-weight: 600;
+        cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 6px;
+    }
+    .btn-refresh:hover { background: #273549; color: #f1f5f9; border-color: #475569; }
+
+    .refresh-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: #0f172a; border: 1px solid #1e293b; border-radius: 20px;
+        padding: 5px 12px; font-size: 12px; color: #475569;
+    }
+    .refresh-badge .dot {
+        width: 7px; height: 7px; border-radius: 50%; background: #22c55e;
+        animation: pulse-dot 2s infinite;
+    }
+    @@keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ─── Main content ─── */
+    .dash-body { padding: 28px 32px; max-width: 1200px; margin: 0 auto; }
+    @@media (max-width:768px) { .dash-body { padding: 16px; } .dash-header { padding: 16px; } }
+
+    /* ─── Stat cards ─── */
+    .stat-grid {
+        display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 32px;
+    }
+    @@media (max-width:1200px) { .stat-grid { grid-template-columns: repeat(3, 1fr); } }
+    @@media (max-width:700px)  { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+    @@media (max-width:500px)  { .stat-grid { grid-template-columns: 1fr; } }
+
+    .stat-card {
+        background: #111827; border: 1px solid #1e293b; border-radius: 16px;
+        padding: 22px 24px; position: relative; overflow: hidden;
+        transition: transform .2s, box-shadow .2s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,.4); }
+    .stat-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        border-radius: 16px 16px 0 0;
+    }
+    .stat-card.blue::before   { background: linear-gradient(90deg,#3b82f6,#60a5fa); }
+    .stat-card.green::before  { background: linear-gradient(90deg,#22c55e,#4ade80); }
+    .stat-card.orange::before { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
+    .stat-card.red::before    { background: linear-gradient(90deg,#ef4444,#f87171); }
+    .stat-card.purple::before { background: linear-gradient(90deg,#8b5cf6,#a78bfa); }
+    .stat-card.cyan::before   { background: linear-gradient(90deg,#06b6d4,#22d3ee); }
+
+    .stat-icon {
+        width: 44px; height: 44px; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px; margin-bottom: 14px;
+    }
+    .stat-icon.blue   { background: rgba(59,130,246,.15); }
+    .stat-icon.green  { background: rgba(34,197,94,.15); }
+    .stat-icon.orange { background: rgba(245,158,11,.15); }
+    .stat-icon.red    { background: rgba(239,68,68,.15); }
+    .stat-icon.purple { background: rgba(139,92,246,.15); }
+    .stat-icon.cyan   { background: rgba(6,182,212,.15); }
+
+    .stat-num  { font-size: 40px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .stat-num.blue   { color: #60a5fa; }
+    .stat-num.green  { color: #4ade80; }
+    .stat-num.orange { color: #fbbf24; }
+    .stat-num.red    { color: #f87171; }
+    .stat-num.purple { color: #a78bfa; }
+    .stat-num.cyan   { color: #22d3ee; }
+
+    .stat-label { font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+    .stat-sub   { font-size: 11px; color: #374151; margin-top: 4px; }
+
+    /* ─── Alert section ─── */
+    .section-head {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 14px; flex-wrap: wrap; gap: 8px;
+    }
+    .section-title {
+        font-size: 14px; font-weight: 700; color: #94a3b8;
+        text-transform: uppercase; letter-spacing: .6px;
+        display: flex; align-items: center; gap: 8px;
+    }
+    .count-pill {
+        display: inline-flex; align-items: center; justify-content: center;
+        background: rgba(239,68,68,.15); color: #f87171; border: 1px solid rgba(239,68,68,.3);
+        border-radius: 20px; padding: 2px 10px; font-size: 12px; font-weight: 700;
+    }
+
+    /* ─── Table ─── */
+    .table-wrap {
+        background: #111827; border: 1px solid #1e293b; border-radius: 16px;
+        overflow: hidden; margin-bottom: 16px;
+    }
+    .table-filter-bar {
+        padding: 14px 18px; border-bottom: 1px solid #1e293b;
+        display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .inp-filter {
+        flex: 1; min-width: 200px; max-width: 320px;
+        background: #0a0d12; border: 1px solid #1e293b; border-radius: 8px;
+        color: #f1f5f9; padding: 7px 12px; font-size: 13px; outline: none;
+    }
+    .inp-filter:focus { border-color: #3b82f6; }
+    .filter-label { font-size: 12px; color: #475569; }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+        padding: 11px 14px; text-align: left;
+        font-size: 11px; font-weight: 700; color: #475569;
+        text-transform: uppercase; letter-spacing: .5px;
+        background: #0d1117; border-bottom: 1px solid #1e293b;
+        white-space: nowrap;
+    }
+    tbody tr {
+        border-bottom: 1px solid #141b27; cursor: pointer;
+        transition: background .12s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(59,130,246,.06); }
+    tbody tr.row-orange { background: rgba(245,158,11,.03); }
+    tbody tr.row-red    { background: rgba(239,68,68,.04); }
+    tbody tr.row-orange:hover { background: rgba(245,158,11,.08); }
+    tbody tr.row-red:hover    { background: rgba(239,68,68,.08); }
+    tbody td { padding: 11px 14px; font-size: 13px; vertical-align: middle; }
+
+    .badge { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .badge-ok      { background: rgba(34,197,94,.15);  color: #4ade80; border: 1px solid rgba(34,197,94,.3); }
+    .badge-ng      { background: rgba(239,68,68,.15);  color: #f87171; border: 1px solid rgba(239,68,68,.3); }
+    .badge-none    { background: rgba(100,116,139,.1); color: #64748b; border: 1px solid #1e293b; }
+    .badge-present { background: rgba(34,197,94,.12);  color: #4ade80; border: 1px solid rgba(34,197,94,.25); }
+    .badge-miss    { background: rgba(239,68,68,.14);  color: #f87171; border: 1px solid rgba(239,68,68,.3); animation: badge-pulse 2.5s infinite; }
+    @@keyframes badge-pulse { 0%,100%{opacity:1} 50%{opacity:.65} }
+
+    .serial-mono { font-family: 'Cascadia Code','Fira Code','Courier New',monospace; color: #93c5fd; font-weight: 700; }
+
+    .btn-detail {
+        background: transparent; color: #3b82f6; border: 1px solid #1e40af;
+        border-radius: 7px; padding: 4px 14px; font-size: 12px; font-weight: 600;
+        cursor: pointer; transition: all .15s; white-space: nowrap;
+    }
+    .btn-detail:hover { background: rgba(59,130,246,.12); border-color: #3b82f6; color: #60a5fa; }
+
+    .empty-state { padding: 56px 20px; text-align: center; color: #1e293b; font-size: 15px; }
+    .empty-good  { color: #166534; font-size: 14px; }
+    .empty-good span { font-size: 28px; display: block; margin-bottom: 8px; }
+
+    /* ─── Detail modal ─── */
+    #detail-modal {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,.75); backdrop-filter: blur(4px);
+        z-index: 2000; align-items: flex-start; justify-content: center;
+        padding: 28px 16px; overflow-y: auto;
+    }
+    #detail-modal.open { display: flex; }
+    .modal-box {
+        background: #0f172a; border: 1px solid #1e293b; border-radius: 18px;
+        padding: 28px; width: 100%; max-width: 1000px;
+        position: relative; box-shadow: 0 24px 80px rgba(0,0,0,.6);
+        animation: modal-in .18s ease;
+    }
+    @@keyframes modal-in { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+
+    .modal-header {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 22px; gap: 12px; flex-wrap: wrap;
+    }
+    .modal-serial-label {
+        font-size: 11px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+    }
+    .modal-serial {
+        font-family: 'Cascadia Code','Fira Code',monospace; color: #93c5fd;
+        font-size: 20px; font-weight: 800; letter-spacing: .5px;
+    }
+    .modal-close {
+        background: #1e293b; color: #64748b; border: 1px solid #334155;
+        border-radius: 9px; cursor: pointer; padding: 8px 16px;
+        font-size: 13px; font-weight: 600; transition: all .15s; white-space: nowrap;
+    }
+    .modal-close:hover { background: #273549; color: #f1f5f9; }
+
+    /* Reuse journey + cards styles */
+    .journey { display:flex; align-items:flex-start; gap:0; margin-bottom:28px; overflow-x:auto; padding-bottom:4px; }
+    .journey-step { flex:1; min-width:130px; }
+    .journey-connector { width:36px; flex-shrink:0; display:flex; align-items:center; justify-content:center; padding-top:20px; }
+    .journey-connector svg { color: #1e293b; }
+    .step-icon { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:19px; margin:0 auto 8px; border:2px solid #1e293b; background:#111827; }
+    .step-icon.done { background:#14532d; border-color:#16a34a; }
+    .step-icon.fail { background:#7f1d1d; border-color:#dc2626; }
+    .step-icon.skip { background:#111827; border-color:#1e293b; opacity:.45; }
+    .step-label  { text-align:center; font-size:13px; color:#cbd5e1; font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
+    .step-status { text-align:center; font-size:12px; font-weight:700; margin-top:4px; }
+    .step-time   { text-align:center; font-size:11px; color:#475569; margin-top:2px; }
+
+    .cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    @@media (max-width:640px) { .cards { grid-template-columns:1fr; } }
+    .card { background:#111827; border:1px solid #1e293b; border-radius:14px; padding:20px; }
+    .card-title { font-size:12px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.6px; margin:0 0 16px; display:flex; align-items:center; gap:8px; }
+    .info-row { display:flex; justify-content:space-between; align-items:flex-start; padding:7px 0; border-bottom:1px solid #1a2235; gap:12px; }
+    .info-row:last-child { border-bottom:none; }
+    .info-label { font-size:12px; color:#94a3b8; font-weight:600; white-space:nowrap; flex-shrink:0; }
+    .info-val { font-size:13px; font-weight:600; text-align:right; word-break:break-all; }
+    .pallet-serials { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+    .serial-chip { background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.3); border-radius:6px; padding:4px 10px; font-size:12px; font-family:monospace; font-weight:700; color:#4ade80; cursor:pointer; }
+    .serial-chip:hover { background:rgba(34,197,94,.16); }
+    .comp-box { margin-top:12px; padding:12px; border-radius:10px; background:rgba(59,130,246,.06); border:1px solid rgba(59,130,246,.2); }
+    .comp-box-title { font-size:11px; color:#60a5fa; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+    .comp-list { display:flex; flex-direction:column; gap:5px; }
+    .comp-item { font-size:12px; color:#64748b; font-family:monospace; background:#0a0d12; padding:5px 10px; border-radius:6px; }
+    .comp-code { color:#93c5fd; font-weight:700; }
+    .comp-name { color:#e2e8f0; font-weight:600; }
+    .comp-lot  { color:#fbbf24; font-weight:700; }
+    .comp-sep  { color:#334155; }
+</style>
+
+<!-- ─── Header ─── -->
+<div class="dash-header">
+    <div>
+        <div class="dash-title">Toast Dashboard</div>
+        <div class="dash-subtitle">Theo dõi trạng thái 5 trạm sản xuất theo thời gian thực</div>
+    </div>
+    <div class="toolbar">
+        <label for="inp-from">Từ</label>
+        <input type="date" id="inp-from" class="inp-date" />
+        <label for="inp-to" style="margin-left:4px;">Đến</label>
+        <input type="date" id="inp-to" class="inp-date" />
+        <button class="btn-primary" onclick="loadDashboard()">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+            Xem
+        </button>
+        <button class="btn-refresh" onclick="loadDashboard()">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Làm mới
+        </button>
+        <div class="refresh-badge">
+            <div class="dot"></div>
+            Live · <span id="countdown">30</span>s
+        </div>
+    </div>
+</div>
+
+<!-- ─── Body ─── -->
+<div class="dash-body">
+
+    <!-- Stat cards -->
+    <div class="stat-grid" id="stat-area" style="display:none;">
+        <div class="stat-card blue">
+            <div class="stat-icon blue">📦</div>
+            <div class="stat-num blue" id="s-total">—</div>
+            <div class="stat-label">Tổng Serial</div>
+        </div>
+        <div class="stat-card green">
+            <div class="stat-icon green">✅</div>
+            <div class="stat-num green" id="s-complete">—</div>
+            <div class="stat-label">Đủ 5 trạm</div>
+            <div class="stat-sub" id="s-pct"></div>
+        </div>
+        <div class="stat-card orange">
+            <div class="stat-icon orange">⚠️</div>
+            <div class="stat-num orange" id="s-wip">—</div>
+            <div class="stat-label">Thiếu trạm WIP</div>
+        </div>
+        <div class="stat-card cyan">
+            <div class="stat-icon cyan">🏭</div>
+            <div class="stat-num cyan" id="s-missing-fg">—</div>
+            <div class="stat-label">Thiếu trạm FG</div>
+        </div>
+        <div class="stat-card red">
+            <div class="stat-icon red">🚨</div>
+            <div class="stat-num red" id="s-viol">—</div>
+            <div class="stat-label">Vi phạm thứ tự</div>
+        </div>
+        <div class="stat-card purple">
+            <div class="stat-icon purple">📤</div>
+            <div class="stat-num purple" id="s-fg-pending">—</div>
+            <div class="stat-label">FG chưa đóng pallet</div>
+        </div>
+    </div>
+
+    <!-- Alert table -->
+    <div id="alert-section" style="display:none;">
+        <div class="section-head">
+            <div class="section-title">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#f59e0b" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                </svg>
+                Serial cần xử lý
+                <span class="count-pill" id="alert-count">0</span>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <div class="table-filter-bar">
+                <span class="filter-label">🔎 Lọc nhanh:</span>
+                <input type="text" id="inp-filter" class="inp-filter"
+                    placeholder="Nhập serial, work order..."
+                    oninput="applyFilter(this.value)" />
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:36px;">#</th>
+                        <th>Serial Number</th>
+                        <th>Work Order</th>
+                        <th>WIP</th>
+                        <th>FCT</th>
+                        <th>FQC</th>
+                        <th>FG</th>
+                        <th>Đóng gói</th>
+                        <th>Trạm bị skip</th>
+                        <th>Thời gian FCT</th>
+                        <th style="width:80px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="alert-tbody">
+                    <tr><td colspan="11" class="empty-state">Đang tải...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="font-size:12px;color:#1e293b;text-align:center;padding-bottom:4px;">
+            Chỉ hiển thị serial vi phạm thứ tự · Click vào hàng để xem chi tiết
+        </div>
+    </div>
+
+    <!-- FG chưa đóng pallet -->
+    <div id="fg-pending-section" style="display:none; margin-top:28px;">
+        <div class="section-head">
+            <div class="section-title">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#8b5cf6" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/>
+                </svg>
+                FG chưa đóng pallet
+                <span class="count-pill" id="fg-pending-count" style="background:rgba(139,92,246,.15);color:#a78bfa;border-color:rgba(139,92,246,.3);">0</span>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="table-filter-bar">
+                <span class="filter-label">🔎 Lọc nhanh:</span>
+                <input type="text" id="inp-fg-filter" class="inp-filter"
+                    placeholder="Nhập serial, work order..."
+                    oninput="applyFgFilter(this.value)" />
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:36px;">#</th>
+                        <th>Serial Number</th>
+                        <th>Work Order</th>
+                        <th>FCT</th>
+                        <th>Thời gian FCT</th>
+                        <th style="width:80px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="fg-pending-tbody">
+                    <tr><td colspan="6" class="empty-state">Đang tải...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="font-size:12px;color:#1e293b;text-align:center;padding-bottom:4px;">
+            Đã có dữ liệu FG nhưng chưa quét vào pallet · Click để xem chi tiết
+        </div>
+    </div>
+
+    <div id="initial-msg" style="text-align:center;color:#1e293b;padding:80px 0;font-size:15px;">
+        Chọn ngày và nhấn <strong style="color:#3b82f6;">Xem</strong> để tải dữ liệu.
+    </div>
+
+</div>
+
+<!-- ─── Detail modal ─── -->
+<div id="detail-modal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <div>
+                <div class="modal-serial-label">Serial Number</div>
+                <div class="modal-serial" id="detail-serial-text"></div>
+            </div>
+            <button class="modal-close" onclick="closeDetail()">✕ Đóng</button>
+        </div>
+        <div id="detail-body">
+            <div style="text-align:center;color:#475569;padding:40px;">Đang tải...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ── Init date pickers to today ──
+    (function () {
+        const now = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const today = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+        document.getElementById('inp-from').value = today;
+        document.getElementById('inp-to').value   = today;
+        loadDashboard();
+    })();
+
+    // ── Auto-refresh countdown ──
+    let _cdVal = 30, _cdTimer = null;
+    function startCountdown() {
+        clearInterval(_cdTimer);
+        _cdVal = 30;
+        document.getElementById('countdown').textContent = _cdVal;
+        _cdTimer = setInterval(() => {
+            _cdVal--;
+            document.getElementById('countdown').textContent = _cdVal;
+            if (_cdVal <= 0) { clearInterval(_cdTimer); loadDashboard(); }
+        }, 1000);
+    }
+
+    // ── Data store ──
+    let _allAlerts    = [];
+    let _filterText   = '';
+    let _allFgPending = [];
+    let _fgFilterText = '';
+
+    // ── Load dashboard ──
+    async function loadDashboard() {
+        const from = document.getElementById('inp-from').value;
+        const to   = document.getElementById('inp-to').value;
+        if (!from || !to) return;
+        document.getElementById('initial-msg').style.display = 'none';
+        document.getElementById('stat-area').style.display = 'grid';
+        document.getElementById('alert-section').style.display = 'block';
+
+        try {
+            const res  = await fetch(`/api/ToastDashboard?fromDate=${encodeURIComponent(from)}&toDate=${encodeURIComponent(to)}`);
+            let data;
+            try { data = await res.json(); }
+            catch { throw new Error(`Server trả về lỗi (HTTP ${res.status})`); }
+            if (!data.ok) { throw new Error(data.message || 'Lỗi không xác định'); }
+
+            const s = data.summary;
+            document.getElementById('s-total').textContent      = s.total;
+            document.getElementById('s-complete').textContent   = s.complete;
+            document.getElementById('s-wip').textContent        = s.missingWip;
+            document.getElementById('s-viol').textContent       = s.anyViol;
+            document.getElementById('s-missing-fg').textContent = s.missingFg ?? 0;
+            document.getElementById('s-fg-pending').textContent = s.fgNotPacked ?? 0;
+            document.getElementById('s-pct').textContent        =
+                s.total > 0 ? `${Math.round(s.complete / s.total * 100)}% hoàn thành` : '';
+            document.getElementById('alert-count').textContent = data.alerts.length;
+
+            _allAlerts  = data.alerts || [];
+            _filterText = '';
+            document.getElementById('inp-filter').value = '';
+            renderAlerts(_allAlerts);
+
+            _allFgPending = data.fgPending || [];
+            _fgFilterText = '';
+            document.getElementById('inp-fg-filter').value = '';
+            document.getElementById('fg-pending-section').style.display = 'block';
+            document.getElementById('fg-pending-count').textContent = _allFgPending.length;
+            renderFgPending(_allFgPending);
+        } catch (e) {
+            document.getElementById('alert-tbody').innerHTML =
+                `<tr><td colspan="11" class="empty-state" style="color:#f87171;">Lỗi kết nối: ${e.message}</td></tr>`;
+        }
+        startCountdown();
+    }
+
+    function applyFilter(val) {
+        _filterText = val.toLowerCase().trim();
+        const filtered = _allAlerts.filter(r =>
+            !_filterText ||
+            (r.serialNumber || '').toLowerCase().includes(_filterText) ||
+            (r.workOrder    || '').toLowerCase().includes(_filterText)
+        );
+        renderAlerts(filtered);
+    }
+
+
+// ── Render alerts table ──
+    function badgeHtml(status) {
+        if (!status) return '<span class="badge badge-none">—</span>';
+        const s = status.toUpperCase();
+        if (s === 'OK') return '<span class="badge badge-ok">✓ OK</span>';
+        if (s === 'NG') return '<span class="badge badge-ng">✕ NG</span>';
+        return `<span class="badge badge-none">${status}</span>`;
+    }
+
+    function stationBadge(has) {
+        return has
+            ? '<span class="badge badge-present">✓ Có</span>'
+            : '<span class="badge badge-miss">✕ Thiếu</span>';
+    }
+
+    function fmtDate(str) {
+        if (!str) return '—';
+        return new Date(str).toLocaleString('vi-VN', { hour12: false });
+    }
+
+    function renderAlerts(alerts) {
+        const tbody = document.getElementById('alert-tbody');
+        if (!alerts.length) {
+            const isFiltered = _filterText.length > 0;
+            if (isFiltered) {
+                tbody.innerHTML = `<tr><td colspan="11" class="empty-state" style="color:#475569;">Không tìm thấy serial khớp từ khóa.</td></tr>`;
+            } else {
+                tbody.innerHTML = `<tr><td colspan="11" class="empty-state empty-good">
+                    <span>🎉</span>Tất cả serial đã đủ trạm WIP và FG!
+                </td></tr>`;
+            }
+            return;
+        }
+
+        tbody.innerHTML = alerts.map((r, i) => {
+            const viols = r.violations || [];
+            const hasMultiViol = viols.length > 1;
+            const rowClass = hasMultiViol ? 'row-red' : 'row-orange';
+            const serial = r.serialNumber.replace(/'/g, "\\'");
+
+            const violBadges = viols.map(v =>
+                `<span style="display:inline-flex;align-items:center;gap:3px;
+                    background:rgba(239,68,68,.18);color:#f87171;
+                    border:1px solid rgba(239,68,68,.4);
+                    border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;
+                    margin-right:4px;animation:badge-pulse 2.5s infinite;"
+                >✕ ${v}</span>`
+            ).join('');
+
+            // FCT luôn có (vì query từ bảng FCT)
+            return `<tr class="${rowClass}" onclick="openDetail('${serial}')">
+                <td style="color:#334155;font-size:12px;">${i + 1}</td>
+                <td><span class="serial-mono">${r.serialNumber}</span></td>
+                <td style="font-size:12px;color:#64748b;">${r.workOrder || '—'}</td>
+                <td>${stationBadge(r.hasWip)}</td>
+                <td>${badgeHtml(r.fctStatus)}</td>
+                <td>${badgeHtml(r.fqcStatus)}</td>
+                <td>${stationBadge(r.hasFg)}</td>
+                <td>${stationBadge(r.hasPallet)}</td>
+                <td style="white-space:nowrap;">${violBadges}</td>
+                <td style="font-size:11px;color:#475569;white-space:nowrap;">${fmtDate(r.fctDatetime)}</td>
+                <td>
+                    <button class="btn-detail" onclick="event.stopPropagation();openDetail('${serial}')">
+                        Chi tiết →
+                    </button>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    // ── Detail modal ──
+    async function openDetail(serial) {
+        document.getElementById('detail-serial-text').textContent = serial;
+        document.getElementById('detail-body').innerHTML =
+            '<div style="text-align:center;color:#475569;padding:40px;">Đang tải...</div>';
+        document.getElementById('detail-modal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        try {
+            const res  = await fetch(`/api/ToastLookup/detail?serial=${encodeURIComponent(serial)}`);
+            const data = await res.json();
+            if (!data.ok || !data.found) {
+                document.getElementById('detail-body').innerHTML =
+                    '<div style="color:#f87171;padding:20px;">Không tìm thấy dữ liệu.</div>';
+                return;
+            }
+            document.getElementById('detail-body').innerHTML =
+                buildJourney(data) + buildCards(data);
+        } catch (e) {
+            document.getElementById('detail-body').innerHTML =
+                `<div style="color:#f87171;padding:20px;">Lỗi: ${e.message}</div>`;
+        }
+    }
+
+    function closeDetail() {
+        document.getElementById('detail-modal').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    document.getElementById('detail-modal').addEventListener('click', function (e) {
+        if (e.target === this) closeDetail();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+
+    function applyFgFilter(val) {
+        _fgFilterText = val.toLowerCase().trim();
+        renderFgPending(_allFgPending.filter(r =>
+            !_fgFilterText ||
+            (r.serialNumber || '').toLowerCase().includes(_fgFilterText) ||
+            (r.workOrder    || '').toLowerCase().includes(_fgFilterText)
+        ));
+    }
+
+    function renderFgPending(rows) {
+        const tbody = document.getElementById('fg-pending-tbody');
+        if (!rows.length) {
+            tbody.innerHTML = _fgFilterText
+                ? `<tr><td colspan="6" class="empty-state" style="color:#475569;">Không tìm thấy serial khớp từ khóa.</td></tr>`
+                : `<tr><td colspan="6" class="empty-state empty-good"><span>🎉</span>Tất cả serial FG đều đã đóng pallet!</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = rows.map((r, i) => {
+            const serial = (r.serialNumber || '').replace(/'/g, "\\'");
+            return `<tr class="row-orange" onclick="openDetail('${serial}')">
+                <td style="color:#334155;font-size:12px;">${i + 1}</td>
+                <td><span class="serial-mono">${r.serialNumber}</span></td>
+                <td style="font-size:12px;color:#64748b;">${r.workOrder || '—'}</td>
+                <td>${badgeHtml(r.fctStatus)}</td>
+                <td style="font-size:11px;color:#475569;white-space:nowrap;">${fmtDate(r.fctDatetime)}</td>
+                <td>
+                    <button class="btn-detail" style="border-color:#4c1d95;color:#a78bfa;"
+                        onclick="event.stopPropagation();openDetail('${serial}')">Chi tiết →</button>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    // ── Journey + Cards renderers ──
+    function connector() {
+        return `<div class="journey-connector">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+        </div>`;
+    }
+
+    function stepIcon(status) {
+        if (!status) return `<div class="step-icon skip">–</div>`;
+        return status.toUpperCase() === 'OK'
+            ? `<div class="step-icon done">✓</div>`
+            : `<div class="step-icon fail">✕</div>`;
+    }
+
+    function buildJourney(d) {
+        const fct = d.fctFqc, wip = d.wip, fg = d.fg, pal = d.pallet;
+        const steps = [
+            { label: 'WIP',      status: wip ? 'OK' : null,  time: wip ? fmtDate(wip.dateFinished) : '—' },
+            { label: 'FCT',      status: fct?.fctStatus,      time: fmtDate(fct?.fctDatetime) },
+            { label: 'FQC',      status: fct?.fqcStatus,      time: fmtDate(fct?.fqcDatetime) },
+            { label: 'FG',       status: fg ? 'OK' : null,    time: fg ? fmtDate(fg.dateFinished) : '—' },
+            { label: 'Đóng gói', status: pal ? 'OK' : null,   time: pal ? pal.scanDate : '—' }
+        ];
+        let html = '<div class="journey">';
+        steps.forEach((s, i) => {
+            const clr = s.status ? (s.status.toUpperCase() === 'OK' ? '#4ade80' : '#f87171') : '#1e293b';
+            html += `<div class="journey-step">
+                ${stepIcon(s.status)}
+                <div class="step-label">${s.label}</div>
+                <div class="step-status" style="color:${clr}">
+                    ${s.status ? (s.status.toUpperCase() === 'OK' ? 'Đạt' : 'Lỗi') : 'Chưa có'}
+                </div>
+                <div class="step-time">${s.time}</div>
+            </div>`;
+            if (i < steps.length - 1) html += connector();
+        });
+        return html + '</div>';
+    }
+
+    function parseComponents(list) {
+        if (!list || !list.length) return '<div style="color:#334155;font-size:12px;">Không có dữ liệu</div>';
+        return list.map(c => {
+            const label = c.productCode
+                ? `<span class="comp-code">[${c.productCode}]</span> <span class="comp-name">${c.productName || ''}</span>`
+                : `<span class="comp-name">product_id: ${c.productId}</span>`;
+            return `<div class="comp-item">${label} <span class="comp-sep">│</span> <span class="comp-lot">${c.lotNumber}</span></div>`;
+        }).join('');
+    }
+
+    function buildCards(d) {
+        const f = d.fctFqc, p = d.pallet, w = d.wip, g = d.fg;
+        let html = '<div class="cards">';
+
+        // FCT/FQC
+        html += `<div class="card"><div class="card-title">📊 FCT / FQC</div>`;
+        if (!f) {
+            html += `<div style="color:#334155;font-size:13px;">Chưa có dữ liệu FCT/FQC</div>`;
+        } else {
+            html += `
+            <div class="info-row"><span class="info-label">Work Order</span><span class="info-val" style="color:#a78bfa">${f.workOrder || '—'}</span></div>
+            <div class="info-row"><span class="info-label">FCT</span><span class="info-val">${badgeHtml(f.fctStatus)}</span></div>
+            <div class="info-row"><span class="info-label">FCT Thời gian</span><span class="info-val" style="color:#475569">${fmtDate(f.fctDatetime)}</span></div>
+            <div class="info-row"><span class="info-label">FQC</span><span class="info-val">${badgeHtml(f.fqcStatus)}</span></div>
+            <div class="info-row"><span class="info-label">FQC Thời gian</span><span class="info-val" style="color:#475569">${fmtDate(f.fqcDatetime)}</span></div>`;
+        }
+        html += '</div>';
+
+        // Pallet
+        html += `<div class="card"><div class="card-title">📦 Thông tin Đóng gói</div>`;
+        if (!p) {
+            html += `<div style="color:#334155;font-size:13px;">Chưa đóng pallet</div>`;
+        } else {
+            html += `
+            <div class="info-row"><span class="info-label">Pallet ID</span><span class="info-val" style="color:#60a5fa">${p.palletID}</span></div>
+            <div class="info-row"><span class="info-label">Ngày đóng</span><span class="info-val">${p.date}</span></div>
+            <div class="info-row"><span class="info-label">Scan lúc</span><span class="info-val" style="color:#475569">${p.scanDate}</span></div>
+            <div class="info-row"><span class="info-label">Tổng serial</span><span class="info-val">${p.countSerial}</span></div>
+            <div style="margin-top:10px;font-size:11px;color:#334155;margin-bottom:6px;">Các serial trong pallet:</div>
+            <div class="pallet-serials">
+                ${(p.serials || []).map(s => `<span class="serial-chip" onclick="event.stopPropagation();document.getElementById('detail-serial-text').textContent='${s.trim()}';openDetail('${s.trim()}')">${s.trim()}</span>`).join('')}
+            </div>`;
+        }
+        html += '</div>';
+
+        // WIP
+        html += `<div class="card"><div class="card-title">🏭 Trạm WIP</div>`;
+        if (!w) {
+            html += `<div style="color:#334155;font-size:13px;">Chưa có log WIP</div>`;
+        } else {
+            html += `
+            <div class="info-row"><span class="info-label">WO Code</span><span class="info-val" style="color:#a78bfa">${w.woCode}</span></div>
+            <div class="info-row"><span class="info-label">WO cha</span><span class="info-val" style="color:#64748b">${w.masterWoCode}</span></div>
+            <div class="info-row"><span class="info-label">Thời gian</span><span class="info-val" style="color:#475569">${fmtDate(w.dateFinished)}</span></div>
+            <div class="info-row"><span class="info-label">Đồng bộ</span><span class="info-val">
+                <span class="badge ${w.status === 'synch success' ? 'badge-ok' : 'badge-ng'}">${w.status === 'synch success' ? '✓ Thành công' : '✕ Chưa đồng bộ'}</span>
+            </span></div>
+            <div class="comp-box"><div class="comp-box-title">Linh kiện</div>
+            <div class="comp-list">${parseComponents(w.componentList)}</div></div>`;
+        }
+        html += '</div>';
+
+        // FG
+        html += `<div class="card"><div class="card-title">✅ Trạm FG</div>`;
+        if (!g) {
+            html += `<div style="color:#334155;font-size:13px;">Chưa có log FG</div>`;
+        } else {
+            html += `
+            <div class="info-row"><span class="info-label">WO Code</span><span class="info-val" style="color:#a78bfa">${g.woCode}</span></div>
+            <div class="info-row"><span class="info-label">WO cha</span><span class="info-val" style="color:#64748b">${g.masterWoCode}</span></div>
+            <div class="info-row"><span class="info-label">Thời gian</span><span class="info-val" style="color:#475569">${fmtDate(g.dateFinished)}</span></div>
+            <div class="info-row"><span class="info-label">Đồng bộ</span><span class="info-val">
+                <span class="badge ${g.status === 'synch success' ? 'badge-ok' : 'badge-ng'}">${g.status === 'synch success' ? '✓ Thành công' : '✕ Chưa đồng bộ'}</span>
+            </span></div>
+            <div class="comp-box"><div class="comp-box-title">Linh kiện</div>
+            <div class="comp-list">${parseComponents(g.componentList)}</div></div>`;
+        }
+        html += '</div>';
+
+        return html + '</div>';
+    }
+</script>
