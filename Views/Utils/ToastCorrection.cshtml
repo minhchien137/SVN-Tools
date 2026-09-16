@@ -285,7 +285,7 @@
             if ((isWip && data.wip) || (isFg && data.fg)) {
                 html += `<div class="comp-row" style="border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.05);">
                     <div class="comp-row-text">🏷 <b style="color:#fbbf24;">Serial sản phẩm</b> &nbsp;|&nbsp; serial_code: <span class="lot">${data.serial}</span></div>
-                    <button class="btn-gray" onclick='startEditSerial(${JSON.stringify(data.serial)})'>Sửa</button>
+                    <button class="btn-gray" onclick='startEditSerial(${JSON.stringify(data.serial)}, "${st.code}")'>Sửa</button>
                 </div>`;
             }
             list.forEach(c => {
@@ -303,13 +303,13 @@
     const _editOld = { station: '', lot: '', code: '', name: '' };
     let _isEditSerial = false;
 
-    function startEditSerial(serial) {
+    function startEditSerial(serial, station) {
         _isEditSerial = true;
-        _editOld.station = 'WIP';
+        _editOld.station = station || 'WIP';
         _editOld.lot = serial;
         _editOld.code = '';
         _editOld.name = 'Serial sản phẩm';
-        document.getElementById('edit-station').value = 'WIP — Serial sản phẩm';
+        document.getElementById('edit-station').value = (station || 'WIP') + ' — Serial sản phẩm';
         document.getElementById('edit-old-lot').value = serial;
         document.getElementById('edit-old-lot-label').textContent = 'Serial cũ';
         document.getElementById('edit-new-lot-label').textContent = 'Serial mới';

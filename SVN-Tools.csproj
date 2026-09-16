@@ -4,7 +4,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>SVN_Tools</RootNamespace>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <!-- <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
     <DotNetWatchItems>
         <Content Include="**\*" Exclude="wwwroot\**\*" />
     </DotNetWatchItems>

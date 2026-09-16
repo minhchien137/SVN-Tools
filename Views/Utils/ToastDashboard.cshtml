@@ -58,11 +58,10 @@
 
     /* ─── Stat cards ─── */
     .stat-grid {
-        display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 32px;
+        display: grid; grid-template-columns: repeat(8, 1fr); gap: 14px; margin-bottom: 32px;
     }
-    @@media (max-width:1200px) { .stat-grid { grid-template-columns: repeat(3, 1fr); } }
+    @@media (max-width:1100px) { .stat-grid { grid-template-columns: repeat(4, 1fr); } }
     @@media (max-width:700px)  { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
-    @@media (max-width:500px)  { .stat-grid { grid-template-columns: 1fr; } }
 
     .stat-card {
         background: #111827; border: 1px solid #1e293b; border-radius: 16px;
@@ -280,7 +279,12 @@
         <div class="stat-card blue">
             <div class="stat-icon blue">📦</div>
             <div class="stat-num blue" id="s-total">—</div>
-            <div class="stat-label">Tổng Serial</div>
+            <div class="stat-label">Tổng Serial qua WIP</div>
+        </div>
+        <div class="stat-card cyan" style="--before-bg: linear-gradient(90deg,#0891b2,#22d3ee);">
+            <div class="stat-icon cyan">🏭</div>
+            <div class="stat-num cyan" id="s-total-fg">—</div>
+            <div class="stat-label">Tổng Serial qua FG</div>
         </div>
         <div class="stat-card green">
             <div class="stat-icon green">✅</div>
@@ -301,12 +305,18 @@
         <div class="stat-card red">
             <div class="stat-icon red">🚨</div>
             <div class="stat-num red" id="s-viol">—</div>
-            <div class="stat-label">Vi phạm thứ tự</div>
+            <div class="stat-label">Cần xử lý</div>
         </div>
         <div class="stat-card purple">
             <div class="stat-icon purple">📤</div>
             <div class="stat-num purple" id="s-fg-pending">—</div>
             <div class="stat-label">FG chưa đóng pallet</div>
+        </div>
+        <div class="stat-card red" style="--before-bg: linear-gradient(90deg,#f43f5e,#fb7185);">
+            <div class="stat-icon red">🔢</div>
+            <div class="stat-num red" id="s-wrong-format">—</div>
+            <div class="stat-label">Serial sai định dạng</div>
+            <div class="stat-sub" style="color:#4b5563;">≠ 13 ký tự</div>
         </div>
     </div>
 
@@ -352,7 +362,7 @@
         </div>
 
         <div style="font-size:12px;color:#1e293b;text-align:center;padding-bottom:4px;">
-            Chỉ hiển thị serial vi phạm thứ tự · Click vào hàng để xem chi tiết
+            Hiển thị serial vi phạm thứ tự hoặc SN không đủ 13 ký tự · Click vào hàng để xem chi tiết
         </div>
     </div>
 
@@ -463,12 +473,14 @@
             if (!data.ok) { throw new Error(data.message || 'Lỗi không xác định'); }
 
             const s = data.summary;
-            document.getElementById('s-total').textContent      = s.total;
-            document.getElementById('s-complete').textContent   = s.complete;
-            document.getElementById('s-wip').textContent        = s.missingWip;
-            document.getElementById('s-viol').textContent       = s.anyViol;
-            document.getElementById('s-missing-fg').textContent = s.missingFg ?? 0;
-            document.getElementById('s-fg-pending').textContent = s.fgNotPacked ?? 0;
+            document.getElementById('s-total').textContent        = s.total;
+            document.getElementById('s-total-fg').textContent     = s.totalFg ?? 0;
+            document.getElementById('s-complete').textContent     = s.complete;
+            document.getElementById('s-wip').textContent          = s.missingWip;
+            document.getElementById('s-viol').textContent         = s.anyViol;
+            document.getElementById('s-missing-fg').textContent   = s.missingFg ?? 0;
+            document.getElementById('s-fg-pending').textContent   = s.fgNotPacked ?? 0;
+            document.getElementById('s-wrong-format').textContent = s.wrongFormat ?? 0;
             document.getElementById('s-pct').textContent        =
                 s.total > 0 ? `${Math.round(s.complete / s.total * 100)}% hoàn thành` : '';
             document.getElementById('alert-count').textContent = data.alerts.length;
@@ -529,8 +541,11 @@
             if (isFiltered) {
                 tbody.innerHTML = `<tr><td colspan="11" class="empty-state" style="color:#475569;">Không tìm thấy serial khớp từ khóa.</td></tr>`;
             } else {
-                tbody.innerHTML = `<tr><td colspan="11" class="empty-state empty-good">
-                    <span>🎉</span>Tất cả serial đã đủ trạm WIP và FG!
+                tbody.innerHTML = `<tr><td colspan="11" class="empty-state empty-good" style="text-align:center;">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+                        <span style="font-size:22px;">🎉</span>
+                        <span style="font-size:12px;">Tất cả serial hiện tại không có vấn đề.</span>
+                    </div>
                 </td></tr>`;
             }
             return;

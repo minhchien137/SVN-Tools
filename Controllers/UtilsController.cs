@@ -1030,7 +1030,8 @@ namespace SVN_Tools.Controllers
                     WHERE serial_code IN @serialList
                       AND date_finished >= @dateFrom
                       AND (component_list IS NULL
-                           OR component_list NOT LIKE '%' + serial_code + '%')
+                           OR (component_list NOT LIKE '%""lotNumber"":""' + serial_code + '""%'
+                               AND component_list NOT LIKE '%""lotNumber"": ""' + serial_code + '""%'))
                     GROUP BY serial_code",
                     new { serialList, dateFrom },
                     commandTimeout: 30
@@ -1054,7 +1055,7 @@ namespace SVN_Tools.Controllers
                 var fgSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach (var sn in serialList)
                 {
-                    if (componentLists.Any(cl => cl.Contains(sn, StringComparison.OrdinalIgnoreCase)))
+                    if (componentLists.Any(cl => ComponentListHasSerial(cl, sn)))
                         fgSet.Add(sn);
                 }
 
@@ -1073,6 +1074,29 @@ namespace SVN_Tools.Controllers
                         palletSet.Add(sn);
                 }
 
+                // Query thêm: serial sai định dạng trong production logs (chưa có FCT)
+                var existingSnSet = new HashSet<string>(serialList, StringComparer.OrdinalIgnoreCase);
+                var wrongFmtProdRows = (await conn.QueryAsync(@"
+                    SELECT serial_code AS SerialCode,
+                           MAX(wo_code) AS WoCode,
+                           MAX(CASE WHEN component_list IS NULL
+                                      OR (component_list NOT LIKE '%""lotNumber"":""' + serial_code + '""%'
+                                          AND component_list NOT LIKE '%""lotNumber"": ""' + serial_code + '""%')
+                                    THEN 1 ELSE 0 END) AS HasWip,
+                           MAX(CASE WHEN component_list IS NOT NULL
+                                     AND (component_list LIKE '%""lotNumber"":""' + serial_code + '""%'
+                                       OR component_list LIKE '%""lotNumber"": ""' + serial_code + '""%')
+                                    THEN 1 ELSE 0 END) AS HasFg
+                    FROM SVN_ProductionInputLogs
+                    WHERE date_finished BETWEEN @from AND @to
+                      AND serial_code IS NOT NULL
+                      AND LTRIM(RTRIM(serial_code)) <> ''
+                      AND LEN(LTRIM(RTRIM(serial_code))) <> 13
+                    GROUP BY serial_code",
+                    new { from, to },
+                    commandTimeout: 30
+                )).Cast<dynamic>().ToList();
+
                 // Tổng hợp và phát hiện vi phạm thứ tự
                 var alerts = serials
                     .Select(r => {
@@ -1084,6 +1108,7 @@ namespace SVN_Tools.Controllers
                         bool hasPal = palletSet.Contains(sn);
 
                         var viols = new List<string>();
+                        if (sn.Length != 13)                 viols.Add("SN ≠ 13 ký tự");
                         if (!hasWip && hasFct)               viols.Add("WIP");
                         if (!hasFqc && (hasFg || hasPal))    viols.Add("FQC");
                         if (!hasFg  && hasPal)               viols.Add("FG");
@@ -1101,6 +1126,31 @@ namespace SVN_Tools.Controllers
                     })
                     .Where(r => r.violations.Count > 0)
                     .ToList<object>();
+
+                // Thêm serial sai định dạng từ production logs (chưa có trong danh sách FCT)
+                foreach (var row in wrongFmtProdRows)
+                {
+                    var sn     = ((string)row.SerialCode).Trim();
+                    if (existingSnSet.Contains(sn)) continue;
+                    bool wfWip = (int)row.HasWip == 1;
+                    bool wfFg  = (int)row.HasFg  == 1;
+                    var viols  = new List<string>();
+                    if (wfWip) viols.Add("SN sai · WIP");
+                    if (wfFg)  viols.Add("SN sai · FG");
+                    if (!wfWip && !wfFg) viols.Add("SN ≠ 13 ký tự");
+                    alerts.Add(new {
+                        serialNumber = sn,
+                        workOrder    = (string?)row.WoCode,
+                        fctStatus    = (string?)null,
+                        fctDatetime  = (DateTime?)null,
+                        fqcStatus    = (string?)null,
+                        hasWip       = wfWip,
+                        hasFqc       = false,
+                        hasFg        = wfFg,
+                        hasPallet    = palletSet.Contains(sn),
+                        violations   = viols
+                    });
+                }
 
                 var fgPending = serials
                     .Where(r => {
@@ -1124,7 +1174,16 @@ namespace SVN_Tools.Controllers
                     })
                     .ToList<object>();
 
-                int total       = serials.Count;
+                int wrongFmtExtra = wrongFmtProdRows.Count(r => !existingSnSet.Contains(((string)r.SerialCode).Trim()));
+                // Tổng Serial qua WIP = distinct serial có bản ghi WIP trong production logs
+                int total       = wipSet.Count
+                                + wrongFmtProdRows.Count(r =>
+                                    !existingSnSet.Contains(((string)r.SerialCode).Trim()) &&
+                                    (int)r.HasWip == 1);
+                int totalFg     = fgSet.Count
+                                + wrongFmtProdRows.Count(r =>
+                                    !existingSnSet.Contains(((string)r.SerialCode).Trim()) &&
+                                    (int)r.HasFg == 1);
                 int missingWip  = serials.Count(r => !wipSet.Contains((string)r.SerialNumber));
                 int missingFg   = serials.Count(r => {
                     var sn = (string)r.SerialNumber;
@@ -1132,6 +1191,7 @@ namespace SVN_Tools.Controllers
                 });
                 int anyViol     = alerts.Count;
                 int fgNotPacked = fgPending.Count;
+                int wrongFormat = serials.Count(r => ((string)r.SerialNumber).Length != 13) + wrongFmtExtra;
                 int complete    = serials.Count(r => {
                     var sn = (string)r.SerialNumber;
                     return wipSet.Contains(sn) &&
@@ -1143,7 +1203,7 @@ namespace SVN_Tools.Controllers
 
                 return Ok(new {
                     ok   = true,
-                    summary = new { total, complete, missingWip, missingFg, anyViol, fgNotPacked },
+                    summary = new { total, totalFg, complete, missingWip, missingFg, anyViol, fgNotPacked, wrongFormat },
                     alerts,
                     fgPending
                 });
@@ -1233,6 +1293,20 @@ namespace SVN_Tools.Controllers
             return await GetToastSerialDetail(serial.Trim().ToUpper(), conn);
         }
 
+        private static bool ComponentListHasSerial(string? json, string serial)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return false;
+            try
+            {
+                using var doc = JsonDocument.Parse(json);
+                return doc.RootElement.ValueKind == JsonValueKind.Array &&
+                       doc.RootElement.EnumerateArray().Any(e =>
+                           e.TryGetProperty("lotNumber", out var lot) &&
+                           string.Equals(lot.GetString(), serial, StringComparison.OrdinalIgnoreCase));
+            }
+            catch { return false; }
+        }
+
         private static List<int> ExtractComponentProductIds(string? componentListJson)
         {
             var ids = new List<int>();
@@ -1295,14 +1369,20 @@ namespace SVN_Tools.Controllers
             var palletRow = (await multi.ReadAsync()).FirstOrDefault();
             var prodRows  = (await multi.ReadAsync()).Cast<dynamic>().ToList();
 
-            // Ưu tiên component_list: FG = serial xuất hiện làm lotNumber trong component_list
-            var fg  = prodRows.FirstOrDefault(x =>  ((string?)x.component_list ?? "").Contains(serial));
-            var wip = prodRows.FirstOrDefault(x => !((string?)x.component_list ?? "").Contains(serial));
-            // Fallback: nếu không phân biệt được qua component_list thì dùng state
+            // FG = serial xuất hiện làm lotNumber (exact match) trong component_list
+            var fg  = prodRows.FirstOrDefault(x =>  ComponentListHasSerial((string?)x.component_list, serial));
+            var wip = prodRows.FirstOrDefault(x => !ComponentListHasSerial((string?)x.component_list, serial));
+            // Fallback: chỉ dùng state khi component_list thực sự rỗng/null
+            // Nếu component_list có data nhưng serial không có trong đó → chắc chắn là WIP, không dùng fallback
             if (fg == null && wip != null && string.Equals((string?)wip.state, "Used", StringComparison.OrdinalIgnoreCase))
             {
-                fg  = wip;
-                wip = null;
+                var cl = ((string?)wip.component_list ?? "").Trim();
+                bool componentListEmpty = string.IsNullOrEmpty(cl) || cl == "[]" || cl == "null";
+                if (componentListEmpty)
+                {
+                    fg  = wip;
+                    wip = null;
+                }
             }
 
             var productIds = ExtractComponentProductIds(wip == null ? null : (string?)wip.component_list)
@@ -1476,6 +1556,18 @@ namespace SVN_Tools.Controllers
         [HttpPost("api/ToastCorrection/replace-component")]
         public async Task<IActionResult> ReplaceToastComponent([FromBody] ReplaceComponentRequest req)
         {
+            try
+            {
+                return await ReplaceToastComponentCore(req);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { ok = false, message = "Lỗi server: " + ex.Message });
+            }
+        }
+
+        private async Task<IActionResult> ReplaceToastComponentCore(ReplaceComponentRequest req)
+        {
             if (string.IsNullOrWhiteSpace(req.Serial) || string.IsNullOrWhiteSpace(req.Station) ||
                 string.IsNullOrWhiteSpace(req.OldLotNumber) || string.IsNullOrWhiteSpace(req.NewProductCode) ||
                 string.IsNullOrWhiteSpace(req.NewLotNumber) || string.IsNullOrWhiteSpace(req.Reason) ||
@@ -1486,14 +1578,27 @@ namespace SVN_Tools.Controllers
             var station = req.Station.Trim().ToUpper();
             if (station != "WIP" && station != "FG")
                 return BadRequest(new { ok = false, message = "Trạm không hợp lệ (chỉ WIP hoặc FG)." });
-            var state = station == "WIP" ? "Consumed" : "Used";
 
             using var conn = new System.Data.SqlClient.SqlConnection(connectionString);
             await conn.OpenAsync();
 
-            var log = await Dapper.SqlMapper.QuerySingleOrDefaultAsync(conn,
-                "SELECT TOP 1 id, component_list FROM SVN_ProductionInputLogs WHERE serial_code = @serial AND state = @state ORDER BY date_finished DESC",
-                new { serial, state });
+            // Lấy tất cả records rồi phân loại WIP/FG bằng component_list (giống lookup)
+            var allLogs = (await Dapper.SqlMapper.QueryAsync(conn,
+                "SELECT id, component_list, state, API_parameters FROM SVN_ProductionInputLogs WHERE serial_code = @serial ORDER BY date_finished DESC",
+                new { serial })).Cast<dynamic>().ToList();
+
+            dynamic? log = station == "WIP"
+                ? allLogs.FirstOrDefault(r => !ComponentListHasSerial((string?)r.component_list, serial))
+                : allLogs.FirstOrDefault(r =>  ComponentListHasSerial((string?)r.component_list, serial));
+
+            // Fallback dùng state chỉ khi component_list thực sự rỗng/null
+            if (log == null && station == "FG")
+                log = allLogs.FirstOrDefault(r =>
+                    string.Equals((string?)r.state, "Used", StringComparison.OrdinalIgnoreCase) &&
+                    (string.IsNullOrWhiteSpace((string?)r.component_list) ||
+                     ((string?)r.component_list).Trim() == "[]" ||
+                     ((string?)r.component_list).Trim() == "null"));
+
             if (log == null)
                 return NotFound(new { ok = false, message = $"Không tìm thấy bản ghi {station} cho serial {serial}." });
 
@@ -1517,12 +1622,14 @@ namespace SVN_Tools.Controllers
                 return BadRequest(new { ok = false, message = "Dữ liệu linh kiện hiện tại không đúng định dạng." });
 
             JsonObject? target = null;
+            int oldProductId = 0;
             foreach (var item in arr)
             {
                 if (item is JsonObject obj &&
                     string.Equals((string?)obj["lotNumber"], req.OldLotNumber.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     target = obj;
+                    oldProductId = obj["product_id"]?.GetValue<int>() ?? 0;
                     break;
                 }
             }
@@ -1536,72 +1643,66 @@ namespace SVN_Tools.Controllers
             target["lotNumber"]  = newLot;
             string newJson = node!.ToJsonString();
 
+            // Cập nhật API_parameters.LotScaneds: tìm theo product_id cũ, thay product_id và lotNumber mới
+            string? oldApiJson = (string?)log.API_parameters;
+            string? newApiJson = null;
+            if (!string.IsNullOrWhiteSpace(oldApiJson) && oldProductId > 0)
+            {
+                try
+                {
+                    var apiNode = JsonNode.Parse(oldApiJson);
+                    var lotScaneds = apiNode?["LotScaneds"] as JsonArray;
+                    if (lotScaneds != null)
+                    {
+                        foreach (var item in lotScaneds)
+                        {
+                            if (item is JsonObject obj && (obj["product_id"]?.GetValue<int>() ?? 0) == oldProductId)
+                            {
+                                obj["product_id"] = newProductId;
+                                obj["lotNumber"]  = newLot;
+                                break;
+                            }
+                        }
+                    }
+                    newApiJson = apiNode?.ToJsonString();
+                }
+                catch { }
+            }
+
             using var tran = conn.BeginTransaction();
             try
             {
-                // Cập nhật component_list và request_body của record đang sửa
                 await conn.ExecuteAsync(
                     @"UPDATE SVN_ProductionInputLogs
                       SET component_list = @newJson,
-                          request_body   = REPLACE(request_body, @oldLot, @newLot)
+                          API_parameters = COALESCE(@newApiJson, API_parameters)
                       WHERE id = @id",
-                    new { newJson, oldLot, newLot, id = (int)log.id }, tran);
-
-                // Nếu lot linh kiện đang sửa chính là serial sản phẩm → rename toàn bộ
-                if (string.Equals(oldLot, serial, StringComparison.OrdinalIgnoreCase))
-                {
-                    await conn.ExecuteAsync(
-                        "UPDATE SVN_ProductionInputLogs SET serial_code = @newLot WHERE serial_code = @oldLot",
-                        new { newLot, oldLot }, tran);
-
-                    await conn.ExecuteAsync(
-                        @"UPDATE SVN_ProductionInputLogs
-                          SET component_list = REPLACE(component_list, @oldLot, @newLot),
-                              request_body   = REPLACE(request_body,   @oldLot, @newLot)
-                          WHERE id <> @id
-                            AND (component_list LIKE '%' + @oldLot + '%' OR request_body LIKE '%' + @oldLot + '%')",
-                        new { newLot, oldLot, id = (int)log.id }, tran);
-
-                    var palletRows = (await conn.QueryAsync(
-                        "SELECT Id, Serial FROM SVN_Astro_Label_Data WHERE isDeleted = 0 AND EmployeeID = 'toast' AND Serial LIKE '%' + @oldLot + '%'",
-                        new { oldLot }, tran)).ToList();
-                    foreach (var row in palletRows)
-                    {
-                        var parts = ((string)row.Serial).Split(',', StringSplitOptions.RemoveEmptyEntries)
-                            .Select(s => s.Trim()).ToList();
-                        bool changed = false;
-                        for (int i = 0; i < parts.Count; i++)
-                        {
-                            if (string.Equals(parts[i], oldLot, StringComparison.OrdinalIgnoreCase))
-                            { parts[i] = newLot; changed = true; }
-                        }
-                        if (changed)
-                            await conn.ExecuteAsync(
-                                "UPDATE SVN_Astro_Label_Data SET Serial = @serial WHERE Id = @rowId",
-                                new { serial = string.Join(",", parts), rowId = (int)row.Id }, tran);
-                    }
-                }
+                    new { newJson, newApiJson, id = (int)log.id }, tran);
 
                 tran.Commit();
             }
-            catch
+            catch (Exception ex)
             {
-                tran.Rollback();
-                throw;
+                try { tran.Rollback(); } catch { }
+                return StatusCode(500, new { ok = false, message = "Lỗi khi lưu dữ liệu: " + ex.Message });
             }
 
-            _context.SVNToastEditLogs.Add(new SVNToastEditLog
+            try
             {
-                ActionType = ToastEditActionType.ReplaceComponent,
-                SerialCode = serial,
-                Station    = station,
-                OldValue   = oldJson,
-                NewValue   = newJson,
-                Reason     = req.Reason.Trim(),
-                EditedBy   = req.SVNCode.Trim(),
-                EditedAt   = DateTime.UtcNow.AddHours(7)
-            });
-            await _context.SaveChangesAsync();
+                _context.SVNToastEditLogs.Add(new SVNToastEditLog
+                {
+                    ActionType = ToastEditActionType.ReplaceComponent,
+                    SerialCode = serial,
+                    Station    = station,
+                    OldValue   = oldJson,
+                    NewValue   = newJson,
+                    Reason     = req.Reason.Trim(),
+                    EditedBy   = req.SVNCode.Trim(),
+                    EditedAt   = DateTime.UtcNow.AddHours(7)
+                });
+                await _context.SaveChangesAsync();
+            }
+            catch { }
 
             return Ok(new { ok = true, message = $"Đã cập nhật linh kiện cho serial {serial} ({station})." });
         }
@@ -1634,15 +1735,24 @@ namespace SVN_Tools.Controllers
             try
             {
                 await conn.ExecuteAsync(
-                    "UPDATE SVN_ProductionInputLogs SET serial_code = @newSerial WHERE serial_code = @oldSerial",
+                    @"UPDATE SVN_ProductionInputLogs
+                      SET serial_code = @newSerial,
+                          API_parameters = CASE
+                              WHEN API_parameters IS NOT NULL AND ISJSON(API_parameters) = 1
+                              THEN REPLACE(
+                                  JSON_MODIFY(API_parameters, '$.LotNumber', @newSerial),
+                                  '""lotNumber"":""' + @oldSerial + '""',
+                                  '""lotNumber"":""' + @newSerial + '""'
+                              )
+                              ELSE API_parameters
+                          END
+                      WHERE serial_code = @oldSerial",
                     new { newSerial, oldSerial }, tran);
 
                 await conn.ExecuteAsync(
                     @"UPDATE SVN_ProductionInputLogs
-                      SET component_list = REPLACE(component_list, @oldSerial, @newSerial),
-                          request_body   = REPLACE(request_body,   @oldSerial, @newSerial)
-                      WHERE component_list LIKE '%' + @oldSerial + '%'
-                         OR request_body   LIKE '%' + @oldSerial + '%'",
+                      SET component_list = REPLACE(component_list, @oldSerial, @newSerial)
+                      WHERE component_list LIKE '%' + @oldSerial + '%'",
                     new { newSerial, oldSerial }, tran);
 
                 var palletRows = (await conn.QueryAsync(
@@ -1685,10 +1795,10 @@ namespace SVN_Tools.Controllers
 
                 tran.Commit();
             }
-            catch
+            catch (Exception ex)
             {
-                tran.Rollback();
-                throw;
+                try { tran.Rollback(); } catch { }
+                return StatusCode(500, new { ok = false, message = "Lỗi khi lưu dữ liệu: " + ex.Message });
             }
 
             return Ok(new { ok = true, message = $"Đã chuyển dữ liệu sản xuất từ {oldSerial} sang {newSerial}." });
