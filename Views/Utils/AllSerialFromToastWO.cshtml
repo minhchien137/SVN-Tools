@@ -1,0 +1,418 @@
+@{
+    ViewData["Title"] = "All Serial From WO";
+}
+
+<style>
+    body { font-family: 'Segoe UI', sans-serif; background: #0f1115; color: #f9fafb; margin: 0; padding: 32px 20px; }
+
+    .page-title {
+        font-size: 30px; font-weight: 800; margin: 0 0 28px; letter-spacing: -.5px;
+        text-align: center;
+        background: linear-gradient(90deg, #60a5fa, #a78bfa);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    .search-bar {
+        display: flex; gap: 10px; max-width: 680px; margin: 0 auto 28px;
+    }
+    .search-bar input {
+        flex: 1; background: #1f2937; border: 1px solid #374151; border-radius: 10px;
+        color: #f9fafb; padding: 14px 18px; font-size: 16px; outline: none; letter-spacing: .5px;
+    }
+    .search-bar input:focus { border-color: #3b82f6; }
+    .search-bar button {
+        background: #2563eb; color: #fff; border: none; border-radius: 10px;
+        padding: 0 26px; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap;
+    }
+    .search-bar button:hover { background: #1d4ed8; }
+
+    #loading { text-align: center; color: #6b7280; padding: 40px; display: none; font-size: 15px; }
+
+    .rule-box {
+        max-width: 900px; margin: 0 auto 20px;
+        background: #1f2937; border: 1px solid #374151; border-radius: 12px; padding: 14px 18px;
+        font-size: 13px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .rule-label { color: #9ca3af; font-weight: 600; }
+    .rule-val   { color: #f9fafb; font-weight: 700; font-family: monospace; }
+    .rule-badge-active   { background: rgba(34,197,94,.15); color: #86efac; border: 1px solid rgba(34,197,94,.4); border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 700; }
+    .rule-badge-inactive { background: rgba(156,163,175,.12); color: #6b7280; border: 1px solid #374151; border-radius: 999px; padding: 2px 10px; font-size: 11px; font-weight: 700; }
+
+    .summary-bar {
+        max-width: 900px; margin: 0 auto 20px;
+        display: flex; gap: 14px; flex-wrap: wrap;
+    }
+    .stat-card {
+        flex: 1; min-width: 120px;
+        background: #1f2937; border: 1px solid #374151; border-radius: 10px; padding: 14px 18px;
+        text-align: center;
+    }
+    .stat-num  { font-size: 26px; font-weight: 800; }
+    .stat-label { font-size: 11px; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+
+    .table-wrapper {
+        max-width: 900px; margin: 0 auto;
+        background: #1f2937; border: 1px solid #374151; border-radius: 14px; overflow: hidden;
+    }
+    .table-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 16px 20px; gap: 12px; flex-wrap: wrap;
+        border-bottom: 1px solid #374151;
+    }
+    .table-header-title { font-size: 14px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: .5px; }
+
+    .filter-input {
+        background: #111827; border: 1px solid #374151; border-radius: 8px;
+        color: #f9fafb; padding: 8px 14px; font-size: 13px; outline: none; width: 220px;
+    }
+    .filter-input:focus { border-color: #3b82f6; }
+
+    .btn-export {
+        background: #16a34a; color: #fff; border: none; border-radius: 8px;
+        padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .btn-export:hover { background: #15803d; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead th {
+        padding: 10px 16px; text-align: left; color: #6b7280; font-size: 11px;
+        font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+        background: #111827; border-bottom: 1px solid #374151;
+    }
+    tbody tr { border-bottom: 1px solid #1e293b; transition: background .15s; }
+    tbody tr:hover { background: rgba(255,255,255,.03); }
+    tbody tr.row-invalid { background: rgba(239,68,68,.08); border-left: 3px solid #ef4444; }
+    tbody tr.row-invalid:hover { background: rgba(239,68,68,.14); }
+    tbody td { padding: 10px 16px; vertical-align: middle; }
+
+    .serial-code { font-family: monospace; font-size: 14px; font-weight: 700; color: #93c5fd; letter-spacing: .5px; }
+    .serial-code.invalid { color: #fca5a5; }
+
+    .badge-invalid {
+        display: inline-block; background: rgba(239,68,68,.2); color: #fca5a5;
+        border: 1px solid rgba(239,68,68,.5); border-radius: 999px;
+        padding: 2px 10px; font-size: 11px; font-weight: 700;
+    }
+    .badge-valid {
+        display: inline-block; background: rgba(34,197,94,.1); color: #86efac;
+        border: 1px solid rgba(34,197,94,.35); border-radius: 999px;
+        padding: 2px 10px; font-size: 11px; font-weight: 700;
+    }
+
+    .no-data {
+        text-align: center; color: #6b7280; padding: 60px 0; font-size: 15px;
+    }
+
+    .pagination {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 12px 20px; border-top: 1px solid #374151; flex-wrap: wrap; gap: 8px;
+    }
+    .pagination-info { font-size: 12px; color: #6b7280; }
+    .pagination-btns { display: flex; gap: 6px; }
+    .btn-page {
+        background: #111827; color: #e5e7eb; border: 1px solid #374151; border-radius: 6px;
+        padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .btn-page:hover:not(:disabled) { background: #1f2937; border-color: #4b5563; }
+    .btn-page:disabled { opacity: .35; cursor: not-allowed; }
+
+    .err-msg {
+        max-width: 680px; margin: 0 auto 20px;
+        background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.4); border-radius: 10px;
+        color: #fca5a5; padding: 12px 18px; font-size: 14px; display: none;
+    }
+
+    .invalid-reason { font-size: 11px; color: #f87171; margin-top: 2px; }
+</style>
+
+<div style="max-width:900px;margin:0 auto;">
+    <div class="page-title">All Serial From WO</div>
+
+    <div class="search-bar">
+        <input type="text" id="inp-wo" placeholder="Nhập Work Order, VD: NM/MO/05144" autofocus />
+        <button onclick="doSearch()">Tìm kiếm</button>
+    </div>
+
+    <div class="err-msg" id="err-msg"></div>
+    <div id="loading">Đang tải...</div>
+    <div id="main-area"></div>
+</div>
+
+<script>
+    document.getElementById('inp-wo').addEventListener('keydown', e => {
+        if (e.key === 'Enter') doSearch();
+    });
+
+    let _allRows    = [];
+    let _filtered   = [];
+    let _currentPage = 1;
+    const PAGE_SIZE  = 50;
+    let _activeRule  = null;
+
+    function fmtDate(str) {
+        if (!str) return '—';
+        const d = new Date(str);
+        return isNaN(d) ? str : d.toLocaleString('vi-VN', { hour12: false });
+    }
+
+    function validateSerial(serial, rule) {
+        if (!serial) return { valid: false, reason: 'Serial rỗng' };
+        if (!rule)   return { valid: true,  reason: '' };
+
+        if (serial.length !== 13)
+            return { valid: false, reason: `Độ dài ${serial.length} ≠ 13` };
+
+        const prefix = rule.prefix || rule.Prefix || '';
+        const minSeq = rule.minSeq ?? rule.MinSeq ?? 0;
+
+        if (!serial.toUpperCase().startsWith(prefix.toUpperCase()))
+            return { valid: false, reason: `Không khớp prefix "${prefix}"` };
+
+        const suffix = serial.slice(prefix.length);
+        const seq = parseInt(suffix, 10);
+        if (isNaN(seq) || suffix !== seq.toString().padStart(suffix.length, '0'))
+            return { valid: false, reason: `Phần số không hợp lệ` };
+
+        if (seq < minSeq)
+            return { valid: false, reason: `Số cuối ${seq} < min ${minSeq}` };
+
+        return { valid: true, reason: '' };
+    }
+
+    function normalizeWO(raw) {
+        const v = raw.trim();
+        if (/^\d{5}$/.test(v)) return 'NM/MO/' + v;
+        return v;
+    }
+
+    async function doSearch() {
+        const wo = normalizeWO(document.getElementById('inp-wo').value);
+        document.getElementById('inp-wo').value = wo;
+        if (!wo) return;
+
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('main-area').innerHTML   = '';
+        document.getElementById('err-msg').style.display = 'none';
+
+        try {
+            const res  = await fetch(`/api/AllSerialFromToastWO?wo=${encodeURIComponent(wo)}`);
+            const data = await res.json();
+            document.getElementById('loading').style.display = 'none';
+
+            if (!res.ok || !data.ok) {
+                showErr(data.message || 'Có lỗi xảy ra.');
+                return;
+            }
+
+            _activeRule  = data.activeRule;
+            _currentPage = 1;
+
+            _allRows = (data.serials || []).map(r => {
+                const v = validateSerial(r.SerialCode, _activeRule);
+                return { ...r, _valid: v.valid, _reason: v.reason };
+            });
+
+            applyFilter('');
+            renderPage();
+        } catch (e) {
+            document.getElementById('loading').style.display = 'none';
+            showErr('Lỗi kết nối: ' + e.message);
+        }
+    }
+
+    function showErr(msg) {
+        const el = document.getElementById('err-msg');
+        el.textContent = msg;
+        el.style.display = 'block';
+    }
+
+    function applyFilter(val) {
+        const q = val.toLowerCase();
+        _filtered = _allRows.filter(r =>
+            !q ||
+            (r.SerialCode || '').toLowerCase().includes(q) ||
+            (r.WoCode     || '').toLowerCase().includes(q) ||
+            (r.State      || '').toLowerCase().includes(q)
+        );
+        _currentPage = 1;
+    }
+
+    function renderPage() {
+        const rule      = _activeRule;
+        const total     = _allRows.length;
+        const invalid   = _allRows.filter(r => !r._valid).length;
+        const valid     = total - invalid;
+
+        let html = '';
+
+        // Rule box
+        if (rule) {
+            html += `<div class="rule-box">
+                <span class="rule-badge-active">Rule đang active</span>
+                <span><span class="rule-label">Prefix: </span><span class="rule-val">${rule.prefix || rule.Prefix}</span></span>
+                <span><span class="rule-label">Min Seq: </span><span class="rule-val">${rule.minSeq ?? rule.MinSeq}</span></span>
+                ${rule.note || rule.Note ? `<span><span class="rule-label">Ghi chú: </span><span style="color:#9ca3af;">${rule.note || rule.Note}</span></span>` : ''}
+            </div>`;
+        } else {
+            html += `<div class="rule-box">
+                <span class="rule-badge-inactive">Chưa có rule active</span>
+                <span style="color:#6b7280;font-size:12px;">Không có quy tắc scan nào đang hoạt động — tất cả serial được coi là hợp lệ.</span>
+            </div>`;
+        }
+
+        // Summary
+        html += `<div class="summary-bar">
+            <div class="stat-card" style="cursor:pointer;" onclick="filterByValidity(null)" title="Hiện tất cả">
+                <div class="stat-num" style="color:#60a5fa;">${total}</div>
+                <div class="stat-label">Tổng serial</div>
+            </div>
+            <div class="stat-card" style="cursor:pointer;" onclick="filterByValidity(true)" title="Lọc hợp lệ">
+                <div class="stat-num" style="color:#86efac;">${valid}</div>
+                <div class="stat-label">Hợp lệ</div>
+            </div>
+            <div class="stat-card" style="cursor:pointer;" onclick="filterByValidity(false)" title="Lọc sai định dạng">
+                <div class="stat-num" style="color:#f87171;">${invalid}</div>
+                <div class="stat-label">Sai định dạng</div>
+            </div>
+        </div>`;
+
+        // Table
+        html += `<div class="table-wrapper">
+            <div class="table-header">
+                <span class="table-header-title">Danh sách serial</span>
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                    <input class="filter-input" type="text" placeholder="Lọc nhanh..."
+                        oninput="onFilter(this.value)" id="filter-inp" />
+                    <button class="btn-export" onclick="exportCsv()">Xuất CSV</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Serial Code</th>
+                        <th>WO Code</th>
+                        <th>Thời gian</th>
+                        <th>Trạng thái</th>
+                        <th>Format</th>
+                    </tr>
+                </thead>
+                <tbody id="tbl-body"></tbody>
+            </table>
+            <div class="pagination" id="pagination"></div>
+        </div>`;
+
+        document.getElementById('main-area').innerHTML = html;
+        renderRows();
+    }
+
+    function onFilter(val) {
+        applyFilter(val);
+        renderRows();
+    }
+
+    function filterByValidity(valid) {
+        if (valid === null) {
+            _filtered = [..._allRows];
+        } else {
+            _filtered = _allRows.filter(r => r._valid === valid);
+        }
+        _currentPage = 1;
+        const filterInp = document.getElementById('filter-inp');
+        if (filterInp) filterInp.value = '';
+        renderRows();
+    }
+
+    function renderRows() {
+        const totalPages = Math.max(1, Math.ceil(_filtered.length / PAGE_SIZE));
+        if (_currentPage > totalPages) _currentPage = totalPages;
+
+        const start    = (_currentPage - 1) * PAGE_SIZE;
+        const pageRows = _filtered.slice(start, start + PAGE_SIZE);
+
+        const tbody = document.getElementById('tbl-body');
+        if (!pageRows.length) {
+            tbody.innerHTML = `<tr><td colspan="6" class="no-data">Không có dữ liệu</td></tr>`;
+        } else {
+            tbody.innerHTML = pageRows.map((r, i) => {
+                const rowCls   = r._valid ? '' : 'row-invalid';
+                const snCls    = r._valid ? 'serial-code' : 'serial-code invalid';
+                const fmtBadge = r._valid
+                    ? `<span class="badge-valid">Hợp lệ</span>`
+                    : `<a class="badge-invalid" href="/Utils/ToastLookup?q=${encodeURIComponent(r.SerialCode)}" target="_blank" style="text-decoration:none;">Sai định dạng ↗</a>
+                       ${r._reason ? `<div class="invalid-reason">${r._reason}</div>` : ''}`;
+
+                return `<tr class="${rowCls}">
+                    <td style="color:#4b5563;font-size:12px;">${start + i + 1}</td>
+                    <td><span class="${snCls}">${r.SerialCode || '—'}</span></td>
+                    <td style="font-size:12px;color:#a78bfa;">${r.WoCode || '—'}</td>
+                    <td style="font-size:12px;color:#9ca3af;">${fmtDate(r.DateFinished)}</td>
+                    <td style="font-size:12px;color:#9ca3af;">${r.State || '—'}</td>
+                    <td>${fmtBadge}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        // Pagination
+        const pag = document.getElementById('pagination');
+        pag.innerHTML = `
+            <span class="pagination-info">Trang ${_currentPage}/${totalPages} &nbsp;·&nbsp; ${_filtered.length} dòng</span>
+            <div class="pagination-btns">
+                <button class="btn-page" onclick="goPage(1)"          ${_currentPage===1?'disabled':''}>«</button>
+                <button class="btn-page" onclick="goPage(${_currentPage-1})" ${_currentPage===1?'disabled':''}>‹</button>
+                <button class="btn-page" onclick="goPage(${_currentPage+1})" ${_currentPage===totalPages?'disabled':''}>›</button>
+                <button class="btn-page" onclick="goPage(${totalPages})" ${_currentPage===totalPages?'disabled':''}>»</button>
+            </div>`;
+    }
+
+    function goPage(p) {
+        _currentPage = p;
+        renderRows();
+    }
+
+    function exportCsv() {
+        if (!_allRows.length) return;
+
+        const rule = _activeRule;
+        const headers = ['STT', 'Serial Code', 'WO Code', 'Thoi gian', 'Trang thai', 'Format hop le', 'Ly do sai'];
+        const rows = _allRows.map((r, i) => [
+            i + 1,
+            r.SerialCode || '',
+            r.WoCode || '',
+            r.DateFinished ? new Date(r.DateFinished).toLocaleString('vi-VN', { hour12: false }) : '',
+            r.State || '',
+            r._valid ? 'Hop le' : 'Sai dinh dang',
+            r._reason || ''
+        ]);
+
+        const csvContent = [headers, ...rows]
+            .map(row => row.map(c => `"${String(c).replace(/"/g, '""')}"`).join(','))
+            .join('\n');
+
+        const blob = new Blob(['﻿' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        const wo   = document.getElementById('inp-wo').value.trim().replace(/[/\\]/g, '-');
+        const now  = new Date();
+        const ts   = now.getFullYear() +
+            (now.getMonth()+1).toString().padStart(2,'0') +
+            now.getDate().toString().padStart(2,'0');
+
+        a.href     = url;
+        a.download = `Serial_WO_${wo}_${ts}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    // Auto-search nếu URL có ?wo=
+    (function () {
+        const params = new URLSearchParams(window.location.search);
+        const wo = params.get('wo');
+        if (wo) {
+            document.getElementById('inp-wo').value = wo;
+            doSearch();
+        }
+    })();
+</script>

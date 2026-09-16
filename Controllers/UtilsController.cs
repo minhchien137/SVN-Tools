@@ -1091,7 +1091,7 @@ namespace SVN_Tools.Controllers
                                        OR component_list LIKE '%""lotNumber"": ""' + serial_code + '""%')
                                     THEN 1 ELSE 0 END) AS HasFg
                     FROM SVN_ProductionInputLogs
-                    WHERE date_finished BETWEEN @from AND @to
+                    WHERE CAST(date_finished AS DATE) BETWEEN @from AND @to
                       AND serial_code IS NOT NULL
                       AND LTRIM(RTRIM(serial_code)) <> ''
                       AND LEN(LTRIM(RTRIM(serial_code))) <> 13
@@ -2012,6 +2012,47 @@ namespace SVN_Tools.Controllers
             public string Prefix { get; set; } = "";
             public int MinSeq { get; set; }
             public string? Note { get; set; }
+        }
+
+        public IActionResult AllSerialFromToastWO() => View("AllSerialFromToastWO");
+
+        [HttpGet("api/AllSerialFromToastWO")]
+        public async Task<IActionResult> GetSerialsFromWO([FromQuery] string wo)
+        {
+            if (string.IsNullOrWhiteSpace(wo))
+                return BadRequest(new { ok = false, message = "Vui lòng nhập Work Order." });
+
+            using var conn = new Microsoft.Data.SqlClient.SqlConnection(connectionString);
+
+            var serials = (await conn.QueryAsync(
+                @"SELECT serial_code AS SerialCode,
+                         MAX(wo_code)       AS WoCode,
+                         MAX(date_finished) AS DateFinished,
+                         MAX(state)         AS State
+                  FROM SVN_ProductionInputLogs
+                  WHERE master_wo_code = @wo
+                    AND serial_code IS NOT NULL
+                    AND LTRIM(RTRIM(serial_code)) <> ''
+                  GROUP BY serial_code
+                  ORDER BY serial_code",
+                new { wo })).ToList();
+
+            var activeRule = await _context.SVNToastScanRules
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.IsActive);
+
+            return Ok(new
+            {
+                ok = true,
+                total = serials.Count,
+                serials,
+                activeRule = activeRule == null ? null : new
+                {
+                    activeRule.Prefix,
+                    activeRule.MinSeq,
+                    activeRule.Note
+                }
+            });
         }
 
     }
