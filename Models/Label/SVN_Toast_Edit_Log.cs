@@ -69,6 +69,7 @@ namespace SVN_Tools.Models.Label
     {
         public string OldSerial { get; set; } = "";
         public string NewSerial { get; set; } = "";
+        public string Station { get; set; } = ""; // "WIP" | "FG"
         public string Reason { get; set; } = "";
         public string SVNCode { get; set; } = "";
     }

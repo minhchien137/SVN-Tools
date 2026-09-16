@@ -391,11 +391,11 @@
                 showMsg('edit-msg', 'Vui lòng nhập đủ Serial mới, lý do và mã nhân viên.', false);
                 return;
             }
-            const body = { oldSerial: _currentSerial, newSerial: newVal, reason, svnCode };
+            const body = { oldSerial: _currentSerial, newSerial: newVal, station: _editOld.station || 'WIP', reason, svnCode };
             openConfirmModal(`
                 Bạn sắp <b>đổi Serial Number</b> của sản phẩm:<br><br>
                 <b>${_currentSerial}</b> → <b>${newVal}</b><br><br>
-                Toàn bộ dữ liệu WIP/FG/Pallet sẽ chuyển sang serial mới.<br>
+                Chỉ cập nhật bản ghi trạm <b>${body.station}</b>.<br>
                 Lý do: ${reason}<br>
                 Người thực hiện: ${svnCode}<br><br>
                 Thao tác này ảnh hưởng đến dữ liệu truy xuất nguồn gốc, chỉ tiếp tục nếu chắc chắn.

@@ -635,7 +635,7 @@
         if (!rows.length) {
             tbody.innerHTML = _fgFilterText
                 ? `<tr><td colspan="5" class="empty-state" style="color:#475569;">Không tìm thấy serial khớp từ khóa.</td></tr>`
-                : `<tr><td colspan="5" class="empty-state empty-good"><span>🎉</span>Tất cả serial FG đều đã đóng pallet!</td></tr>`;
+                : `<tr><td colspan="5" class="empty-state empty-good" style="text-align:center;"><span>🎉</span>Tất cả serial FG đều đã đóng pallet!</td></tr>`;
             return;
         }
         tbody.innerHTML = rows.map((r, i) => {
