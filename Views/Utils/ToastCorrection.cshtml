@@ -412,8 +412,8 @@
             reason,
             svnCode
         };
-        if (!body.newProductCode || !body.newLotNumber || !body.reason || !body.svnCode) {
-            showMsg('edit-msg', 'Vui lòng nhập đủ mã sản phẩm mới, lot mới, lý do và mã nhân viên.', false);
+        if (!body.reason || !body.svnCode) {
+            showMsg('edit-msg', 'Vui lòng nhập lý do và mã nhân viên.', false);
             return;
         }
         openConfirmModal(`

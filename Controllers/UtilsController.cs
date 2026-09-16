@@ -1371,19 +1371,29 @@ namespace SVN_Tools.Controllers
 
             // FG = serial xuất hiện làm lotNumber (exact match) trong component_list
             var fg  = prodRows.FirstOrDefault(x =>  ComponentListHasSerial((string?)x.component_list, serial));
-            var wip = prodRows.FirstOrDefault(x => !ComponentListHasSerial((string?)x.component_list, serial));
-            // Fallback: chỉ dùng state khi component_list thực sự rỗng/null
-            // Nếu component_list có data nhưng serial không có trong đó → chắc chắn là WIP, không dùng fallback
-            if (fg == null && wip != null && string.Equals((string?)wip.state, "Used", StringComparison.OrdinalIgnoreCase))
+            // WIP = serial không có trong component_list, ưu tiên state="Consumed"
+            var wip = prodRows.FirstOrDefault(x => !ComponentListHasSerial((string?)x.component_list, serial)
+                                                && string.Equals((string?)x.state, "Consumed", StringComparison.OrdinalIgnoreCase));
+
+            // Fallback FG: trường hợp WSS đã bị sửa nên serial không còn trong component_list
+            // Chỉ dùng state="Used" làm FG khi: đã có WIP riêng (2 records) HOẶC component_list rỗng
+            if (fg == null)
             {
-                var cl = ((string?)wip.component_list ?? "").Trim();
-                bool componentListEmpty = string.IsNullOrEmpty(cl) || cl == "[]" || cl == "null";
-                if (componentListEmpty)
+                var candidateFg = prodRows.FirstOrDefault(x =>
+                    !ComponentListHasSerial((string?)x.component_list, serial) &&
+                    string.Equals((string?)x.state, "Used", StringComparison.OrdinalIgnoreCase));
+                if (candidateFg != null)
                 {
-                    fg  = wip;
-                    wip = null;
+                    var cl = ((string?)candidateFg.component_list ?? "").Trim();
+                    bool clEmpty = string.IsNullOrEmpty(cl) || cl == "[]" || cl == "null";
+                    if (wip != null || clEmpty)
+                        fg = candidateFg;
                 }
             }
+
+            // Fallback WIP: nếu không có state="Consumed", lấy record còn lại không phải FG
+            if (wip == null)
+                wip = prodRows.FirstOrDefault(x => x != fg && !ComponentListHasSerial((string?)x.component_list, serial));
 
             var productIds = ExtractComponentProductIds(wip == null ? null : (string?)wip.component_list)
                 .Concat(ExtractComponentProductIds(fg == null ? null : (string?)fg.component_list))
@@ -1587,17 +1597,34 @@ namespace SVN_Tools.Controllers
                 "SELECT id, component_list, state, API_parameters FROM SVN_ProductionInputLogs WHERE serial_code = @serial ORDER BY date_finished DESC",
                 new { serial })).Cast<dynamic>().ToList();
 
-            dynamic? log = station == "WIP"
-                ? allLogs.FirstOrDefault(r => !ComponentListHasSerial((string?)r.component_list, serial))
-                : allLogs.FirstOrDefault(r =>  ComponentListHasSerial((string?)r.component_list, serial));
-
-            // Fallback dùng state chỉ khi component_list thực sự rỗng/null
-            if (log == null && station == "FG")
-                log = allLogs.FirstOrDefault(r =>
-                    string.Equals((string?)r.state, "Used", StringComparison.OrdinalIgnoreCase) &&
-                    (string.IsNullOrWhiteSpace((string?)r.component_list) ||
-                     ((string?)r.component_list).Trim() == "[]" ||
-                     ((string?)r.component_list).Trim() == "null"));
+            dynamic? log;
+            if (station == "WIP")
+            {
+                log = allLogs.FirstOrDefault(r => !ComponentListHasSerial((string?)r.component_list, serial)
+                                               && string.Equals((string?)r.state, "Consumed", StringComparison.OrdinalIgnoreCase));
+                log ??= allLogs.FirstOrDefault(r => !ComponentListHasSerial((string?)r.component_list, serial));
+            }
+            else
+            {
+                log = allLogs.FirstOrDefault(r => ComponentListHasSerial((string?)r.component_list, serial));
+                // Fallback FG: WSS đã bị sửa nên serial không còn trong component_list
+                // Chỉ dùng state="Used" khi đã có WIP riêng biệt (2 records) HOẶC component_list rỗng
+                if (log == null)
+                {
+                    var wipLog = allLogs.FirstOrDefault(r => !ComponentListHasSerial((string?)r.component_list, serial)
+                                                          && string.Equals((string?)r.state, "Consumed", StringComparison.OrdinalIgnoreCase));
+                    var candidateFg = allLogs.FirstOrDefault(r =>
+                        !ComponentListHasSerial((string?)r.component_list, serial) &&
+                        string.Equals((string?)r.state, "Used", StringComparison.OrdinalIgnoreCase));
+                    if (candidateFg != null)
+                    {
+                        var cl = ((string?)candidateFg.component_list ?? "").Trim();
+                        bool clEmpty = string.IsNullOrEmpty(cl) || cl == "[]" || cl == "null";
+                        if (wipLog != null || clEmpty)
+                            log = candidateFg;
+                    }
+                }
+            }
 
             if (log == null)
                 return NotFound(new { ok = false, message = $"Không tìm thấy bản ghi {station} cho serial {serial}." });
@@ -1609,9 +1636,8 @@ namespace SVN_Tools.Controllers
             var productRow = await Dapper.SqlMapper.QuerySingleOrDefaultAsync(conn,
                 "SELECT TOP 1 id FROM SVN_product_product WHERE default_code = @code",
                 new { code = req.NewProductCode.Trim() });
-            if (productRow == null)
-                return BadRequest(new { ok = false, message = $"Không tìm thấy mã sản phẩm {req.NewProductCode}." });
-            int newProductId = (int)productRow.id;
+            // Không bắt buộc phải tìm thấy product — nếu không có thì giữ nguyên product_id cũ
+            int? lookedUpProductId = productRow != null ? (int?)((int)productRow.id) : null;
 
             JsonNode? node;
             try { node = JsonNode.Parse(oldJson); }
@@ -1636,6 +1662,7 @@ namespace SVN_Tools.Controllers
             if (target == null)
                 return NotFound(new { ok = false, message = $"Không tìm thấy linh kiện với lot {req.OldLotNumber} trong trạm {station}." });
 
+            int newProductId = lookedUpProductId ?? oldProductId;
             var oldLot = req.OldLotNumber.Trim().ToUpper();
             var newLot = req.NewLotNumber.Trim().ToUpper();
 
@@ -1721,15 +1748,6 @@ namespace SVN_Tools.Controllers
 
             using var conn = new System.Data.SqlClient.SqlConnection(connectionString);
             await conn.OpenAsync();
-
-            var oldPalletRows = (await conn.QueryAsync(
-                "SELECT Id, Serial FROM SVN_Astro_Label_Data WHERE isDeleted = 0 AND EmployeeID = 'toast' AND Serial LIKE '%' + @newSerial + '%'",
-                new { newSerial })).ToList();
-            bool newAlreadyInPallet = oldPalletRows.Any(r =>
-                ((string)r.Serial).Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Any(s => string.Equals(s.Trim(), newSerial, StringComparison.OrdinalIgnoreCase)));
-            if (newAlreadyInPallet)
-                return BadRequest(new { ok = false, message = $"SN mới {newSerial} đã nằm trong 1 pallet khác, không thể gộp." });
 
             using var tran = conn.BeginTransaction();
             try
