@@ -2016,6 +2016,101 @@ namespace SVN_Tools.Controllers
 
         public IActionResult AllSerialFromToastWO() => View("AllSerialFromToastWO");
 
+        // Scan History WIP & FG
+        [HttpGet("utils/scan-history")]
+        public IActionResult ScanHistoryWIPFG() => View("ScanHistoryWIPFG");
+
+        [HttpGet("api/ScanHistory")]
+        public async Task<IActionResult> GetScanHistory(
+            [FromQuery] string? fromDate,
+            [FromQuery] string? toDate,
+            [FromQuery] string? masterWoCode,
+            [FromQuery] string? woCode,
+            [FromQuery] string? productId,
+            [FromQuery] string? type,
+            [FromQuery] string? search)
+        {
+            using var conn = new System.Data.SqlClient.SqlConnection(connectionString);
+
+            var rows = (await conn.QueryAsync<ScanHistoryRow>(
+                @"SELECT t.id,
+                         t.master_wo_code  AS MasterWoCode,
+                         t.wo_code         AS WoCode,
+                         t.product_id      AS ProductId,
+                         t.field_type      AS FieldType,
+                         t.product_name    AS ProductName,
+                         t.has_tracking    AS HasTracking,
+                         t.scanned_value   AS ScannedValue,
+                         t.scan_time       AS ScanTime
+                  FROM dbo.SVN_ProductEnterScanInputLog t
+                  WHERE (@fromDate     IS NULL OR CONVERT(date, t.scan_time) >= @fromDate)
+                    AND (@toDate       IS NULL OR CONVERT(date, t.scan_time) <= @toDate)
+                    AND (@masterWoCode IS NULL OR t.master_wo_code LIKE '%' + @masterWoCode + '%')
+                    AND (@woCode       IS NULL OR t.wo_code         LIKE '%' + @woCode + '%')
+                    AND (@productId    IS NULL OR CAST(t.product_id AS NVARCHAR) LIKE '%' + @productId + '%')
+                    AND (@type         IS NULL OR t.field_type = @type)
+                    AND (
+                        @search IS NULL
+                        OR EXISTS (
+                            SELECT 1 FROM dbo.SVN_ProductEnterScanInputLog s
+                            WHERE s.master_wo_code = t.master_wo_code
+                              AND s.wo_code        = t.wo_code
+                              AND (@fromDate IS NULL OR CONVERT(date, s.scan_time) >= @fromDate)
+                              AND (@toDate   IS NULL OR CONVERT(date, s.scan_time) <= @toDate)
+                              AND (s.scanned_value LIKE '%' + @search + '%'
+                                OR s.product_name  LIKE '%' + @search + '%')
+                        )
+                    )
+                  ORDER BY t.master_wo_code, t.wo_code, t.product_id, t.scan_time DESC",
+                new
+                {
+                    fromDate    = string.IsNullOrWhiteSpace(fromDate)    ? (DateTime?)null : DateTime.Parse(fromDate),
+                    toDate      = string.IsNullOrWhiteSpace(toDate)      ? (DateTime?)null : DateTime.Parse(toDate),
+                    masterWoCode = string.IsNullOrWhiteSpace(masterWoCode) ? (string?)null : masterWoCode.Trim(),
+                    woCode      = string.IsNullOrWhiteSpace(woCode)      ? (string?)null : woCode.Trim(),
+                    productId   = string.IsNullOrWhiteSpace(productId)   ? (string?)null : productId.Trim(),
+                    type        = string.IsNullOrWhiteSpace(type)        ? (string?)null : type.Trim(),
+                    search      = string.IsNullOrWhiteSpace(search)      ? (string?)null : search.Trim()
+                })).ToList();
+
+            var groups = rows
+                .GroupBy(r => new { r.MasterWoCode, r.WoCode, r.ProductId })
+                .Select(g =>
+                {
+                    var latest = g.First();
+                    return new
+                    {
+                        latest.MasterWoCode,
+                        latest.WoCode,
+                        latest.ProductId,
+                        latest.FieldType,
+                        latest.ProductName,
+                        latest.HasTracking,
+                        LatestValue = latest.ScannedValue,
+                        LatestAt    = latest.ScanTime,
+                        ScanCount   = g.Count(),
+                        History     = g.Select(r => new { r.Id, r.ScannedValue, r.ScanTime }).ToList()
+                    };
+                })
+                .OrderByDescending(g => g.LatestAt)
+                .ToList();
+
+            return Ok(new { ok = true, total = groups.Count, groups });
+        }
+
+        private class ScanHistoryRow
+        {
+            public int Id { get; set; }
+            public string? MasterWoCode { get; set; }
+            public string? WoCode { get; set; }
+            public int ProductId { get; set; }
+            public string? FieldType { get; set; }
+            public string? ProductName { get; set; }
+            public string? HasTracking { get; set; }
+            public string? ScannedValue { get; set; }
+            public DateTime ScanTime { get; set; }
+        }
+
         [HttpGet("api/AllSerialFromToastWO")]
         public async Task<IActionResult> GetSerialsFromWO([FromQuery] string wo)
         {

@@ -1,0 +1,635 @@
+@{
+    ViewData["Title"] = "KeyLogger WIP & FG Station";
+}
+
+<style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0d12; color: #f1f5f9; margin: 0; padding: 0; }
+
+    /* ─── Header ─── */
+    .sh-header {
+        background: linear-gradient(135deg, #0f172a 0%, #111827 100%);
+        border-bottom: 1px solid #1e293b;
+        padding: 20px 32px;
+        display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+    }
+    .sh-title {
+        font-size: 22px; font-weight: 800; letter-spacing: -.3px;
+        background: linear-gradient(90deg, #34d399 0%, #60a5fa 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .sh-subtitle { font-size: 12px; color: #475569; margin-top: 2px; }
+
+    /* ─── Filter bar ─── */
+    .filter-bar {
+        background: #111827; border-bottom: 1px solid #1e293b;
+        padding: 16px 32px; display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap;
+    }
+    .filter-group { display: flex; flex-direction: column; gap: 4px; }
+    .filter-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: .4px; }
+    .filter-inp {
+        background: #1e293b; border: 1px solid #334155; border-radius: 8px;
+        color: #f1f5f9; padding: 8px 12px; font-size: 13px; outline: none;
+        transition: border-color .2s; min-width: 130px;
+    }
+    .filter-inp:focus { border-color: #3b82f6; }
+    select.filter-inp { min-width: 120px; cursor: pointer; }
+    .btn-search {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; border: none;
+        border-radius: 8px; padding: 9px 22px; font-size: 13px; font-weight: 700;
+        cursor: pointer; transition: opacity .15s; display: flex; align-items: center; gap: 6px;
+        white-space: nowrap;
+    }
+    .btn-search:hover { opacity: .88; }
+    .btn-clear {
+        background: #1e293b; color: #94a3b8; border: 1px solid #334155;
+        border-radius: 8px; padding: 9px 16px; font-size: 13px; font-weight: 600;
+        cursor: pointer; transition: all .15s; white-space: nowrap;
+    }
+    .btn-clear:hover { background: #273549; color: #f1f5f9; }
+
+    /* ─── Body ─── */
+    .sh-body { padding: 24px 32px; }
+    @@media (max-width: 768px) { .sh-body { padding: 12px; } .filter-bar { padding: 12px 16px; } .sh-header { padding: 16px; } }
+
+    /* ─── Summary bar ─── */
+    .summary-row {
+        display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .sum-card {
+        background: #111827; border: 1px solid #1e293b; border-radius: 12px;
+        padding: 14px 20px; min-width: 130px; text-align: center;
+    }
+    .sum-num { font-size: 28px; font-weight: 800; }
+    .sum-num.blue   { color: #60a5fa; }
+    .sum-num.green  { color: #4ade80; }
+    .sum-num.orange { color: #fbbf24; }
+    .sum-lbl { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: .4px; margin-top: 4px; }
+
+    /* ─── Table ─── */
+    .table-wrap {
+        background: #111827; border: 1px solid #1e293b; border-radius: 16px; overflow: hidden;
+    }
+    .table-toolbar {
+        padding: 14px 20px; border-bottom: 1px solid #1e293b;
+        display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    }
+    .table-toolbar-title { font-size: 13px; font-weight: 700; color: #94a3b8; }
+    .inp-quick-filter {
+        background: #1e293b; border: 1px solid #334155; border-radius: 8px;
+        color: #f1f5f9; padding: 7px 12px; font-size: 13px; outline: none; min-width: 200px;
+    }
+    .inp-quick-filter:focus { border-color: #3b82f6; }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: #0f172a; }
+    th { padding: 12px 14px; text-align: left; font-size: 11px; font-weight: 700; color: #64748b;
+         text-transform: uppercase; letter-spacing: .5px; white-space: nowrap; border-bottom: 1px solid #1e293b; }
+    td { padding: 11px 14px; font-size: 13px; border-bottom: 1px solid #1e293b; vertical-align: middle; }
+    tr.main-row:hover td { background: rgba(255,255,255,.03); }
+    tr.history-row td { background: #0a0d12; padding: 0; border-bottom: 1px solid #1e293b; }
+    tr.history-row.hidden { display: none; }
+
+    .mono { font-family: monospace; letter-spacing: .3px; }
+    .text-muted2 { color: #475569; }
+
+    .badge-fg        { background: rgba(6,182,212,.15);  color: #22d3ee; border: 1px solid rgba(6,182,212,.3);  border-radius: 6px; padding: 2px 9px; font-size: 11px; font-weight: 700; }
+    .badge-component { background: rgba(139,92,246,.15); color: #a78bfa; border: 1px solid rgba(139,92,246,.3); border-radius: 6px; padding: 2px 9px; font-size: 11px; font-weight: 700; }
+
+    .btn-expand {
+        background: transparent; border: 1px solid #334155; border-radius: 6px;
+        color: #94a3b8; padding: 3px 10px; font-size: 12px; cursor: pointer;
+        transition: all .15s; display: inline-flex; align-items: center; gap: 5px;
+    }
+    .btn-expand:hover { background: #1e293b; color: #f1f5f9; border-color: #475569; }
+    .btn-expand.active { background: #1e3a5f; color: #60a5fa; border-color: #3b82f6; }
+
+    /* Detail panel (WO expand) */
+    .detail-panel {
+        padding: 10px 16px 10px 48px;
+        background: #080b10;
+        border-left: 3px solid #1e3a5f;
+        display: flex; flex-direction: column; gap: 6px;
+    }
+    .detail-item {
+        background: #111827; border: 1px solid #1e293b; border-radius: 10px;
+        overflow: hidden;
+    }
+    .detail-item-header {
+        display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+        padding: 10px 14px; font-size: 13px;
+    }
+    .detail-item:hover .detail-item-header { background: rgba(255,255,255,.02); }
+
+    /* Scan history sub (within a product) */
+    .scan-history-sub { padding: 8px 14px 10px 14px; border-top: 1px solid #1e293b; }
+    .scan-history-sub.hidden { display: none; }
+
+    .history-item {
+        display: flex; align-items: center; gap: 14px;
+        padding: 5px 8px; border-radius: 6px;
+        font-size: 12px; font-family: monospace;
+    }
+    .history-item:first-child { background: rgba(59,130,246,.1); border: 1px solid rgba(59,130,246,.2); }
+    .history-item .h-idx   { color: #475569; min-width: 20px; text-align: right; }
+    .history-item .h-val   { color: #f1f5f9; font-weight: 700; flex: 1; }
+    .history-item .h-at    { color: #64748b; white-space: nowrap; }
+    .history-item .h-badge { background: rgba(59,130,246,.2); color: #93c5fd; border-radius: 4px; padding: 1px 6px; font-size: 10px; }
+
+    /* Keep old history-panel for compat */
+    .history-panel { padding: 12px 20px 12px 40px; background: #080b10; border-left: 3px solid #1e3a5f; }
+    .history-panel-title { font-size: 11px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+
+    /* Auto-refresh badge */
+    .refresh-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: #0f172a; border: 1px solid #1e293b; border-radius: 20px;
+        padding: 5px 12px; font-size: 12px; color: #475569;
+    }
+    .refresh-badge .dot {
+        width: 7px; height: 7px; border-radius: 50%; background: #22c55e;
+        animation: pulse-dot 2s infinite;
+    }
+    @@keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* Pagination */
+    .pg-btn {
+        background: #1e293b; border: 1px solid #334155; border-radius: 7px;
+        color: #94a3b8; padding: 5px 11px; font-size: 12px; font-weight: 600;
+        cursor: pointer; transition: all .15s; min-width: 32px; text-align: center;
+    }
+    .pg-btn:hover:not(:disabled) { background: #273549; color: #f1f5f9; border-color: #475569; }
+    .pg-btn.active { background: #1e3a5f; color: #60a5fa; border-color: #3b82f6; }
+    .pg-btn:disabled { opacity: .35; cursor: default; }
+
+    /* Export btn */
+    .btn-export {
+        background: #14532d; color: #4ade80; border: 1px solid #166534;
+        border-radius: 8px; padding: 7px 14px; font-size: 12px; font-weight: 600;
+        cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 5px;
+    }
+    .btn-export:hover { background: #166534; }
+
+    #loading-overlay {
+        text-align: center; padding: 60px 20px; color: #475569; font-size: 15px;
+    }
+    #empty-state {
+        text-align: center; padding: 60px 20px; color: #475569; font-size: 14px;
+    }
+    #result-area { }
+</style>
+
+<!-- ─── Header ─── -->
+<div class="sh-header">
+    <div>
+        <div class="sh-title">KeyLogger WIP &amp; FG Station</div>
+        <div class="sh-subtitle">Lịch sử dữ liệu đã quét vào các trường tại trạm WIP và FG Toast</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+        <div class="refresh-badge" id="refresh-badge" style="display:none;">
+            <div class="dot"></div>
+            Auto · <span id="countdown">20</span>s
+        </div>
+        <button class="btn-clear" id="btn-toggle-auto" onclick="toggleAutoRefresh()" style="font-size:12px;padding:6px 12px;">
+            ▶ Bật tự động
+        </button>
+        <button class="btn-export" id="btn-export" onclick="exportCsv()" style="display:none;">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/>
+            </svg>
+            Xuất CSV
+        </button>
+    </div>
+</div>
+
+<!-- ─── Filter bar ─── -->
+<div class="filter-bar">
+    <div class="filter-group">
+        <span class="filter-label">Từ ngày</span>
+        <input type="date" id="f-from" class="filter-inp" />
+    </div>
+    <div class="filter-group">
+        <span class="filter-label">Đến ngày</span>
+        <input type="date" id="f-to" class="filter-inp" />
+    </div>
+    <div class="filter-group">
+        <span class="filter-label">Master WO</span>
+        <input type="text" id="f-mwo" class="filter-inp" placeholder="VD: NM/MO/05144" />
+    </div>
+    <div class="filter-group">
+        <span class="filter-label">WO Code</span>
+        <input type="text" id="f-wo" class="filter-inp" placeholder="VD: NM/MO/05144-476" />
+    </div>
+    <div class="filter-group">
+        <span class="filter-label">Product ID</span>
+        <input type="text" id="f-pid" class="filter-inp" placeholder="VD: 909" style="min-width:100px;" />
+    </div>
+    <div class="filter-group">
+        <span class="filter-label">Loại</span>
+        <select id="f-type" class="filter-inp">
+            <option value="">Tất cả</option>
+            <option value="FG">FG</option>
+            <option value="Component">Component</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <span class="filter-label">Tìm kiếm (serial / linh kiện)</span>
+        <input type="text" id="f-search" class="filter-inp" placeholder="Nhập serial hoặc tên linh kiện..." style="min-width:220px;" />
+    </div>
+    <button class="btn-search" onclick="doSearch()">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+        Tìm kiếm
+    </button>
+    <button class="btn-clear" onclick="clearFilters()">Xóa bộ lọc</button>
+</div>
+
+<!-- ─── Body ─── -->
+<div class="sh-body">
+
+    <div id="loading-overlay" style="display:none;">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#3b82f6" stroke-width="2" style="animation:spin 1s linear infinite;vertical-align:middle;margin-right:8px;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        Đang tải dữ liệu...
+    </div>
+    <div id="empty-state" style="display:none;">Không có dữ liệu phù hợp. Thử thay đổi bộ lọc.</div>
+
+    <div id="result-area" style="display:none;">
+        <!-- Summary -->
+        <div class="summary-row" id="summary-row"></div>
+
+        <!-- Table -->
+        <div class="table-wrap">
+            <div class="table-toolbar">
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                    <span class="table-toolbar-title" id="tbl-count">0 nhóm</span>
+                    <select id="page-size" class="filter-inp" style="min-width:auto;padding:5px 10px;font-size:12px;" onchange="onPageSizeChange()">
+                        <option value="10">10 / trang</option>
+                        <option value="20" selected>20 / trang</option>
+                        <option value="50">50 / trang</option>
+                        <option value="100">100 / trang</option>
+                    </select>
+                </div>
+                <input type="text" class="inp-quick-filter" id="inp-quick" placeholder="Lọc nhanh trong kết quả..." oninput="quickFilter(this.value)" />
+            </div>
+            <div style="overflow-x:auto;">
+                <table id="result-table">
+                    <thead>
+                        <tr>
+                            <th style="width:36px;"></th>
+                            <th>#</th>
+                            <th>Master WO</th>
+                            <th>WO Code</th>
+                            <th style="text-align:center;">FG</th>
+                            <th style="text-align:center;">Component</th>
+                            <th style="text-align:center;">Tổng scan</th>
+                            <th>Lần quét cuối</th>
+                        </tr>
+                    </thead>
+                    <tbody id="result-tbody"></tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <div id="pagination-bar" style="display:none;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid #1e293b;flex-wrap:wrap;gap:10px;">
+                <span id="page-info" style="font-size:12px;color:#64748b;"></span>
+                <div style="display:flex;align-items:center;gap:6px;" id="page-btns"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+    let _allGroups  = [];
+    let _woGroups   = [];
+    let _filtered   = [];
+    let _curPage    = 1;
+    let _pageSize   = 20;
+
+    // Auto-refresh
+    let _autoOn     = false;
+    let _cdVal      = 20;
+    let _cdTimer    = null;
+
+    function toggleAutoRefresh() {
+        _autoOn = !_autoOn;
+        const btn   = document.getElementById('btn-toggle-auto');
+        const badge = document.getElementById('refresh-badge');
+        if (_autoOn) {
+            btn.textContent = '⏸ Tắt tự động';
+            btn.style.borderColor = '#22c55e';
+            btn.style.color = '#4ade80';
+            badge.style.display = 'inline-flex';
+            startCountdown();
+        } else {
+            btn.textContent = '▶ Bật tự động';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+            badge.style.display = 'none';
+            clearInterval(_cdTimer);
+        }
+    }
+
+    function startCountdown() {
+        _cdVal = 20;
+        document.getElementById('countdown').textContent = _cdVal;
+        clearInterval(_cdTimer);
+        _cdTimer = setInterval(() => {
+            _cdVal--;
+            document.getElementById('countdown').textContent = _cdVal;
+            if (_cdVal <= 0) {
+                clearInterval(_cdTimer);
+                doSearch().then(() => { if (_autoOn) startCountdown(); });
+            }
+        }, 1000);
+    }
+
+    (function initDefaults() {
+        const today = new Date().toISOString().slice(0, 10);
+        document.getElementById('f-from').value = today;
+        document.getElementById('f-to').value   = today;
+
+        document.querySelectorAll('.filter-inp, #f-from, #f-to, #f-search').forEach(el => {
+            el.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+        });
+    })();
+
+    async function doSearch() {
+        const params = new URLSearchParams();
+        const from   = document.getElementById('f-from').value;
+        const to     = document.getElementById('f-to').value;
+        const mwo    = document.getElementById('f-mwo').value.trim();
+        const wo     = document.getElementById('f-wo').value.trim();
+        const pid    = document.getElementById('f-pid').value.trim();
+        const type   = document.getElementById('f-type').value;
+        const search = document.getElementById('f-search').value.trim();
+
+        if (from)   params.set('fromDate', from);
+        if (to)     params.set('toDate', to);
+        if (mwo)    params.set('masterWoCode', mwo);
+        if (wo)     params.set('woCode', wo);
+        if (pid)    params.set('productId', pid);
+        if (type)   params.set('type', type);
+        if (search) params.set('search', search);
+
+        show('loading-overlay'); hide('result-area'); hide('empty-state');
+
+        try {
+            const res  = await fetch(`/api/ScanHistory?${params}`);
+            const data = await res.json();
+            hide('loading-overlay');
+
+            if (!data.ok || !data.groups || data.groups.length === 0) {
+                show('empty-state'); return;
+            }
+
+            _allGroups = data.groups;
+            renderSummary(data.groups);
+            renderTable(data.groups);
+            show('result-area');
+            document.getElementById('btn-export').style.display = 'flex';
+        } catch (e) {
+            hide('loading-overlay');
+            show('empty-state');
+            document.getElementById('empty-state').textContent = 'Lỗi khi tải dữ liệu: ' + e.message;
+        }
+    }
+
+    function renderSummary(groups) {
+        const woCount      = new Set(groups.map(g => `${g.masterWoCode}||${g.woCode}`)).size;
+        const totalFG      = groups.filter(g => g.fieldType === 'FG').length;
+        const totalComp    = groups.filter(g => g.fieldType === 'Component').length;
+        const totalReScans = groups.filter(g => g.scanCount > 1).length;
+
+        document.getElementById('summary-row').innerHTML = `
+            <div class="sum-card"><div class="sum-num blue">${woCount}</div><div class="sum-lbl">Tổng WO</div></div>
+            <div class="sum-card"><div class="sum-num" style="color:#94a3b8">${groups.length}</div><div class="sum-lbl">Tổng mục</div></div>
+            <div class="sum-card"><div class="sum-num" style="color:#22d3ee">${totalFG}</div><div class="sum-lbl">FG</div></div>
+            <div class="sum-card"><div class="sum-num" style="color:#a78bfa">${totalComp}</div><div class="sum-lbl">Component</div></div>
+            <div class="sum-card"><div class="sum-num orange">${totalReScans}</div><div class="sum-lbl">Quét lại</div></div>
+        `;
+    }
+
+    // Group by (masterWoCode, woCode) for display
+    function buildWoGroups(groups) {
+        const map = new Map();
+        groups.forEach(g => {
+            const key = `${g.masterWoCode}||${g.woCode}`;
+            if (!map.has(key)) map.set(key, { masterWoCode: g.masterWoCode, woCode: g.woCode, items: [] });
+            map.get(key).items.push(g);
+        });
+        return Array.from(map.values()).map(w => {
+            const latestAt  = w.items.reduce((a, b) => a.latestAt > b.latestAt ? a : b).latestAt;
+            const fgCount   = w.items.filter(i => i.fieldType === 'FG').length;
+            const compCount = w.items.filter(i => i.fieldType === 'Component').length;
+            const totalScans = w.items.reduce((s, i) => s + i.scanCount, 0);
+            return { ...w, latestAt, fgCount, compCount, totalScans };
+        }).sort((a, b) => b.latestAt.localeCompare(a.latestAt));
+    }
+
+    function renderTable(groups) {
+        _woGroups = buildWoGroups(groups);
+        _filtered  = _woGroups;
+        _curPage   = 1;
+        renderPage();
+    }
+
+    function renderPage() {
+        const tbody  = document.getElementById('result-tbody');
+        tbody.innerHTML = '';
+        const total  = _filtered.length;
+        const start  = (_curPage - 1) * _pageSize;
+        const end    = Math.min(start + _pageSize, total);
+        const page   = _filtered.slice(start, end);
+
+        page.forEach((wo, pi) => {
+            const wi = _filtered.indexOf(wo);   // global index for IDs
+            // ── WO summary row ──
+            const mainRow = document.createElement('tr');
+            mainRow.className = 'main-row';
+            mainRow.dataset.wi = wi;
+            mainRow.style.cursor = 'pointer';
+            mainRow.onclick = () => toggleWo(wi);
+            mainRow.innerHTML = `
+                <td style="text-align:center;width:36px;">
+                    <span id="wo-icon-${wi}" style="color:#3b82f6;font-size:12px;">▶</span>
+                </td>
+                <td class="text-muted2">${wi + 1}</td>
+                <td class="mono" style="color:#93c5fd;font-size:12px;">${esc(wo.masterWoCode || '')}</td>
+                <td class="mono" style="color:#60a5fa;font-weight:700;font-size:13px;">${esc(wo.woCode || '')}</td>
+                <td style="text-align:center;">
+                    ${wo.fgCount > 0 ? `<span class="badge-fg">${wo.fgCount} FG</span>` : '<span class="text-muted2">—</span>'}
+                </td>
+                <td style="text-align:center;">
+                    ${wo.compCount > 0 ? `<span class="badge-component">${wo.compCount} Comp</span>` : '<span class="text-muted2">—</span>'}
+                </td>
+                <td style="text-align:center;color:#fbbf24;font-weight:700;">${wo.totalScans}</td>
+                <td style="color:#64748b;font-size:12px;">${fmtDate(wo.latestAt)}</td>
+            `;
+            tbody.appendChild(mainRow);
+
+            // ── Detail rows (hidden) ──
+            const detailRow = document.createElement('tr');
+            detailRow.className = 'history-row hidden';
+            detailRow.id = `wo-detail-${wi}`;
+
+            const itemsHtml = wo.items.map((g, gi) => {
+                const compName = g.productName
+                    ? `<span style="color:#e2e8f0;font-family:monospace;">${esc(g.productName)}</span>`
+                    : `<span class="text-muted2">—</span>`;
+
+                const typeBadge = g.fieldType === 'FG'
+                    ? `<span class="badge-fg">FG</span>`
+                    : `<span class="badge-component">Component</span>`;
+
+                const scanHistory = g.history.length > 1
+                    ? g.history.map((h, hi) => `
+                        <div class="history-item" style="margin-top:4px;">
+                            <span class="h-idx">${hi + 1}</span>
+                            <span class="h-val">${esc(h.scannedValue || '')}</span>
+                            <span class="h-at">${fmtDate(h.scanTime)}</span>
+                            ${hi === 0 ? '<span class="h-badge">MỚI NHẤT</span>' : ''}
+                        </div>`).join('')
+                    : '';
+
+                return `
+                <div class="detail-item" id="detail-${wi}-${gi}">
+                    <div class="detail-item-header">
+                        <span style="color:#475569;font-size:11px;min-width:20px;">${gi + 1}</span>
+                        <span style="color:#fbbf24;font-weight:700;min-width:50px;">ID: ${g.productId}</span>
+                        ${typeBadge}
+                        <span style="flex:1;">${compName}</span>
+                        <span class="mono" style="color:#4ade80;font-weight:700;">${esc(g.latestValue || '—')}</span>
+                        <span style="color:#64748b;font-size:11px;white-space:nowrap;">${fmtDate(g.latestAt)}</span>
+                        ${g.scanCount > 1
+                            ? `<button class="btn-expand" onclick="event.stopPropagation();toggleScanHistory('sh-${wi}-${gi}')" style="font-size:11px;padding:2px 8px;">
+                                   <span id="sh-icon-${wi}-${gi}">▶</span> ${g.scanCount} lần
+                               </button>`
+                            : `<span style="color:#475569;font-size:11px;">1 lần</span>`}
+                    </div>
+                    ${g.scanCount > 1 ? `<div class="scan-history-sub hidden" id="sh-${wi}-${gi}">${scanHistory}</div>` : ''}
+                </div>`;
+            }).join('');
+
+            detailRow.innerHTML = `<td colspan="8"><div class="detail-panel">${itemsHtml}</div></td>`;
+            tbody.appendChild(detailRow);
+        });
+
+        document.getElementById('tbl-count').textContent =
+            `${_filtered.length} WO · ${_allGroups.length} mục`;
+        renderPagination(total, start, end);
+    }
+
+    function renderPagination(total, start, end) {
+        const bar      = document.getElementById('pagination-bar');
+        const info     = document.getElementById('page-info');
+        const btnsEl   = document.getElementById('page-btns');
+        const totalPages = Math.ceil(total / _pageSize);
+
+        if (totalPages <= 1) { bar.style.display = 'none'; return; }
+        bar.style.display = 'flex';
+        info.textContent  = `Hiển thị ${start + 1}–${end} / ${total} WO`;
+
+        btnsEl.innerHTML = '';
+        const addBtn = (label, page, active, disabled) => {
+            const b = document.createElement('button');
+            b.className   = 'pg-btn' + (active ? ' active' : '');
+            b.textContent = label;
+            b.disabled    = disabled;
+            if (!disabled && !active) b.onclick = () => goPage(page);
+            btnsEl.appendChild(b);
+        };
+
+        addBtn('«', 1, false, _curPage === 1);
+        addBtn('‹', _curPage - 1, false, _curPage === 1);
+
+        // page numbers: show up to 5 around current
+        const delta = 2;
+        const lo = Math.max(1, _curPage - delta);
+        const hi = Math.min(totalPages, _curPage + delta);
+        if (lo > 1) { addBtn('1', 1, false, false); if (lo > 2) { const s = document.createElement('span'); s.textContent = '…'; s.style.cssText = 'color:#475569;padding:0 4px;font-size:12px;'; btnsEl.appendChild(s); } }
+        for (let p = lo; p <= hi; p++) addBtn(p, p, p === _curPage, false);
+        if (hi < totalPages) { if (hi < totalPages - 1) { const s = document.createElement('span'); s.textContent = '…'; s.style.cssText = 'color:#475569;padding:0 4px;font-size:12px;'; btnsEl.appendChild(s); } addBtn(totalPages, totalPages, false, false); }
+
+        addBtn('›', _curPage + 1, false, _curPage === totalPages);
+        addBtn('»', totalPages,   false, _curPage === totalPages);
+    }
+
+    function goPage(p) {
+        _curPage = p;
+        renderPage();
+        document.getElementById('result-table').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function onPageSizeChange() {
+        _pageSize = parseInt(document.getElementById('page-size').value);
+        _curPage  = 1;
+        renderPage();
+    }
+
+    function toggleWo(wi) {
+        const row  = document.getElementById(`wo-detail-${wi}`);
+        const icon = document.getElementById(`wo-icon-${wi}`);
+        const open = row.classList.contains('hidden');
+        row.classList.toggle('hidden', !open);
+        icon.textContent = open ? '▼' : '▶';
+    }
+
+    function toggleScanHistory(id) {
+        const el   = document.getElementById(id);
+        const icon = document.getElementById(`sh-icon-${id.slice(3)}`);
+        const open = el.classList.contains('hidden');
+        el.classList.toggle('hidden', !open);
+        if (icon) icon.textContent = open ? '▼' : '▶';
+    }
+
+    function quickFilter(q) {
+        q = q.toLowerCase().trim();
+        _filtered = !q ? _woGroups : _woGroups.filter(wo => {
+            const text = [wo.masterWoCode, wo.woCode,
+                ...wo.items.flatMap(i => [i.productName, i.latestValue, String(i.productId)])]
+                .filter(Boolean).join(' ').toLowerCase();
+            return text.includes(q);
+        });
+        _curPage = 1;
+        renderPage();
+    }
+
+    function clearFilters() {
+        document.getElementById('f-from').value   = '';
+        document.getElementById('f-to').value     = '';
+        document.getElementById('f-mwo').value    = '';
+        document.getElementById('f-wo').value     = '';
+        document.getElementById('f-pid').value    = '';
+        document.getElementById('f-type').value   = '';
+        document.getElementById('f-search').value = '';
+        document.getElementById('inp-quick').value = '';
+        _filtered = _woGroups;
+    }
+
+    function exportCsv() {
+        if (!_allGroups.length) return;
+        const rows = [['Master WO', 'WO Code', 'Product ID', 'Loại', 'Linh kiện', 'Serial mới nhất', 'Lần quét cuối', 'Số lần quét']];
+        _allGroups.forEach(g => {
+            rows.push([g.masterWoCode, g.woCode, g.productId, g.fieldType, g.productName || '', g.latestValue || '', fmtDate(g.latestAt), g.scanCount]);
+        });
+        const csv  = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+        const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a'); a.href = url;
+        a.download = `scan-history-${new Date().toISOString().slice(0,10)}.csv`;
+        a.click(); URL.revokeObjectURL(url);
+    }
+
+    function fmtDate(d) {
+        if (!d) return '—';
+        const dt = new Date(d);
+        if (isNaN(dt)) return d;
+        return dt.toLocaleString('vi-VN', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    }
+    function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function show(id) { document.getElementById(id).style.display = 'block'; }
+    function hide(id) { document.getElementById(id).style.display = 'none'; }
+</script>
