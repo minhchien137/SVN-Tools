@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SVN-Tools")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9f376f7e3588e7be1b29ec37cb886b37f19ae8e5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b00fb5a635ca2d5592b6c200419a1ecd08a0160a")]
 [assembly: System.Reflection.AssemblyProductAttribute("SVN-Tools")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SVN-Tools")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -999,6 +999,7 @@ namespace SVN_Tools.Controllers
             try
             {
                 using var conn = new System.Data.SqlClient.SqlConnection(connectionString);
+                await conn.OpenAsync();
 
                 // Query 1: lấy danh sách serial trong khoảng ngày
                 var serials = (await conn.QueryAsync(@"
@@ -1023,33 +1024,43 @@ namespace SVN_Tools.Controllers
                 var dateFrom   = from.AddDays(-60);
                 var dateTo     = to.AddDays(7);
 
+                // Dùng temp table để tránh vượt giới hạn 2100 parameters của SQL Server
+                await conn.ExecuteAsync("CREATE TABLE #Serials (SerialCode NVARCHAR(50) NOT NULL)", commandTimeout: 10);
+                var serialDt = new System.Data.DataTable();
+                serialDt.Columns.Add("SerialCode", typeof(string));
+                foreach (var sn in serialList) serialDt.Rows.Add(sn);
+                using (var bulk = new System.Data.SqlClient.SqlBulkCopy(conn))
+                {
+                    bulk.DestinationTableName = "#Serials";
+                    await bulk.WriteToServerAsync(serialDt);
+                }
+
                 // Query 2: WIP — lấy thêm wo_code để fill WorkOrder khi SVN_Toast_Serial_Info null
                 var wipRows = (await conn.QueryAsync(@"
-                    SELECT DISTINCT serial_code AS SerialCode, MAX(wo_code) AS WoCode
-                    FROM SVN_ProductionInputLogs
-                    WHERE serial_code IN @serialList
-                      AND date_finished >= @dateFrom
-                      AND (component_list IS NULL
-                           OR (component_list NOT LIKE '%""lotNumber"":""' + serial_code + '""%'
-                               AND component_list NOT LIKE '%""lotNumber"": ""' + serial_code + '""%'))
-                    GROUP BY serial_code",
-                    new { serialList, dateFrom },
+                    SELECT DISTINCT p.serial_code AS SerialCode, MAX(p.wo_code) AS WoCode
+                    FROM SVN_ProductionInputLogs p
+                    INNER JOIN #Serials s ON s.SerialCode = p.serial_code
+                    WHERE p.date_finished >= @dateFrom
+                      AND (p.component_list IS NULL
+                           OR (p.component_list NOT LIKE '%""lotNumber"":""' + p.serial_code + '""%'
+                               AND p.component_list NOT LIKE '%""lotNumber"": ""' + p.serial_code + '""%'))
+                    GROUP BY p.serial_code",
+                    new { dateFrom },
                     commandTimeout: 30
                 )).Cast<dynamic>().ToList();
 
                 var wipSet   = new HashSet<string>(wipRows.Select(w => (string)w.SerialCode), StringComparer.OrdinalIgnoreCase);
                 var wipWoMap = wipRows.ToDictionary(w => (string)w.SerialCode, w => (string?)w.WoCode, StringComparer.OrdinalIgnoreCase);
 
-                // Query 3: FG — chỉ lấy records của các serial đang xét (serial_code IN serialList)
-                // để tránh nhầm serial X là "có FG" chỉ vì X xuất hiện là component trong record của serial Y khác
+                // Query 3: FG — chỉ lấy records của các serial đang xét
                 var componentRows = (await conn.QueryAsync(@"
-                    SELECT serial_code, component_list
-                    FROM SVN_ProductionInputLogs
-                    WHERE date_finished BETWEEN @dateFrom AND @dateTo
-                      AND serial_code IN @serialList
-                      AND component_list IS NOT NULL
-                      AND LEN(component_list) > 2",
-                    new { dateFrom, dateTo, serialList },
+                    SELECT p.serial_code, p.component_list
+                    FROM SVN_ProductionInputLogs p
+                    INNER JOIN #Serials s ON s.SerialCode = p.serial_code
+                    WHERE p.date_finished BETWEEN @dateFrom AND @dateTo
+                      AND p.component_list IS NOT NULL
+                      AND LEN(p.component_list) > 2",
+                    new { dateFrom, dateTo },
                     commandTimeout: 60
                 )).Cast<dynamic>().ToList();
 
